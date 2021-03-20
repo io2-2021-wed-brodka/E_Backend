@@ -1,0 +1,20 @@
+package com.example.bikeRenting.service.mapping;
+
+import com.example.bikeRenting.dto.BikeStationDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class BikeStationMappingService {
+    public BikeStationDTO mapToBikeStationDTO(BikeStation bikeStation)
+    {
+        var result = new BikeStationDTO();
+        //result.setBikes();
+        result.setId(bikeStation.getId());
+        result.setMaxBikes(bikeStation.getMaxBikes());
+        result.setLocationName(bikeStation.getLocationName());
+        return result;
+    }
+}
