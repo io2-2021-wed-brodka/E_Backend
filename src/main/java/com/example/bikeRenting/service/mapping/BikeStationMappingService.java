@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -33,10 +34,6 @@ public class BikeStationMappingService {
 
     private List<BikeDTO> mapBikesFromStation(BikeStation bikeStation)
     {
-        var resultList = new ArrayList<BikeDTO>();
-        for (var bike: bikeStation.getBikes()) {
-            var result = bikeMappingService.mapToBikeDTO(bike);
-        }
-        return resultList;
+        return bikeStation.getBikes().stream().map(b -> bikeMappingService.mapToBikeDTO(b)).collect(Collectors.toList());
     }
 }
