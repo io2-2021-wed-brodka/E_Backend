@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,10 @@ public class BikeStationMappingService {
 
     private List<BikeDTO> mapBikesFromStation(BikeStation bikeStation)
     {
+        if(null==bikeStation.getBikes())
+        {
+            return new LinkedList<BikeDTO>();
+        }
         return bikeStation.getBikes().stream().map(b -> bikeMappingService.mapToBikeDTO(b)).collect(Collectors.toList());
     }
 }
