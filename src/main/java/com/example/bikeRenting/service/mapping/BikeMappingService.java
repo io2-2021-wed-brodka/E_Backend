@@ -20,6 +20,7 @@ public class BikeMappingService {
         result.setId(bike.getId());
 //        result.setBikeState(bike.getBikeState().toString());
 //        result.setName(bike.getName());
+        result.setStationId(bike.getBikeStation().getId());
         return result;
     }
 }
