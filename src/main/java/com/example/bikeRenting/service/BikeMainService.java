@@ -1,6 +1,8 @@
 package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.BikeDTO;
+import com.example.bikeRenting.model.entity.Bike;
+import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.UserRepository;
@@ -46,5 +48,22 @@ public class BikeMainService implements BikeService{
                 .getRentedBikes()
                 .stream().map(r -> bikeMappingService.mapToBikeDTO(r.getBike()))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public BikeDTO addNewBike(long stationId) {
+        var bikeStation =  bikeStationRepository.findById(stationId)
+                .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + " doesn't exist"));
+        checkWhetherStationIsFull(bikeStation);
+        Bike bike = new Bike();
+        bike.setBikeStation(bikeStation);
+        return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
+    }
+
+    private void checkWhetherStationIsFull(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
+            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+        }
     }
 }
