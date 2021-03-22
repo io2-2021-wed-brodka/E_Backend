@@ -62,10 +62,7 @@ public class BikeMainService implements BikeService{
     }
 
     private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        var bikesOnStation = bikeStation.getBikes();
-        var bikesCount = bikesOnStation !=null ? 0 : bikesOnStation.stream().count();
-        if(bikeStation.getMaxBikes() <= bikesCount)
-        {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
         }
     }
