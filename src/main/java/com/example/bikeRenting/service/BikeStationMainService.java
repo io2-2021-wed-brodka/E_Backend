@@ -24,6 +24,4 @@ public class BikeStationMainService implements BikeStationService {
         bikeStation.setLocationName(locationName);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
     }
-
-
 }

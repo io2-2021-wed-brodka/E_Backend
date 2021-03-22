@@ -8,4 +8,6 @@ public class BikeDTO {
     private Long id;
 //    private String bikeState;
     private String name;
+
+    private Long stationId;
 }

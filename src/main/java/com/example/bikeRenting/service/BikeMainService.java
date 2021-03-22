@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Service
 public class BikeMainService implements BikeService{
 
-    private  final BikeRepository bikeRepository;
-    private  final BikeStationRepository bikeStationRepository;
-    private  final BikeMappingService bikeMappingService;
+    private final BikeRepository bikeRepository;
+    private final BikeStationRepository bikeStationRepository;
+    private final BikeMappingService bikeMappingService;
     private final UserRepository userRepository;
 
     @Autowired
