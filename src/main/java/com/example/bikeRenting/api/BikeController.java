@@ -37,4 +37,9 @@ public class BikeController {
     public RentalDTO rentBike(@RequestBody BikeDTO bikeDTO, Principal principal) {
         return rentalService.rentBike(bikeDTO.getId(), principal.getName());
     }
+
+    @PostMapping("/add")
+    public BikeDTO addBike(@RequestBody BikeDTO bikeDTO) {
+        return bikeService.addNewBike(bikeDTO.getStationId());
+    }
 }

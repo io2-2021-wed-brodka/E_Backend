@@ -1,10 +1,13 @@
 package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.BikeStationDTO;
+import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.service.mapping.BikeStationMappingService;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class BikeStationMainService implements BikeStationService {
