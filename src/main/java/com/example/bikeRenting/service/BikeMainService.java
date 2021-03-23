@@ -2,7 +2,6 @@ package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.model.entity.Bike;
-import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.UserRepository;
@@ -22,13 +21,15 @@ public class BikeMainService implements BikeService{
     private final BikeStationRepository bikeStationRepository;
     private final BikeMappingService bikeMappingService;
     private final UserRepository userRepository;
+    private final BikeStationMainService bikeStationMainService;
 
     @Autowired
-    public BikeMainService(BikeRepository bikeRepository, BikeStationRepository bikeStationRepository, BikeMappingService bikeMappingService, UserRepository userRepository) {
+    public BikeMainService(BikeRepository bikeRepository, BikeStationRepository bikeStationRepository, BikeMappingService bikeMappingService, UserRepository userRepository, BikeStationMainService bikeStationMainService) {
         this.bikeRepository = bikeRepository;
         this.bikeStationRepository = bikeStationRepository;
         this.bikeMappingService = bikeMappingService;
         this.userRepository = userRepository;
+        this.bikeStationMainService = bikeStationMainService;
     }
 
     @Override
@@ -55,15 +56,11 @@ public class BikeMainService implements BikeService{
     public BikeDTO addNewBike(long stationId) {
         var bikeStation =  bikeStationRepository.findById(stationId)
                 .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + " doesn't exist"));
-        checkWhetherStationIsFull(bikeStation);
+        bikeStationMainService.checkWhetherStationIsFull(bikeStation);
         Bike bike = new Bike();
         bike.setBikeStation(bikeStation);
         return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
     }
 
-    private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
-            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
-        }
-    }
+
 }

@@ -1,8 +1,6 @@
 package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.RentalDTO;
-import com.example.bikeRenting.model.entity.Bike;
-import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
@@ -23,13 +21,15 @@ public class RentalMainService implements RentalService {
     private final BikeRepository bikeRepository;
     private final RentalMappingService rentalMappingService;
     private final BikeStationRepository bikeStationRepository;
+    private final BikeStationMainService bikeStationMainService;
 
-    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository, BikeRepository bikeRepository, RentalMappingService rentalMappingService, BikeStationRepository bikeStationRepository) {
+    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository, BikeRepository bikeRepository, RentalMappingService rentalMappingService, BikeStationRepository bikeStationRepository, BikeStationMainService bikeStationMainService) {
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.bikeRepository = bikeRepository;
         this.rentalMappingService = rentalMappingService;
         this.bikeStationRepository = bikeStationRepository;
+        this.bikeStationMainService = bikeStationMainService;
     }
 
     @Override
@@ -41,9 +41,6 @@ public class RentalMainService implements RentalService {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with id " + bikeId + " doesn't exist"));
 
-//        if (!bike.getBikeState().equals(Bike.BikeState.Working)) {
-//            throw new RuntimeException("Bike is not working");
-//        }
 
         if (bike.getBikeStation() == null) {
             throw new RuntimeException("Bike has been already rented");
@@ -53,6 +50,7 @@ public class RentalMainService implements RentalService {
         rental.setBike(bike);
         rental.setUser(user);
         rental.setStartDate(LocalDateTime.now());
+        rental.setFromStation(bike.getBikeStation());
 
         bike.setBikeStation(null);
 
@@ -75,12 +73,12 @@ public class RentalMainService implements RentalService {
 
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("bike station with id " + bikeStationId + " doesn't exist"));
-//        if(bikeStation.getBikeStationState().equals(BikeStation.BikeStationState.Blocked)) {
-//            throw new RuntimeException("Bike station is blocked");
-//        }
+
+        bikeStationMainService.checkWhetherStationIsFull(bikeStation);
 
         rental.getBike().setBikeStation(bikeStation);
         rental.setEndDate(LocalDateTime.now());
+        rental.setToStation(bikeStation);
 
         return rentalMappingService.mapToRentalDTO(rentalRepository.save(rental));
     }
