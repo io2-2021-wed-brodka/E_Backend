@@ -1,7 +1,6 @@
 package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.RentalDTO;
-import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.repository.BikeRepository;
@@ -41,9 +40,6 @@ public class RentalMainService implements RentalService {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with id " + bikeId + " doesn't exist"));
 
-//        if (!bike.getBikeState().equals(Bike.BikeState.Working)) {
-//            throw new RuntimeException("Bike is not working");
-//        }
 
         if (bike.getBikeStation() == null) {
             throw new RuntimeException("Bike has been already rented");
@@ -53,6 +49,7 @@ public class RentalMainService implements RentalService {
         rental.setBike(bike);
         rental.setUser(user);
         rental.setStartDate(LocalDateTime.now());
+        rental.setFromStation(bike.getBikeStation());
 
         bike.setBikeStation(null);
 
@@ -75,15 +72,19 @@ public class RentalMainService implements RentalService {
 
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("bike station with id " + bikeStationId + " doesn't exist"));
-//        if(bikeStation.getBikeStationState().equals(BikeStation.BikeStationState.Blocked)) {
-//            throw new RuntimeException("Bike station is blocked");
-//        }
+
+        checkWhetherStationIsFull(bikeStation);
 
         rental.getBike().setBikeStation(bikeStation);
         rental.setEndDate(LocalDateTime.now());
+        rental.setToStation(bikeStation);
 
         return rentalMappingService.mapToRentalDTO(rentalRepository.save(rental));
     }
 
-
+    private void checkWhetherStationIsFull(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
+            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+        }
+    }
 }

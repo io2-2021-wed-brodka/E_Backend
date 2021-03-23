@@ -27,4 +27,10 @@ public class BikeStationMainService implements BikeStationService {
         bikeStation.setLocationName(locationName);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
     }
+
+    private void checkWhetherStationIsFull(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
+            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+        }
+    }
 }

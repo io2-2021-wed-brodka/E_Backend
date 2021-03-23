@@ -1,5 +1,6 @@
 package com.example.bikeRenting.api;
 
+import ch.qos.logback.core.subst.Parser;
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.dto.RentalDTO;
 import com.example.bikeRenting.service.BikeService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/bikes")
@@ -36,6 +38,13 @@ public class BikeController {
     @PostMapping("/rented")
     public RentalDTO rentBike(@RequestBody BikeDTO bikeDTO, Principal principal) {
         return rentalService.rentBike(bikeDTO.getId(), principal.getName());
+    }
+
+    @DeleteMapping("/rented")
+    public RentalDTO returnBike(@RequestParam Map<String,String> requestParams, Principal principal) {
+        long bikeId =  Long.parseLong(requestParams.get("bikeId"));
+        long stationId = Long.parseLong(requestParams.get("stationId"));
+        return  rentalService.returnBike(bikeId, stationId, principal.getName());
     }
 
     @PostMapping("/add")
