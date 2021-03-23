@@ -28,7 +28,7 @@ public class BikeStationMainService implements BikeStationService {
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
     }
 
-    public void checkWhetherStationIsFull(BikeStation bikeStation) {
+    private void checkWhetherStationIsFull(BikeStation bikeStation) {
         if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
         }

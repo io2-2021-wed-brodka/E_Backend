@@ -1,6 +1,7 @@
 package com.example.bikeRenting.service;
 
 import com.example.bikeRenting.dto.RentalDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
@@ -21,15 +22,13 @@ public class RentalMainService implements RentalService {
     private final BikeRepository bikeRepository;
     private final RentalMappingService rentalMappingService;
     private final BikeStationRepository bikeStationRepository;
-    private final BikeStationMainService bikeStationMainService;
 
-    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository, BikeRepository bikeRepository, RentalMappingService rentalMappingService, BikeStationRepository bikeStationRepository, BikeStationMainService bikeStationMainService) {
+    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository, BikeRepository bikeRepository, RentalMappingService rentalMappingService, BikeStationRepository bikeStationRepository) {
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.bikeRepository = bikeRepository;
         this.rentalMappingService = rentalMappingService;
         this.bikeStationRepository = bikeStationRepository;
-        this.bikeStationMainService = bikeStationMainService;
     }
 
     @Override
@@ -74,7 +73,7 @@ public class RentalMainService implements RentalService {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("bike station with id " + bikeStationId + " doesn't exist"));
 
-        bikeStationMainService.checkWhetherStationIsFull(bikeStation);
+        checkWhetherStationIsFull(bikeStation);
 
         rental.getBike().setBikeStation(bikeStation);
         rental.setEndDate(LocalDateTime.now());
@@ -83,5 +82,9 @@ public class RentalMainService implements RentalService {
         return rentalMappingService.mapToRentalDTO(rentalRepository.save(rental));
     }
 
-
+    private void checkWhetherStationIsFull(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
+            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+        }
+    }
 }
