@@ -1,13 +1,12 @@
 package com.example.bikeRenting.service.authentication;
 
-import com.example.bikeRenting.dto.LoginRequestDTO;
+import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.repository.UserRepository;
-import com.example.bikeRenting.service.mapping.UserMappingService;
+import com.example.bikeRenting.service.authentication.mapping.UserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,16 +25,16 @@ public class UserMainService implements UserService {
 
     @Override
     @Transactional
-    public void register(LoginRequestDTO user) {
-        userRepository.findByUserName(user.getLogin())
+    public UserDTO createUser(UserDTO user) {
+        userRepository.findByUserName(user.getName())
                 .ifPresent(s -> {
-                    throw new RuntimeException("user with username " + user.getLogin() + " already exists");
+                    throw new RuntimeException("user with username " + user.getName() + " already exists");
                 });
 
         var userEntity = new User();
-        userEntity.setUserName(user.getLogin());
+        userEntity.setUserName(user.getName());
         userEntity.setPassword(user.getPassword());
-        userRepository.save(userEntity);
+        return userMappingService.mapToUserDTO(userRepository.save(userEntity));
     }
 
     @Override

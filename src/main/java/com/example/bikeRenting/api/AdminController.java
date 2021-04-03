@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.LoginRequestDTO;
-import com.example.bikeRenting.service.AdminService;
+import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.service.authentication.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*;
 @Secured("ROLE_ADMIN")
 @RequestMapping("/admin")
 public class AdminController {
-    private final AdminService adminService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminController(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @PostMapping
-    public LoginRequestDTO createAdmin(@RequestBody LoginRequestDTO user) {
-        return  adminService.addRole(user.getLogin(), "ROLE_ADMIN");
+    public UserDTO createAdmin(@RequestBody UserDTO user) {
+        return  roleService.addRole(user.getName(), "ROLE_ADMIN");
     }
 }

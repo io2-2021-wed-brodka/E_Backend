@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.LoginResponseDTO;
-import com.example.bikeRenting.dto.LoginRequestDTO;
+import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.service.authentication.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public LoginResponseDTO register(@RequestBody LoginRequestDTO user) {
-        return loginService.register(user);
+    public LoginResponseDTO register(@RequestBody UserDTO user) {
+        return loginService.registerLogin(user);
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody LoginRequestDTO user) {
+    public LoginResponseDTO login(@RequestBody UserDTO user) {
         return loginService.login(user);
     }
 

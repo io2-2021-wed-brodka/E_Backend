@@ -1,9 +1,8 @@
-package com.example.bikeRenting.service.mapping;
+package com.example.bikeRenting.service.authentication.mapping;
 
-import com.example.bikeRenting.dto.LoginRequestDTO;
+import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.model.MainUserDetails;
 import com.example.bikeRenting.model.entity.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class UserMappingService {
-    public LoginRequestDTO mapToUserDTO(User user) {
-        var result = new LoginRequestDTO();
-        result.setLogin(user.getUserName());
+
+    public UserDTO mapToUserDTO(User user) {
+        var result = new UserDTO();
+        result.setName(user.getUserName());
+        result.setId(user.getId());
         return result;
     }
 
@@ -26,8 +26,6 @@ public class UserMappingService {
         result.setAuthorities(user.getRoles().stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName()))
                 .collect(Collectors.toSet()));
-
-        result.getAuthorities().forEach(a -> {log.info(a.getAuthority());});
         return result;
     }
 }
