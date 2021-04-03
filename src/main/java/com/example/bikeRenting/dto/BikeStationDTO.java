@@ -11,7 +11,7 @@ import java.util.List;
 public class BikeStationDTO {
 
     @JsonAlias("stationId")
-    private Long Id;
+    private Long id;
 
 //  private BikeStationState bikeStationState;
 

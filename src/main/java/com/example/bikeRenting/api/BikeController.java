@@ -1,6 +1,5 @@
 package com.example.bikeRenting.api;
 
-import ch.qos.logback.core.subst.Parser;
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.dto.BikeStationDTO;
 import com.example.bikeRenting.dto.RentalDTO;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/bikes")
