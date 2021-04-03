@@ -25,11 +25,6 @@ public class BikeController {
         this.rentalService = rentalService;
     }
 
-    @GetMapping("/{stationId}")
-    public Collection<BikeDTO> getBikesInStation(@PathVariable long stationId) {
-        return bikeService.getBikesInStation(stationId);
-    }
-
     @GetMapping("/rented")
     public Collection<BikeDTO> getUserRentedBikes(Principal principal) {
         return bikeService.getBikesRentedByUser(principal.getName());
@@ -40,14 +35,7 @@ public class BikeController {
         return rentalService.rentBike(bikeDTO.getId(), principal.getName());
     }
 
-    @DeleteMapping("/rented")
-    public RentalDTO returnBike(@RequestParam Map<String,String> requestParams, Principal principal) {
-        long bikeId =  Long.parseLong(requestParams.get("bikeId"));
-        long stationId = Long.parseLong(requestParams.get("stationId"));
-        return  rentalService.returnBike(bikeId, stationId, principal.getName());
-    }
-
-    @PostMapping("/add")
+    @PostMapping
     public BikeDTO addBike(@RequestBody BikeDTO bikeDTO) {
         return bikeService.addNewBike(bikeDTO.getStationId());
     }
