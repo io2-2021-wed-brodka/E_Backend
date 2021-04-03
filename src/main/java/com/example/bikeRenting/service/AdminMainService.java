@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.LoginRequestDTO;
 import com.example.bikeRenting.model.entity.Role;
 import com.example.bikeRenting.repository.RoleRepository;
 import com.example.bikeRenting.repository.UserRepository;
@@ -30,7 +30,7 @@ public class AdminMainService implements AdminService {
 
 
     @Override
-    public UserDTO addRole(String userName, String roleName) {
+    public LoginRequestDTO addRole(String userName, String roleName) {
         var user = userRepository.findByUserName(userName)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + userName + " doesn't exist"));
 

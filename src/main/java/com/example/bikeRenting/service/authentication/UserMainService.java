@@ -1,6 +1,6 @@
-package com.example.bikeRenting.service;
+package com.example.bikeRenting.service.authentication;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.LoginRequestDTO;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.UserMappingService;
@@ -14,32 +14,28 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserMainService implements UserService {
-
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMappingService userMappingService;
 
     @Autowired
-    public UserMainService(PasswordEncoder passwordEncoder,
-                           UserRepository userRepository,
+    public UserMainService(UserRepository userRepository,
                            UserMappingService userMappingService) {
-        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
     }
 
     @Override
     @Transactional
-    public UserDTO register(UserDTO user) {
-        userRepository.findByUserName(user.getUserName())
+    public void register(LoginRequestDTO user) {
+        userRepository.findByUserName(user.getLogin())
                 .ifPresent(s -> {
-                    throw new RuntimeException("user with username " + user.getUserName() + " already exists");
+                    throw new RuntimeException("user with username " + user.getLogin() + " already exists");
                 });
 
         var userEntity = new User();
-        userEntity.setUserName(user.getUserName());
-        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userMappingService.mapToUserDTO(userRepository.save(userEntity));
+        userEntity.setUserName(user.getLogin());
+        userEntity.setPassword(user.getPassword());
+        userRepository.save(userEntity);
     }
 
     @Override

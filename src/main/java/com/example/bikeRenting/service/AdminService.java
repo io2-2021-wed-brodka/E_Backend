@@ -1,7 +1,7 @@
 package com.example.bikeRenting.service;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.LoginRequestDTO;
 
 public interface AdminService {
-    UserDTO addRole(String userName, String roleName);
+    LoginRequestDTO addRole(String userName, String roleName);
 }
