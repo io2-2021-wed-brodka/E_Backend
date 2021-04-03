@@ -2,6 +2,7 @@ package com.example.bikeRenting.api;
 
 import ch.qos.logback.core.subst.Parser;
 import com.example.bikeRenting.dto.BikeDTO;
+import com.example.bikeRenting.dto.BikeStationDTO;
 import com.example.bikeRenting.dto.RentalDTO;
 import com.example.bikeRenting.service.BikeService;
 import com.example.bikeRenting.service.RentalService;
@@ -36,7 +37,7 @@ public class BikeController {
     }
 
     @PostMapping
-    public BikeDTO addBike(@RequestBody BikeDTO bikeDTO) {
-        return bikeService.addNewBike(bikeDTO.getStationId());
+    public BikeDTO addBike(@RequestBody BikeStationDTO stationDTO) {
+        return bikeService.addNewBike(stationDTO.getId());
     }
 }

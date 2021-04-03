@@ -38,6 +38,6 @@ public class BikeStationController {
 
     @PostMapping
     public BikeStationDTO createStation(@RequestBody BikeStationDTO bikeStationDTO) {
-        return bikeStationService.createBikeStation(bikeStationDTO.getMaxBikes(), bikeStationDTO.getLocationName());
+        return bikeStationService.createBikeStation(bikeStationDTO.getMaxBikes(), bikeStationDTO.getName());
     }
 }

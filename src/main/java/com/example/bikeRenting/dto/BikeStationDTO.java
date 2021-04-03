@@ -1,6 +1,7 @@
 package com.example.bikeRenting.dto;
 
 import com.example.bikeRenting.model.entity.Bike;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,12 +10,11 @@ import java.util.List;
 @Data
 public class BikeStationDTO {
 
+    @JsonAlias("stationId")
     private Long Id;
 
 //  private BikeStationState bikeStationState;
 
-    private String locationName;
+    private String name;
     private int maxBikes;
-
-    private List<BikeDTO> bikes;
 }
