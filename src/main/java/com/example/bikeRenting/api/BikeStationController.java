@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.BikeStationDTO;
-import com.example.bikeRenting.service.BikeStationService;
+import com.example.bikeRenting.service.bikestation.BikeStationService;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

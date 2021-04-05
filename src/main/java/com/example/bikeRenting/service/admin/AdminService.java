@@ -1,4 +1,4 @@
-package com.example.bikeRenting.service;
+package com.example.bikeRenting.service.admin;
 
 import com.example.bikeRenting.dto.UserDTO;
 

@@ -1,13 +1,13 @@
-package com.example.bikeRenting.service.mapping;
+package com.example.bikeRenting.service.mapping.bikestation;
 
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.dto.BikeStationDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
+import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;

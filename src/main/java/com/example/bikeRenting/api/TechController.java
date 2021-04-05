@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.UserDTO;
-import com.example.bikeRenting.service.AdminService;
+import com.example.bikeRenting.service.admin.AdminService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;

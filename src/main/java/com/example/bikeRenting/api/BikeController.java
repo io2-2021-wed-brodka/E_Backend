@@ -1,10 +1,9 @@
 package com.example.bikeRenting.api;
 
-import ch.qos.logback.core.subst.Parser;
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.dto.RentalDTO;
-import com.example.bikeRenting.service.BikeService;
-import com.example.bikeRenting.service.RentalService;
+import com.example.bikeRenting.service.bike.BikeService;
+import com.example.bikeRenting.service.rental.RentalService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
