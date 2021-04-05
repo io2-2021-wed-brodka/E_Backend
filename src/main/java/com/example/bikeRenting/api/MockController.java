@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.configuration.RestAuthenticationSuccessHandler;
 import com.example.bikeRenting.constants.ProfileConstants;
+import com.example.bikeRenting.service.user.AuthenticationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MockController {
 
     @Autowired
-    private RestAuthenticationSuccessHandler successHandler;
+    private AuthenticationService authenticationService;
 
     @GetMapping("/{userLogin}")
     public String mockCreateJwt(@PathVariable String userLogin) {
-        return successHandler.mockSuccessfulAuthentication(userLogin);
+        return authenticationService.createJWT(userLogin);
     }
 
 }
