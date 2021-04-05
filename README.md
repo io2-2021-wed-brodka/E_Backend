@@ -9,3 +9,6 @@ To remove running containers, their volumes and networks execute:
  
 To execute flyway migrations on DEV environment run:
 ./scripts/flyway.sh dev migrate
+
+In order to generate DTO definition for frontend, use:
+ make generate_dto
