@@ -2,11 +2,9 @@ DOCKER_COMPOSE=docker-compose -f docker-compose.yml
 
 all: build
 
-dev_prepare: clean dev_refresh
-
-dev_refresh:
+generate_dto:
 	@./mvnw compile
-	@npm install --prefix frontend
+	@npm install --prefix ../E_User-Tech
 
 dev_compose_start:
 	@$(DOCKER_COMPOSE) up --detach
