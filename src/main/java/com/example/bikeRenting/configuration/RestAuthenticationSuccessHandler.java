@@ -35,4 +35,12 @@ public class RestAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
         response.addHeader("Authorization", "Bearer " + token);
         clearAuthenticationAttributes(request);
     }
+
+    public String mockSuccessfulAuthentication(String username){
+        var token = JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .sign(Algorithm.HMAC256(secret));
+        return token;
+    }
 }

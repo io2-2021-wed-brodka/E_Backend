@@ -1,9 +1,9 @@
-package com.example.bikeRenting.service;
+package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.repository.UserRepository;
-import com.example.bikeRenting.service.mapping.UserMappingService;
+import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

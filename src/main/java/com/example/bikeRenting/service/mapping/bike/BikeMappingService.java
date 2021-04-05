@@ -1,4 +1,4 @@
-package com.example.bikeRenting.service.mapping;
+package com.example.bikeRenting.service.mapping.bike;
 
 import com.example.bikeRenting.dto.BikeDTO;
 import com.example.bikeRenting.dto.UserDTO;

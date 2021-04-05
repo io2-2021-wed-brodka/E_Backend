@@ -1,4 +1,4 @@
-package com.example.bikeRenting.service;
+package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.UserDTO;
 import org.springframework.security.core.userdetails.UserDetailsService;

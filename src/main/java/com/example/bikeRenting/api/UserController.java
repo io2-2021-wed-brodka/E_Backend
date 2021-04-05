@@ -1,7 +1,8 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.UserDTO;
-import com.example.bikeRenting.service.UserService;
+import com.example.bikeRenting.service.user.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping(path = "/users")
+@Api(description = "API for operations connected with User")
 public class UserController {
 
     private final UserService userService;

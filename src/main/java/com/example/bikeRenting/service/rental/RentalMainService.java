@@ -1,4 +1,4 @@
-package com.example.bikeRenting.service;
+package com.example.bikeRenting.service.rental;
 
 import com.example.bikeRenting.dto.RentalDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
@@ -7,7 +7,7 @@ import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
-import com.example.bikeRenting.service.mapping.RentalMappingService;
+import com.example.bikeRenting.service.mapping.rental.RentalMappingService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
