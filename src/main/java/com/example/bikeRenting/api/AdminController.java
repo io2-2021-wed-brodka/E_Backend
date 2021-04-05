@@ -23,4 +23,9 @@ public class AdminController {
     public UserDTO createAdmin(@RequestBody UserDTO user) {
         return  adminService.addRole(user.getUserName(), "ROLE_ADMIN");
     }
+
+    @GetMapping
+    public String verifyAuthorized() {
+        return "ok";
+    }
 }

@@ -61,7 +61,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/register").permitAll()
+                .antMatchers("/users/register", "/mock/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -85,16 +85,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .antMatchers("/v2/api-docs")
                     .antMatchers("/swagger-ui.html")
                     .antMatchers("/swagger-resources/**")
+                    .antMatchers("/configuration/ui")
                     .antMatchers("/api/renting/swagger/docs")
                     .antMatchers("/webjars/**");
-            /*
-            web.ignoring().antMatchers("/v2/api-docs",
-                    "/configuration/ui",
-                    "/swagger-resources/**",
-                    "/configuration/security",
-                    "/swagger-ui.html",
-                    "/webjars/**");
-             */
         }
     }
 
