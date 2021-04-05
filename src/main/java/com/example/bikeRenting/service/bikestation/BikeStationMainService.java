@@ -6,6 +6,9 @@ import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.service.mapping.bikestation.BikeStationMappingService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class BikeStationMainService implements BikeStationService {
 
@@ -23,6 +26,13 @@ public class BikeStationMainService implements BikeStationService {
         bikeStation.setMaxBikes(maxBikes);
         bikeStation.setLocationName(locationName);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
+    }
+
+    @Override
+    public List<BikeStationDTO> findAll() {
+        return bikeStationRepository.findAll().stream()
+                .map(bs -> bikeStationMappingService.mapToBikeStationDTO(bs))
+                .collect(Collectors.toList());
     }
 
     private void checkWhetherStationIsFull(BikeStation bikeStation) {

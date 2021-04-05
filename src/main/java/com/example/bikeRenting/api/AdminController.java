@@ -23,7 +23,7 @@ public class AdminController {
 
     @PostMapping
     public UserDTO createAdmin(@RequestBody UserDTO user) {
-        return  adminService.addRole(user.getUserName(), "ROLE_ADMIN");
+        return  adminService.addRole(user.getUserName(), ADMIN);
     }
 
     @GetMapping
