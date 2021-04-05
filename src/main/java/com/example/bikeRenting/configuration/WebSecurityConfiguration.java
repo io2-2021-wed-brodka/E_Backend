@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,16 +28,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final SimpleUrlAuthenticationFailureHandler authenticationFailureHandler;
     private final SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler;
     private final String secret;
+    private final Boolean swaggerEnabled;
 
     @Autowired
     public WebSecurityConfiguration(@Qualifier("userMainService") UserDetailsService userDetailsService,
                                     SimpleUrlAuthenticationFailureHandler authenticationFailureHandler,
                                     SimpleUrlAuthenticationSuccessHandler authenticationSuccessHandler,
-                                    @Value("${jwt.secret}") String secret) {
+                                    @Value("${jwt.secret}") String secret,
+                                    @Value("#{new Boolean('${swagger.enabled}')}") Boolean swaggerEnabled) {
         this.userDetailsService = userDetailsService;
         this.authenticationFailureHandler = authenticationFailureHandler;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.secret = secret;
+        this.swaggerEnabled = swaggerEnabled;
     }
 
     @Bean
@@ -68,6 +72,22 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .and()
                 .csrf().disable();
+
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/*.{js,css,html}", "/assets/**", "favicon.ico");
+
+        // Disable security on Swagger endpoints (if it's enabled)
+        if (Boolean.TRUE.equals(swaggerEnabled)) {
+            web.ignoring()
+                    .antMatchers("/v2/api-docs")
+                    .antMatchers("/swagger-ui.html")
+                    .antMatchers("/swagger-resources/**")
+                    .antMatchers("/api/renting/swagger/docs")
+                    .antMatchers("/webjars/**");
+        }
     }
 
     @Override

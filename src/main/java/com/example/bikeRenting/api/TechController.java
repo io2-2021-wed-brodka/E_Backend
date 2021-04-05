@@ -2,6 +2,7 @@ package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.service.AdminService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Secured({"ROLE_ADMIN","ROLE_TECH"})
 @RequestMapping("/techs")
+@Api(description = "API for operations connected with Tech")
 public class TechController {
     private final AdminService adminService;
 
