@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.bikeRenting.constants.RoleConstants.ADMIN;
+
 @RestController
-@Secured("ROLE_ADMIN")
+@Secured(ADMIN)
 @RequestMapping("/admin")
 @Api(description = "API for admin-related operations")
 public class AdminController {

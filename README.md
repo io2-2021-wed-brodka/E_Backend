@@ -6,3 +6,6 @@ In order to stop running containers execute:
  
 To remove running containers, their volumes and networks execute:    
  make dev_compose_down
+ 
+To execute flyway migrations on DEV environment run:
+./scripts/flyway.sh dev migrate
