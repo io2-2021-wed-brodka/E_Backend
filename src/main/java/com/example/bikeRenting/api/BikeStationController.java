@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/stations")
@@ -41,5 +42,10 @@ public class BikeStationController {
     @PostMapping
     public BikeStationDTO createStation(@RequestBody BikeStationDTO bikeStationDTO) {
         return bikeStationService.createBikeStation(bikeStationDTO.getMaxBikes(), bikeStationDTO.getName());
+    }
+
+    @GetMapping
+    public List<BikeStationDTO> getAllBikeStations() {
+        return bikeStationService.findAll();
     }
 }
