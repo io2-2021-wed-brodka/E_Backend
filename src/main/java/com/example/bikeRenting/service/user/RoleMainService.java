@@ -1,4 +1,4 @@
-package com.example.bikeRenting.service.admin;
+package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.UserDTO;
 import com.example.bikeRenting.model.entity.Role;
@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class AdminMainService implements AdminService {
+public class RoleMainService implements RoleService {
 
     private final UserRepository userRepository;
     private final UserMappingService userMappingService;
     private final RoleRepository roleRepository;
 
     @Autowired
-    public AdminMainService(UserRepository userRepository,
-                            UserMappingService userMappingService,
-                            RoleRepository roleRepository) {
+    public RoleMainService(UserRepository userRepository,
+                           UserMappingService userMappingService,
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
         this.roleRepository = roleRepository;

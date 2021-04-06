@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.UserDTO;
-import com.example.bikeRenting.service.admin.AdminService;
+import com.example.bikeRenting.service.tech.TechService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -18,16 +18,16 @@ import static com.example.bikeRenting.constants.RoleConstants.TECH;
 @RequestMapping("/techs")
 @Api(description = "API for operations connected with Tech")
 public class TechController {
-    private final AdminService adminService;
+    private final TechService techService;
 
     @Autowired
-    public TechController(AdminService adminService) {
-        this.adminService = adminService;
+    public TechController(TechService techService) {
+        this.techService = techService;
     }
 
     @PostMapping
-    @Secured(ADMIN)
+    @Secured("ROLE_ADMIN")
     public UserDTO createTech(@RequestBody UserDTO user) {
-        return  adminService.addRole(user.getUserName(), "ROLE_TECH");
+        return  techService.createTech(user);
     }
 }

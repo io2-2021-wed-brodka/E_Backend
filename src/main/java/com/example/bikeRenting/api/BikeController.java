@@ -1,6 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.BikeDTO;
+import com.example.bikeRenting.dto.BikeStationDTO;
 import com.example.bikeRenting.dto.RentalDTO;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.rental.RentalService;
@@ -16,7 +17,6 @@ import java.util.Map;
 @RequestMapping("/bikes")
 @Api(description = "API for operations connected with bikes")
 public class BikeController {
-
     private final BikeService bikeService;
     private final RentalService rentalService;
 
@@ -24,11 +24,6 @@ public class BikeController {
     public BikeController(BikeService bikeService, RentalService rentalService) {
         this.bikeService = bikeService;
         this.rentalService = rentalService;
-    }
-
-    @GetMapping("/{stationId}")
-    public Collection<BikeDTO> getBikesInStation(@PathVariable long stationId) {
-        return bikeService.getBikesInStation(stationId);
     }
 
     @GetMapping("/rented")
@@ -41,15 +36,8 @@ public class BikeController {
         return rentalService.rentBike(bikeDTO.getId(), principal.getName());
     }
 
-    @DeleteMapping("/rented")
-    public RentalDTO returnBike(@RequestParam Map<String,String> requestParams, Principal principal) {
-        long bikeId =  Long.parseLong(requestParams.get("bikeId"));
-        long stationId = Long.parseLong(requestParams.get("stationId"));
-        return  rentalService.returnBike(bikeId, stationId, principal.getName());
-    }
-
-    @PostMapping("/add")
-    public BikeDTO addBike(@RequestBody BikeDTO bikeDTO) {
-        return bikeService.addNewBike(bikeDTO.getStationId());
+    @PostMapping
+    public BikeDTO addBike(@RequestBody BikeStationDTO stationDTO) {
+        return bikeService.addNewBike(stationDTO.getId());
     }
 }

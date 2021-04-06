@@ -1,7 +1,7 @@
-package com.example.bikeRenting.service.admin;
+package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.UserDTO;
 
-public interface AdminService {
+public interface RoleService {
     UserDTO addRole(String userName, String roleName);
 }

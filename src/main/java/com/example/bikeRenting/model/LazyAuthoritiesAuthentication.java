@@ -1,6 +1,5 @@
-package com.example.bikeRenting.configuration;
+package com.example.bikeRenting.model;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -7,38 +7,33 @@ import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
 public class UserMainService implements UserService {
-
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMappingService userMappingService;
 
     @Autowired
-    public UserMainService(PasswordEncoder passwordEncoder,
-                           UserRepository userRepository,
+    public UserMainService(UserRepository userRepository,
                            UserMappingService userMappingService) {
-        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
     }
 
     @Override
     @Transactional
-    public UserDTO register(UserDTO user) {
-        userRepository.findByUserName(user.getUserName())
+    public UserDTO createUser(UserDTO user) {
+        userRepository.findByUserName(user.getName())
                 .ifPresent(s -> {
-                    throw new RuntimeException("user with username " + user.getUserName() + " already exists");
+                    throw new RuntimeException("user with username " + user.getName() + " already exists");
                 });
 
         var userEntity = new User();
-        userEntity.setUserName(user.getUserName());
-        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        userEntity.setUserName(user.getName());
+        userEntity.setPassword(user.getPassword());
         return userMappingService.mapToUserDTO(userRepository.save(userEntity));
     }
 
