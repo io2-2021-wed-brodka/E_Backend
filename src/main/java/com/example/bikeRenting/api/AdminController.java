@@ -1,7 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.UserDTO;
-import com.example.bikeRenting.service.admin.AdminService;
+import com.example.bikeRenting.service.user.RoleService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -14,16 +14,16 @@ import static com.example.bikeRenting.constants.RoleConstants.ADMIN;
 @RequestMapping("/admin")
 @Api(description = "API for admin-related operations")
 public class AdminController {
-    private final AdminService adminService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminController(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @PostMapping
     public UserDTO createAdmin(@RequestBody UserDTO user) {
-        return  adminService.addRole(user.getUserName(), ADMIN);
+        return  roleService.addRole(user.getName(), ADMIN);
     }
 
     @GetMapping
