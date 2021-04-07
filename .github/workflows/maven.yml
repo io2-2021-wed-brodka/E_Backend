@@ -12,8 +12,11 @@ on:
     branches: [ main, dev ]
 
 jobs:
-  build:
 
+  build:
+  
+    environment: 'example'
+    
     runs-on: ubuntu-latest
 
     steps:
