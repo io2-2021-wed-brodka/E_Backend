@@ -147,6 +147,7 @@
 				<version>1.6</version>
 				<configuration>
 					<workingDirectory>${project.basedir}/../E_User-Tech</workingDirectory>
+					<nodeVersion>v10.19.0</nodeVersion>
 				</configuration>
 				<executions>
 					<execution>
