@@ -6,7 +6,9 @@ import com.example.bikeRenting.service.user.LoginMainService;
 import configuration.FlywayMigrationConfig;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ActiveProfiles("tests")
 @Import(FlywayMigrationConfig.class)
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SimpleSpringTest {
 
     @Autowired
@@ -28,9 +31,9 @@ class SimpleSpringTest {
     @Autowired
     private FlywayMigrationStrategy strategy;
 
-    @PrepareTestInstance
+    @BeforeAll
     void prepareInstance() {
-        strategy.migrate(Flyway.configure().dataSource("jdbc:mysql://localhost:1143/tests","renting","NiezleHaslo123!").load());
+        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:mysql://localhost:1144/dbo","root","").load());
     }
 
     @Test

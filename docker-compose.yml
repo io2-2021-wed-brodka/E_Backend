@@ -22,7 +22,7 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
-      MYSQL_DATABASE: 'tests'
+      MYSQL_DATABASE: 'dbo'
       MYSQL_USER: 'renting'
       MYSQL_PASSWORD: 'NiezleHaslo123!'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
