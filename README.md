@@ -14,6 +14,6 @@ In order to generate DTO definition for frontend, use:
  make generate_dto
  
  Some docker hacks:
- - docker-compose build - rebuilds images
+ - docker-compose build - rebuilds images (using docker-compose.yml in pwd)
  - docker rm -vf $(docker ps -a -q) - purge all containers
  - docker rmi -f $(docker images -a -q) - purge all images
