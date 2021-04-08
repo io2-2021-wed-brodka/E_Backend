@@ -44,7 +44,7 @@ class SimpleSpringTest {
     void testMigrationUserLogin() {
         UserDTO stefanoDTO = new UserDTO();
         stefanoDTO.setName("stefano");
-        stefanoDTO.setPassword("NiezleHaslo123!");
+        stefanoDTO.setPassword("stefano");
         Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO));
     }
 
