@@ -18,17 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("tests")
+@Import(FlywayMigrationConfig.class)
 @Transactional
 class SimpleSpringTest {
 
     @Autowired
     private LoginMainService loginMainService;
 
-
+    @Autowired
+    private FlywayMigrationStrategy strategy;
 
     @PrepareTestInstance
     void prepareInstance() {
-
+        strategy.migrate(Flyway.configure().dataSource("jdbc:mysql://localhost:1143/tests","renting","NiezleHaslo123!").load());
     }
 
     @Test
