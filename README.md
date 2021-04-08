@@ -12,3 +12,8 @@ To execute flyway migrations on DEV environment run:
 
 In order to generate DTO definition for frontend, use:
  make generate_dto
+ 
+ Some docker hacks:
+ - docker-compose build - rebuilds images
+ - docker rm -vf $(docker ps -a -q) - purge all containers
+ - docker rmi -f $(docker images -a -q) - purge all images
