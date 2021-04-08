@@ -18,15 +18,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("tests")
-@Import(FlywayMigrationConfig.class)
 @Transactional
 class SimpleSpringTest {
 
     @Autowired
     private LoginMainService loginMainService;
 
-    @Autowired
-    private FlywayMigrationStrategy strategy;
 
     @Autowired
     private Flyway flyway;
@@ -34,7 +31,8 @@ class SimpleSpringTest {
 
     @PrepareTestInstance
     void prepareInstance() {
-       strategy.migrate(flyway);
+        flyway.clean();
+        flyway.migrate();
     }
 
     @Test
