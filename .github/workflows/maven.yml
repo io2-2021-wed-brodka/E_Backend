@@ -45,7 +45,5 @@ jobs:
     
     - name: Build with Maven
       run: mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
-    - name: Run Flyway migrations
-      run: ./scripts/flyway.sh tests migrate
     - name: Test with Maven
       run: mvn test
