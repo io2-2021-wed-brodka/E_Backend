@@ -25,14 +25,10 @@ class SimpleSpringTest {
     private LoginMainService loginMainService;
 
 
-    @Autowired
-    private Flyway flyway;
-
 
     @PrepareTestInstance
     void prepareInstance() {
-        flyway.clean();
-        flyway.migrate();
+
     }
 
     @Test
