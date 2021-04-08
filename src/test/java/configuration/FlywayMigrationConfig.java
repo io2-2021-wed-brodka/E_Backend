@@ -11,7 +11,6 @@ public class FlywayMigrationConfig {
     public static FlywayMigrationStrategy cleanMigrateStrategy(){
 
         return flyway -> {
-            flyway.clean();
             flyway.migrate();
         };
     }

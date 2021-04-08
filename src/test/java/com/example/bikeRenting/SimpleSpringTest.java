@@ -6,7 +6,9 @@ import com.example.bikeRenting.service.user.LoginMainService;
 import configuration.FlywayMigrationConfig;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,21 +20,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("tests")
+@Import(FlywayMigrationConfig.class)
 @Transactional
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SimpleSpringTest {
 
     @Autowired
     private LoginMainService loginMainService;
 
-
     @Autowired
-    private Flyway flyway;
+    private FlywayMigrationStrategy strategy;
 
-
-    @PrepareTestInstance
+    @BeforeAll
     void prepareInstance() {
-        flyway.clean();
-        flyway.migrate();
+        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:mysql://localhost:1144/dbo","renting","NiezleHaslo123!").load());
     }
 
     @Test
@@ -43,7 +44,7 @@ class SimpleSpringTest {
     void testMigrationUserLogin() {
         UserDTO stefanoDTO = new UserDTO();
         stefanoDTO.setName("stefano");
-        stefanoDTO.setPassword("NiezleHaslo123!");
+        stefanoDTO.setPassword("stefano");
         Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO));
     }
 
