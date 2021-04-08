@@ -9,6 +9,7 @@ class SimpleTest {
     @Test
     void simpleTest() {
         assertEquals(2, 1+1);
+
     }
 
 }
