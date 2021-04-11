@@ -5,6 +5,7 @@ import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
+import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,15 @@ public class BikeMainService implements BikeService{
     private final BikeStationRepository bikeStationRepository;
     private final BikeMappingService bikeMappingService;
     private final UserRepository userRepository;
+    private final RentalRepository rentalRepository;
 
     @Autowired
-    public BikeMainService(BikeRepository bikeRepository, BikeStationRepository bikeStationRepository, BikeMappingService bikeMappingService, UserRepository userRepository) {
+    public BikeMainService(BikeRepository bikeRepository, BikeStationRepository bikeStationRepository, BikeMappingService bikeMappingService, UserRepository userRepository, RentalRepository rentalRepository) {
         this.bikeRepository = bikeRepository;
         this.bikeStationRepository = bikeStationRepository;
         this.bikeMappingService = bikeMappingService;
         this.userRepository = userRepository;
+        this.rentalRepository = rentalRepository;
     }
 
     @Override
@@ -43,9 +46,7 @@ public class BikeMainService implements BikeService{
     @Override
     @Transactional
     public Collection<BikeDTO> getBikesRentedByUser(String userName) {
-        return userRepository.findByUserName(userName)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username " + userName + " doesn't exist"))
-                .getRentedBikes()
+        return rentalRepository.getCurrentUserRentals(userName)
                 .stream().map(r -> bikeMappingService.mapToBikeDTO(r.getBike()))
                 .collect(Collectors.toSet());
     }
