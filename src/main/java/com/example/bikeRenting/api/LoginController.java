@@ -1,11 +1,13 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.LoginResponseDTO;
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.LoginResponseDTO;
+import com.example.bikeRenting.dto.request.login.LoginRequestDTO;
 import com.example.bikeRenting.service.user.LoginService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
@@ -21,13 +23,13 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public LoginResponseDTO register(@RequestBody UserDTO user) {
-        return loginService.registerLogin(user);
+    public LoginResponseDTO register(@RequestBody LoginRequestDTO requestDTO) {
+        return loginService.registerLogin(requestDTO.getLogin(), requestDTO.getPassword());
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO login(@RequestBody UserDTO user) {
-        return loginService.login(user);
+    public LoginResponseDTO login(@RequestBody LoginRequestDTO requestDTO) {
+        return loginService.login(requestDTO.getLogin(), requestDTO.getPassword());
     }
 
     @PostMapping("/xd")

@@ -1,6 +1,6 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.service.user.RoleService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;

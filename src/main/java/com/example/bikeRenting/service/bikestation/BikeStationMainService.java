@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.bikestation;
 
-import com.example.bikeRenting.dto.BikeStationDTO;
+import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.service.mapping.bikestation.BikeStationMappingService;
@@ -21,7 +21,7 @@ public class BikeStationMainService implements BikeStationService {
     private final BikeStationMappingService bikeStationMappingService;
 
     @Override
-    public BikeStationDTO createBikeStation(int maxBikes, String locationName) {
+    public BikeStationDTO createBikeStation(Integer maxBikes, String locationName) {
         BikeStation bikeStation = new BikeStation();
         bikeStation.setMaxBikes(maxBikes);
         bikeStation.setLocationName(locationName);
@@ -31,13 +31,7 @@ public class BikeStationMainService implements BikeStationService {
     @Override
     public List<BikeStationDTO> findAll() {
         return bikeStationRepository.findAll().stream()
-                .map(bs -> bikeStationMappingService.mapToBikeStationDTO(bs))
+                .map(bikeStationMappingService::mapToBikeStationDTO)
                 .collect(Collectors.toList());
-    }
-
-    private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
-            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
-        }
     }
 }

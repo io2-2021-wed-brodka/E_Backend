@@ -1,8 +1,9 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.BikeDTO;
-import com.example.bikeRenting.dto.BikeStationDTO;
-import com.example.bikeRenting.dto.RentalDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.RentalDTO;
+import com.example.bikeRenting.dto.request.bike.AddBikeRequestDTO;
+import com.example.bikeRenting.dto.request.bike.RentBikeRequestDTO;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.rental.RentalService;
 import io.swagger.annotations.Api;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/bikes")
@@ -32,12 +32,12 @@ public class BikeController {
     }
 
     @PostMapping("/rented")
-    public RentalDTO rentBike(@RequestBody BikeDTO bikeDTO, Principal principal) {
-        return rentalService.rentBike(bikeDTO.getId(), principal.getName());
+    public RentalDTO rentBike(@RequestBody RentBikeRequestDTO requestDTO, Principal principal) {
+        return rentalService.rentBike(requestDTO.getId(), principal.getName());
     }
 
     @PostMapping
-    public BikeDTO addBike(@RequestBody BikeStationDTO stationDTO) {
-        return bikeService.addNewBike(stationDTO.getId());
+    public BikeDTO addBike(@RequestBody AddBikeRequestDTO requestDTO) {
+        return bikeService.addNewBike(requestDTO.getStationId());
     }
 }

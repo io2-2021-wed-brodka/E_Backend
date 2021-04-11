@@ -1,6 +1,7 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.dto.request.tech.CreateTechRequestDTO;
 import com.example.bikeRenting.service.tech.TechService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TechController {
 
     @PostMapping
     @Secured("ROLE_ADMIN")
-    public UserDTO createTech(@RequestBody UserDTO user) {
-        return  techService.createTech(user);
+    public UserDTO createTech(@RequestBody CreateTechRequestDTO requestDTO) {
+        return techService.createTech(requestDTO.getName(), requestDTO.getPassword());
     }
 }

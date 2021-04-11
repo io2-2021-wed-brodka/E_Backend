@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.user;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.model.entity.Role;
 import com.example.bikeRenting.repository.RoleRepository;
 import com.example.bikeRenting.repository.UserRepository;
