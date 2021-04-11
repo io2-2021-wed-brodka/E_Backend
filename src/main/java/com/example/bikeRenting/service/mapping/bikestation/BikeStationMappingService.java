@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.mapping.bikestation;
 
-import com.example.bikeRenting.dto.BikeStationDTO;
+import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

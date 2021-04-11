@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.bike;
 
-import com.example.bikeRenting.dto.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package com.example.bikeRenting.api;
+package com.example.bikeRenting.configuration;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;

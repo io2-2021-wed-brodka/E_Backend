@@ -1,3 +1,5 @@
+[![Java CI with Maven](https://github.com/io2-2021-wed-brodka/E_Backend/actions/workflows/maven.yml/badge.svg)](https://github.com/io2-2021-wed-brodka/E_Backend/actions/workflows/maven.yml)
+
 To run containers switch context to root and execute:
  make dev_compose_start
  
@@ -12,7 +14,7 @@ To execute flyway migrations on DEV environment run:
 
 In order to generate DTO definition for frontend, use:
  make generate_dto
- 
+
  Some docker hacks:
  - docker-compose build - rebuilds images (using docker-compose.yml in pwd)
  - docker rm -vf $(docker ps -a -q) - purge all containers

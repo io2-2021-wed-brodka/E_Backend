@@ -1,8 +1,10 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.dto.BikeDTO;
-import com.example.bikeRenting.dto.BikeStationDTO;
-import com.example.bikeRenting.dto.RentalDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.RentalDTO;
+import com.example.bikeRenting.dto.request.bikeStation.CreateStationRequestDTO;
+import com.example.bikeRenting.dto.request.bikeStation.ReturnBikeRequestDTO;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.bikestation.BikeStationService;
 import com.example.bikeRenting.service.rental.RentalService;
@@ -35,13 +37,13 @@ public class BikeStationController {
     }
 
     @PostMapping("/{stationId}/bikes")
-    public RentalDTO returnBike(@PathVariable long stationId, @RequestBody BikeDTO bikeDTO, Principal principal) {
-        return rentalService.returnBike(bikeDTO.getId(), stationId, principal.getName());
+    public RentalDTO returnBike(@PathVariable long stationId, @RequestBody ReturnBikeRequestDTO requestDTO, Principal principal) {
+        return rentalService.returnBike(requestDTO.getId(), stationId, principal.getName());
     }
 
     @PostMapping
-    public BikeStationDTO createStation(@RequestBody BikeStationDTO bikeStationDTO) {
-        return bikeStationService.createBikeStation(bikeStationDTO.getMaxBikes(), bikeStationDTO.getName());
+    public BikeStationDTO createStation(@RequestBody CreateStationRequestDTO requestDTO) {
+        return bikeStationService.createBikeStation(requestDTO.getMaxBikes(), requestDTO.getName());
     }
 
     @GetMapping
