@@ -1,8 +1,6 @@
 package com.example.bikeRenting;
 
-import com.example.bikeRenting.dto.BikeDTO;
-import com.example.bikeRenting.dto.BikeStationDTO;
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.service.bike.BikeMainService;
 import com.example.bikeRenting.service.bikestation.BikeStationMainService;
 import com.example.bikeRenting.service.rental.RentalMainService;
@@ -30,7 +28,7 @@ public class BikeStationTests {
     @Order(0)
     void createStationTest()
     {
-        var result = bikeStationMainService.createBikeStation(10, "testowowa stacja 3");
+        var result = bikeStationMainService.createBikeStation(10, "testowa stacja 3");
         var expected = new BikeStationDTO();
         expected.setMaxBikes(10);
         expected.setName("testowa stacja 3");

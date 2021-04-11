@@ -1,6 +1,7 @@
 package com.example.bikeRenting;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.request.login.LoginRequestDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.service.user.LoginMainService;
 import configuration.FlywayMigrationConfig;
 import org.flywaydb.core.Flyway;
@@ -40,69 +41,63 @@ class LoginTests {
     @Test
     @Order(0)
     void testMigratedUserLogin() {
-        UserDTO stefanoDTO = new UserDTO();
-        stefanoDTO.setName("stefano");
+        var stefanoDTO = new LoginRequestDTO();
+        stefanoDTO.setLogin("stefano");
         stefanoDTO.setPassword("stefano");
-        Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO));
+        Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO.getLogin(), stefanoDTO.getPassword()));
     }
 
     @Test
     @Order(1)
     void registerNewUser() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName("Zaphod");
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin("Zaphod");
         newUserDTO.setPassword("Beeblebrox");
-        newUserDTO.setId((long)2);
-        Assertions.assertDoesNotThrow(()->loginMainService.register(newUserDTO));
+        Assertions.assertDoesNotThrow(()->loginMainService.register(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }
 
     @Test
     @Order(2)
     void loginNewUser() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName("Zaphod");
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin("Zaphod");
         newUserDTO.setPassword("Beeblebrox");
-        newUserDTO.setId((long)2);
-        Assertions.assertDoesNotThrow(()->loginMainService.login(newUserDTO));
+        Assertions.assertDoesNotThrow(()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }
 
     @Test
     @Order(3)
     void userNotInDB() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName("Ford");
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin("Ford");
         newUserDTO.setPassword("Prefect");
-        newUserDTO.setId((long)3);
-        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO));
+        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }
 
     @Test
     @Order(4)
     void wrongPassword() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName("Zaphod");
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin("Zaphod");
         newUserDTO.setPassword("Zaphod");
-        newUserDTO.setId((long)3);
-        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO), "Wrong password provided");
+        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()), "Wrong password provided");
     }
 
     @Test
     @Order(5)
     void nullLogin() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName(null);
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin(null);
         newUserDTO.setPassword("Zaphod");
-        newUserDTO.setId((long)1);
-        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO));
+        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }
 
     @Test
     @Order(6)
     void nullPassword() {
-        UserDTO newUserDTO = new UserDTO();
-        newUserDTO.setName("stefano");
+        var newUserDTO = new LoginRequestDTO();
+        newUserDTO.setLogin("stefano");
         newUserDTO.setPassword(null);
-        newUserDTO.setId((long)1);
-        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO));
+        Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }
 }

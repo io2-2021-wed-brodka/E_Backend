@@ -1,21 +1,19 @@
 package com.example.bikeRenting;
 
-import com.example.bikeRenting.dto.BikeDTO;
-import com.example.bikeRenting.dto.BikeStationDTO;
-import com.example.bikeRenting.dto.UserDTO;
+
+import com.example.bikeRenting.dto.request.login.LoginRequestDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.service.bike.BikeMainService;
 import com.example.bikeRenting.service.bikestation.BikeStationMainService;
 import com.example.bikeRenting.service.rental.RentalMainService;
 import com.example.bikeRenting.service.user.UserMainService;
-import configuration.FlywayMigrationConfig;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.Assert;
 
-import javax.transaction.Transactional;
 
 @SpringBootTest
 @ActiveProfiles("tests")
@@ -33,21 +31,19 @@ public class BikeTests {
     RentalMainService rentalMainService;
 
     long stationOneId;
-    UserDTO zeroBikesUser = new UserDTO();
-    UserDTO oneBikeUser = new UserDTO();
+    LoginRequestDTO zeroBikesUser = new LoginRequestDTO();
+    LoginRequestDTO oneBikeUser = new LoginRequestDTO();
 
     @BeforeAll
     void prepareData()
     {
             stationOneId = bikeStationMainService.createBikeStation(2, "Testy stacja 1").getId();
-            zeroBikesUser.setName("zeroBikes");
+            zeroBikesUser.setLogin("zeroBikes");
             zeroBikesUser.setPassword("");
-            zeroBikesUser.setId((long)12345);
-            userMainService.createUser(zeroBikesUser);
-            oneBikeUser.setName("oneBike");
+            userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
+            oneBikeUser.setLogin("oneBike");
             oneBikeUser.setPassword("");
-            oneBikeUser.setId((long)123456);
-            userMainService.createUser(oneBikeUser);
+            userMainService.createUser(oneBikeUser.getLogin(), oneBikeUser.getPassword());
     }
 
 
@@ -70,7 +66,7 @@ public class BikeTests {
     @Order(2)
     void zeroBikesRentedTest()
     {
-        var result = bikeMainService.getBikesRentedByUser(zeroBikesUser.getName());
+        var result = bikeMainService.getBikesRentedByUser(zeroBikesUser.getLogin());
         Assertions.assertNotNull(result);
         var resultTab = result.toArray();
         Assertions.assertArrayEquals(new BikeDTO[]{}, resultTab);
