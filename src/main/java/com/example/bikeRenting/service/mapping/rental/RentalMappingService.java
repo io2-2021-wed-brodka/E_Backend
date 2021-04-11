@@ -1,8 +1,9 @@
 package com.example.bikeRenting.service.mapping.rental;
 
-import com.example.bikeRenting.dto.RentalDTO;
+import com.example.bikeRenting.dto.response.RentalDTO;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
+import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -10,18 +11,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class RentalMappingService {
 
-    private final BikeMappingService bikeMappingService;
+    private final UserMappingService userMappingService;
 
-    public RentalMappingService(BikeMappingService bikeMappingService) {
-        this.bikeMappingService = bikeMappingService;
+    public RentalMappingService(UserMappingService userMappingService) {
+        this.userMappingService = userMappingService;
     }
 
     public RentalDTO mapToRentalDTO(Rental rental) {
         var result = new RentalDTO();
-        result.setId(rental.getId());
-        result.setBike(bikeMappingService.mapToBikeDTO(rental.getBike()));
-        result.setStartDate(rental.getStartDate());
-        result.setEndDate(rental.getEndDate());
+        result.setId(rental.getBike().getId());
+        result.setUser(userMappingService.mapToUserDTO(rental.getUser()));
         return result;
     }
 }

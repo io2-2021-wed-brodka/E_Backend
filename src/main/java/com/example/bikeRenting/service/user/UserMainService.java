@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.user;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.user.UserMappingService;
@@ -25,15 +25,15 @@ public class UserMainService implements UserService {
 
     @Override
     @Transactional
-    public UserDTO createUser(UserDTO user) {
-        userRepository.findByUserName(user.getName())
+    public UserDTO createUser(String login, String hashedPassword) {
+        userRepository.findByUserName(login)
                 .ifPresent(s -> {
-                    throw new RuntimeException("user with username " + user.getName() + " already exists");
+                    throw new RuntimeException("user with username " + login + " already exists");
                 });
 
         var userEntity = new User();
-        userEntity.setUserName(user.getName());
-        userEntity.setPassword(user.getPassword());
+        userEntity.setUserName(login);
+        userEntity.setPassword(hashedPassword);
         return userMappingService.mapToUserDTO(userRepository.save(userEntity));
     }
 

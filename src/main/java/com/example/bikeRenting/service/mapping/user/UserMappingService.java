@@ -1,15 +1,13 @@
 package com.example.bikeRenting.service.mapping.user;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.model.MainUserDetails;
 import com.example.bikeRenting.model.entity.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Service

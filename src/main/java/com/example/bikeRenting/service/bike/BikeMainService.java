@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.bike;
 
-import com.example.bikeRenting.dto.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeRepository;
@@ -36,7 +36,7 @@ public class BikeMainService implements BikeService{
         return bikeStationRepository.findById(stationId)
                 .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + "doesn't exist"))
                 .getBikes()
-                .stream().map(b -> bikeMappingService.mapToBikeDTO(b))
+                .stream().map(bikeMappingService::mapToBikeDTO)
                 .collect(Collectors.toSet());
     }
 

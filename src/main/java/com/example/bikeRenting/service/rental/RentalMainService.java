@@ -1,6 +1,6 @@
 package com.example.bikeRenting.service.rental;
 
-import com.example.bikeRenting.dto.RentalDTO;
+import com.example.bikeRenting.dto.response.RentalDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.repository.BikeRepository;

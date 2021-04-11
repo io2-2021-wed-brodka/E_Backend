@@ -1,7 +1,7 @@
 package com.example.bikeRenting.service.tech;
 
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 
 public interface TechService {
-    UserDTO createTech(UserDTO request);
+    UserDTO createTech(String login, String password);
 }
