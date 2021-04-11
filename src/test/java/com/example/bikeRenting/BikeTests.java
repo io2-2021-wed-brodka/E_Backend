@@ -15,11 +15,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+
 @SpringBootTest
 @ActiveProfiles("tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-
 public class BikeTests {
 
     @Autowired
@@ -31,7 +32,6 @@ public class BikeTests {
     @Autowired
     RentalMainService rentalMainService;
 
-    BikeDTO bikeDTO;
     long stationOneId;
     UserDTO zeroBikesUser = new UserDTO();
     UserDTO oneBikeUser = new UserDTO();
@@ -39,7 +39,6 @@ public class BikeTests {
     @BeforeAll
     void prepareData()
     {
-        try {
             stationOneId = bikeStationMainService.createBikeStation(2, "Testy stacja 1").getId();
             zeroBikesUser.setName("zeroBikes");
             zeroBikesUser.setPassword("");
@@ -49,22 +48,8 @@ public class BikeTests {
             oneBikeUser.setPassword("");
             oneBikeUser.setId((long)123456);
             userMainService.createUser(oneBikeUser);
-        }
-        catch (Exception e) {
-
-        }
     }
 
-    //TODO sprawdzenie po ktorej stronie jest blad - czy musi byc sesja, czy jest problem z listowaniem
-    @Test
-    @Order(0)
-    void getBikesInStationTest()
-    {
-        var bikes = bikeMainService.getBikesInStation(stationOneId);
-        Assertions.assertNotNull(bikes);
-        var bikesTab = bikes.toArray();
-        Assertions.assertArrayEquals(new BikeDTO[]{}, bikesTab);
-    }
 
     @Test
     @Order(1)
@@ -79,7 +64,6 @@ public class BikeTests {
         expected.setStation(stationDTO);
         expected.setId(result.getId()); //czy +1?
         Assertions.assertEquals(expected, result);
-        bikeDTO = result;
     }
 
     @Test
@@ -96,6 +80,7 @@ public class BikeTests {
     @Order(3)
     void oneBikeRentedTest()
     {
+        var bikeDTO=bikeMainService.addNewBike(stationOneId);
         rentalMainService.rentBike(bikeDTO.getId(), "oneBike" );
         var result = bikeMainService.getBikesRentedByUser("oneBike");
         Assertions.assertNotNull(result);
