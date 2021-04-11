@@ -1,7 +1,7 @@
 package com.example.bikeRenting.service.user;
 
-import com.example.bikeRenting.dto.LoginResponseDTO;
-import com.example.bikeRenting.dto.UserDTO;
+import com.example.bikeRenting.dto.response.LoginResponseDTO;
+import com.example.bikeRenting.dto.response.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class LoginMainService implements LoginService{
     }
 
     @Override
-    public LoginResponseDTO login(UserDTO request) {
-        var userDetails = userService.loadUserByUsername(request.getName());
+    public LoginResponseDTO login(String login, String password) {
+        var userDetails = userService.loadUserByUsername(login);
 
-        if(!passwordEncoder.matches(request.getPassword(), userDetails.getPassword())) {
+        if(!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new RuntimeException("Wrong password provided");
         }
 
@@ -39,18 +39,17 @@ public class LoginMainService implements LoginService{
     }
 
     @Override
-    public LoginResponseDTO registerLogin(UserDTO user) {
-        register(user);
+    public LoginResponseDTO registerLogin(String login, String password) {
+        register(login, password);
 
         var response = new LoginResponseDTO();
-        response.setToken(authenticationService.createJWT(user.getName()));
+        response.setToken(authenticationService.createJWT(login));
         response.setRole("user");
         return response;
     }
 
     @Override
-    public UserDTO register(UserDTO user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userService.createUser(user);
+    public UserDTO register(String login, String password) {
+        return userService.createUser(login, passwordEncoder.encode(password));
     }
 }
