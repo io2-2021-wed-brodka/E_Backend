@@ -48,6 +48,9 @@ jobs:
     - name: Test with Maven
       run: mvn test    
     
+    - name: Start Maven App
+      run: mvn spring-boot:run -f pom.xml
+    
     - name: Run API Tests
       id: run-newman
       uses: anthonyvscode/newman-action@v1
