@@ -46,4 +46,17 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
     - name: Test with Maven
-      run: mvn test
+      run: mvn test    
+    
+    - name: Start Maven App
+      run: mvn spring-boot:run -f pom.xml
+    
+    - name: Run API Tests
+      id: run-newman
+      uses: anthonyvscode/newman-action@v1
+      with:
+        collection: API/BikesRentalAPI.postman_collection.json
+        reporters: cli
+
+    - name: Output summary to console
+      run: echo ${{ steps.run-newman.outputs.summary }}
