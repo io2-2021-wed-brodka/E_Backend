@@ -52,7 +52,7 @@ jobs:
       id: run-newman
       uses: anthonyvscode/newman-action@v1
       with:
-        collection: BikesRentalAPI.postman_collection.json
+        collection: API/BikesRentalAPI.postman_collection.json
         reporters: cli
 
     - name: Output summary to console
