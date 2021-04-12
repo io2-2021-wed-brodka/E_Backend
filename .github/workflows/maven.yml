@@ -48,10 +48,10 @@ jobs:
     - name: Test with Maven
       run: mvn test    
     
-    - name: Start Maven App
+    - name: Start Maven App in background
       run: mvn spring-boot:run -f pom.xml &
       
-    - name: Wait for Maven in background
+    - name: Wait for Maven App to start
       uses: jakejarvis/wait-action@v0.1.0
       with:
         time: '1m'
@@ -62,9 +62,6 @@ jobs:
       with:
         collection: API/BikesRentalAPI.postman_collection.json
         reporters: cli
-        
-    - name: Stop Maven App
-      run: mvn spring-boot:stop 
       
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
