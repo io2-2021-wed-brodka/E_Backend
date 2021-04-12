@@ -49,7 +49,7 @@ jobs:
       run: mvn test    
     
     - name: Start Maven App
-      run: mvn spring-boot:run -f pom.xml
+      run: mvn spring-boot:run -f pom.xml &
     
     - name: Run API Tests
       id: run-newman
