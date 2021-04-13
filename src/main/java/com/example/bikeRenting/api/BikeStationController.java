@@ -1,5 +1,6 @@
 package com.example.bikeRenting.api;
 
+import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.RentalDTO;
@@ -10,6 +11,7 @@ import com.example.bikeRenting.service.bikestation.BikeStationService;
 import com.example.bikeRenting.service.rental.RentalService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -42,6 +44,7 @@ public class BikeStationController {
     }
 
     @PostMapping
+    @Secured(RoleConstants.ADMIN)
     public BikeStationDTO createStation(@RequestBody CreateStationRequestDTO requestDTO) {
         return bikeStationService.createBikeStation(requestDTO.getMaxBikes(), requestDTO.getName());
     }
