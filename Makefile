@@ -6,7 +6,8 @@ generate_dto:
 	@./mvnw compile
 	@npm install --prefix ../E_User-Tech
 	@npm install --prefix ../E_User-Tech
-	@rm -rf ../E_Admin/src/app/generated && mkdir ../E_Admin/src/app/generated && cp ../E_User-Tech/src/app/generated/dto.ts ../E_Admin/src/app/generated/dto.ts
+	@rm -rf ../E_Admin/src/app/generated
+	@mkdir ../E_Admin/src/app/generated && cp ../E_User-Tech/src/app/generated/dto.ts ../E_Admin/src/app/generated/dto.ts
 
 dev_compose_start:
 	@$(DOCKER_COMPOSE) up --detach
