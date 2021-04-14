@@ -6,4 +6,5 @@ import lombok.Data;
 public class BikeDTO {
     private Long id;
     private BikeStationDTO station;
+    private String status;
 }

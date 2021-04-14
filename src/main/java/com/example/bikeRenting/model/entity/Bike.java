@@ -13,15 +13,11 @@ import java.util.Set;
 @Setter
 public class Bike {
 
-//    public enum BikeState {
-//        Working, InService, Blocked
-//    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    private BikeState bikeState;
+    private boolean isBlocked = false;
 
     @ManyToOne
     private BikeStation bikeStation;
