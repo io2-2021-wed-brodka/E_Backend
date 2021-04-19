@@ -50,4 +50,21 @@ public class RoleMainService implements RoleService {
 
         return userMappingService.mapToUserDTO(user);
     }
+
+    @Override
+    public  UserDTO removeRole(long userId, String roleName) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User with id " + userId + " doesn't exist"));
+
+        var roleOptional = roleRepository.findByName(roleName);
+
+        if(roleOptional.isPresent()) {
+            roleRepository.delete(roleOptional.get());
+        }
+        else {
+            throw new RuntimeException("User with id " + userId + " doesn't have specified role " + roleName);
+        }
+
+        return userMappingService.mapToUserDTO(user);
+    }
 }

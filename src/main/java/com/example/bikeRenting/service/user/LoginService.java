@@ -7,4 +7,5 @@ public interface LoginService {
     LoginResponseDTO login(String login, String password);
     LoginResponseDTO registerLogin(String login, String password);
     UserDTO register(String login, String password);
+    UserDTO deleteUser(long userId);
 }

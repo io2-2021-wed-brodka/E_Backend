@@ -6,6 +6,9 @@ import com.example.bikeRenting.service.user.LoginService;
 import com.example.bikeRenting.service.user.RoleService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transaction;
+import javax.transaction.Transactional;
+
 @Service
 public class TechMainService implements TechService {
 
@@ -21,5 +24,12 @@ public class TechMainService implements TechService {
     public UserDTO createTech(String login, String password) {
         var registeredUser =  loginService.register(login, password);
         return roleService.addRole(registeredUser.getName(), RoleConstants.TECH);
+    }
+
+    @Override
+    @Transactional
+    public  UserDTO deleteTech(long techId) {
+        roleService.removeRole(techId, RoleConstants.TECH);
+        return loginService.deleteUser(techId);
     }
 }

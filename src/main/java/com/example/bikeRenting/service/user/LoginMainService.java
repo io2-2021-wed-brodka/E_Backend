@@ -52,4 +52,9 @@ public class LoginMainService implements LoginService{
     public UserDTO register(String login, String password) {
         return userService.createUser(login, passwordEncoder.encode(password));
     }
+
+    @Override
+    public UserDTO deleteUser(long userId) {
+        return userService.deleteUser(userId);
+    }
 }

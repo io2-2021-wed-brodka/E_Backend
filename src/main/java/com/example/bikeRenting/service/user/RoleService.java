@@ -4,4 +4,5 @@ import com.example.bikeRenting.dto.response.UserDTO;
 
 public interface RoleService {
     UserDTO addRole(String userName, String roleName);
+    UserDTO removeRole(long userId, String roleName);
 }
