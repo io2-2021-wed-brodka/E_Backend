@@ -61,6 +61,25 @@ public class BikeMainService implements BikeService{
         return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
     }
 
+    @Override
+    @Transactional
+    public  BikeDTO deleteBike(long bikeId) {
+        var bike = bikeRepository.findById(bikeId)
+                .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
+
+        if(null == bike.getBikeStation()) {
+            throw new RuntimeException("Bike with id " + bikeId + " is currently rented");
+        }
+
+        BikeDTO bikeDTO = bikeMappingService.mapToBikeDTO(bike);
+        bikeDTO.setStation(null);
+
+        bike.setBikeStation(null);
+        bikeRepository.delete(bike);
+
+        return bikeDTO;
+    }
+
     private void checkWhetherStationIsFull(BikeStation bikeStation) {
         if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
