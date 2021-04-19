@@ -71,10 +71,8 @@ public class BikeMainService implements BikeService{
             throw new RuntimeException("Bike with id " + bikeId + " is currently rented");
         }
 
-        BikeDTO bikeDTO = bikeMappingService.mapToBikeDTO(bike);
-        bikeDTO.setStation(null);
+        var bikeDTO = bikeMappingService.mapToBikeDTO(bike);
 
-        bike.setBikeStation(null);
         bikeRepository.delete(bike);
 
         return bikeDTO;
