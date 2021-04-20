@@ -13,4 +13,5 @@ public interface BikeService {
     BikeDTO blockBike(long bikeId);
     BikeDTO unBlockBike(long bikeId);
     Collection<BikeDTO> getAllBlockedBikes();
+    BikeDTO deleteBike(long bikeId);
 }

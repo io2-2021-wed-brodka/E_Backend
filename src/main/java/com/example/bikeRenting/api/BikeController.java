@@ -61,4 +61,10 @@ public class BikeController {
     public BikeDTO unBlockBike(@PathVariable("id") long id) {
         return bikeService.unBlockBike(id);
     }
+
+    @DeleteMapping("/{id}")
+    @Secured(RoleConstants.ADMIN)
+    public BikeDTO deleteBike(@PathVariable long id) {
+        return bikeService.deleteBike(id);
+    }
 }

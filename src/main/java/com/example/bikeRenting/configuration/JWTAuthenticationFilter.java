@@ -11,6 +11,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Console;
 import java.io.IOException;
 
 @Slf4j
@@ -39,6 +40,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
 
     private Authentication getAuthentication(HttpServletRequest request) {
         var token = request.getHeader(TOKEN_HEADER);
+        System.out.println(token);
         if(token == null) {
             return null;
         }
