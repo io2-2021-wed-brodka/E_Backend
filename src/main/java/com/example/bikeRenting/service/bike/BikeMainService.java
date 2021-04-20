@@ -62,6 +62,39 @@ public class BikeMainService implements BikeService{
     }
 
     @Override
+    public BikeDTO blockBike(long bikeId) {
+        var bike = bikeRepository.findById(bikeId)
+                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+        if(bike.isBlocked()) {
+            throw new RuntimeException("Bike has already been blocked");
+        }
+
+        bike.setBlocked(true);
+
+        return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
+    }
+
+    @Override
+    public BikeDTO unBlockBike(long bikeId) {
+        var bike = bikeRepository.findById(bikeId)
+                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+        if(!bike.isBlocked()) {
+            throw new RuntimeException("Bike has already been blocked");
+        }
+
+        bike.setBlocked(false);
+
+        return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
+    }
+
+    @Override
+    public Collection<BikeDTO> getAllBlockedBikes() {
+        return bikeRepository.getAllByIsBlocked(true).stream()
+                .map(bikeMappingService::mapToBikeDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public  BikeDTO deleteBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)

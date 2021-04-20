@@ -1,6 +1,7 @@
 package com.example.bikeRenting.service.rental;
 
 import com.example.bikeRenting.dto.response.RentalDTO;
+import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.repository.BikeRepository;
@@ -43,6 +44,10 @@ public class RentalMainService implements RentalService {
 
         if (bike.getBikeStation() == null) {
             throw new RuntimeException("Bike has been already rented");
+        }
+
+        if (bike.isBlocked()) {
+            throw new RuntimeException("Bike is blocked");
         }
 
         var rental = new Rental();

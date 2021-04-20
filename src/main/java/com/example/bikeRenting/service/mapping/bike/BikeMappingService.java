@@ -22,6 +22,12 @@ public class BikeMappingService {
         var result = new BikeDTO();
         result.setId(bike.getId());
         result.setStation(bike.getBikeStation() != null ? bikeStationMappingService.mapToBikeStationDTO(bike.getBikeStation()) : null);
+        if(bike.isBlocked()) {
+            result.setStatus("blocked");
+        }
+        else {
+            result.setStatus("available");
+        }
         return result;
     }
 }
