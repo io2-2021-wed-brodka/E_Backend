@@ -4,6 +4,7 @@ import com.example.bikeRenting.dto.response.RentalDTO;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
+import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.RentalRepository;
@@ -46,7 +47,7 @@ public class RentalMainService implements RentalService {
             throw new RuntimeException("Bike has been already rented");
         }
 
-        if (bike.isBlocked()) {
+        if (BikeStatus.BLOCKED.equals(bike.getStatus())) {
             throw new RuntimeException("Bike is blocked");
         }
 

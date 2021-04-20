@@ -1,5 +1,6 @@
 package com.example.bikeRenting.model.entity;
 
+import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,5 +29,14 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Rental> rentedBikes;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
+    public User(Long id) {
+        this.id = id;
+    }
 }
