@@ -9,4 +9,5 @@ public interface BikeService {
     Collection<BikeDTO> getBikesRentedByUser(String userName);
 
     BikeDTO addNewBike(long stationId);
+    BikeDTO deleteBike(long bikeId);
 }
