@@ -13,10 +13,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class UserMappingService {
+
     public UserDTO mapToUserDTO(User user) {
         var result = new UserDTO();
         result.setId(user.getId());
         result.setName(user.getUserName());
+        result.setBlocked(user.getBlocked());
         return result;
     }
 

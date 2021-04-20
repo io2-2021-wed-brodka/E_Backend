@@ -22,6 +22,8 @@ public class User implements Serializable {
     private String userName;
     private String password;
 
+    private Boolean blocked;
+
     @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private Set<Role> roles;
 
