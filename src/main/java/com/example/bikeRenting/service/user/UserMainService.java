@@ -43,4 +43,12 @@ public class UserMainService implements UserService {
         return userMappingService.mapToUserDetails(userRepository.findByUserName(s)
                 .orElseThrow(() -> new UsernameNotFoundException("user with username " + s + "doesn't exist")));
     }
+
+    @Override
+    public UserDTO deleteUser(long userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("user with id " + userId + " not found"));
+        userRepository.deleteById(userId);
+        return userMappingService.mapToUserDTO(user);
+    }
 }
