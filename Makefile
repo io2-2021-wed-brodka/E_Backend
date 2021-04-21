@@ -17,3 +17,12 @@ dev_compose_stop:
 
 dev_compose_down:
 	@$(DOCKER_COMPOSE) down --volumes
+
+maven_build_no_tests:
+	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
+
+maven_run:
+	@mvn spring-boot:run -f pom.xml
+
+check_makefile:
+	@cat -e -t -v Makefile
