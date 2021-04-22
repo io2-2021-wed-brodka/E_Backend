@@ -1,5 +1,3 @@
-alter table renting.dbo.bike add status nvarchar(255) default 'ACTIVE';
-
 alter table renting.dbo.user_data add status nvarchar(255) default 'ACTIVE';
 
 create table renting.dbo.reservation (
