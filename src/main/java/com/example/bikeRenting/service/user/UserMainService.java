@@ -1,6 +1,10 @@
 package com.example.bikeRenting.service.user;
 
+import com.example.bikeRenting.dto.request.user.BlockUserRequestDTO;
 import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.exception.EntityNotFoundException;
+import com.example.bikeRenting.exception.UserAlreadyBlockedException;
+import com.example.bikeRenting.exception.UserNotBlockedException;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.user.UserMappingService;
@@ -10,9 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserMainService implements UserService {
+
     private final UserRepository userRepository;
     private final UserMappingService userMappingService;
 
@@ -21,6 +28,20 @@ public class UserMainService implements UserService {
                            UserMappingService userMappingService) {
         this.userRepository = userRepository;
         this.userMappingService = userMappingService;
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(u -> userMappingService.mapToUserDTO(u))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getBlockedUsers() {
+        return userRepository.findBlocked().stream()
+                .map(u -> userMappingService.mapToUserDTO(u))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,6 +70,35 @@ public class UserMainService implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("user with id " + userId + " not found"));
         userRepository.deleteById(userId);
+        return userMappingService.mapToUserDTO(user);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO blockUser(BlockUserRequestDTO request) {
+        var user = userRepository.findById(request.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (Boolean.TRUE.equals(user.getBlocked())) {
+            throw new UserAlreadyBlockedException("User already blocked");
+        }
+
+        user.setBlocked(Boolean.TRUE);
+
+        return userMappingService.mapToUserDTO(user);
+    }
+
+    @Override
+    @Transactional
+    public UserDTO unblockUser(Long userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if (Boolean.FALSE.equals(user.getBlocked())) {
+            throw new UserNotBlockedException("User is not blocked");
+        }
+
+        user.setBlocked(Boolean.FALSE);
         return userMappingService.mapToUserDTO(user);
     }
 }
