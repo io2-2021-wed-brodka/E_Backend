@@ -1,4 +1,5 @@
-DOCKER_COMPOSE=docker-compose -f docker-compose.yml
+DOCKER_COMPOSE_DEV=docker-compose -f docker-compose.dev.yml
+DOCKER_COMPOSE_TESTS=docker-compose -f docker-compose.tests.yml
 
 all: build
 
@@ -10,13 +11,13 @@ generate_dto:
 	@mkdir ../E_Admin/src/app/generated && cp ../E_User-Tech/src/app/generated/dto.ts ../E_Admin/src/app/generated/dto.ts
 
 dev_compose_start:
-	@$(DOCKER_COMPOSE) up --detach
+	@$(DOCKER_COMPOSE_DEV) up --detach
 
 dev_compose_stop:
-	@$(DOCKER_COMPOSE) stop
+	@$(DOCKER_COMPOSE_DEV) stop
 
 dev_compose_down:
-	@$(DOCKER_COMPOSE) down --volumes
+	@$(DOCKER_COMPOSE_DEV) down --volumes
 
 maven_build_no_tests:
 	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
