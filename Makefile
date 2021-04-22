@@ -25,5 +25,10 @@ maven_build_no_tests:
 maven_run:
 	@mvn spring-boot:run -f pom.xml
 
+maven_clean_build_run_no_tests:
+	@mvn clean
+	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
+	@mvn spring-boot:run -f pom.xml
+
 check_makefile:
 	@cat -e -t -v Makefile

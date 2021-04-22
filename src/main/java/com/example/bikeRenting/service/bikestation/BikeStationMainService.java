@@ -25,6 +25,7 @@ public class BikeStationMainService implements BikeStationService {
         BikeStation bikeStation = new BikeStation();
         bikeStation.setMaxBikes(maxBikes);
         bikeStation.setLocationName(locationName);
+        bikeStation.setStatus(BikeStation.BikeStationState.Working);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
     }
 
@@ -33,5 +34,35 @@ public class BikeStationMainService implements BikeStationService {
         return bikeStationRepository.findAll().stream()
                 .map(bikeStationMappingService::mapToBikeStationDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public BikeStationDTO blockBikeStation(long bikeStationId)
+    {
+        var bikeStation = bikeStationRepository.findById(bikeStationId)
+                .orElseThrow(()-> new RuntimeException ("Station not found"));
+
+        if(BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
+            throw new RuntimeException("Station already blocked");
+        }
+
+        bikeStation.setStatus(BikeStation.BikeStationState.Blocked);
+
+        return bikeStationMappingService.mapToBikeStationDTO(bikeStation);
+    }
+
+    @Override
+    public String unblockBikeStation(long bikeStationId)
+    {
+        var bikeStation = bikeStationRepository.findById(bikeStationId)
+                .orElseThrow(()-> new RuntimeException ("Station not found"));
+
+        if(BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
+            throw new RuntimeException("Station not blocked");
+        }
+
+        bikeStation.setStatus(BikeStation.BikeStationState.Working);
+
+        return "Station unblocked";
     }
 }
