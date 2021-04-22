@@ -1,5 +1,6 @@
 package com.example.bikeRenting.model.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rental")
-@Getter
-@Setter
+@Data
 public class Rental {
 
     @Id
@@ -24,6 +24,7 @@ public class Rental {
 
     @ManyToOne
     private BikeStation fromStation;
+
     @ManyToOne
     private BikeStation toStation;
 
