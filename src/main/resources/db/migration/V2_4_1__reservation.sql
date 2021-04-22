@@ -1,5 +1,3 @@
-alter table renting.dbo.user_data add status nvarchar(255) default 'ACTIVE';
-
 create table renting.dbo.reservation (
     id int primary key,
     user_id bigint references user_data(id),
