@@ -18,6 +18,9 @@ import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.bikeRenting.constants.RoleConstants.ADMIN;
+import static com.example.bikeRenting.constants.RoleConstants.TECH;
+
 @RestController
 @RequestMapping("/stations")
 @Api(description = "API for operations connected with bike stations")
@@ -52,5 +55,19 @@ public class BikeStationController {
     @GetMapping
     public List<BikeStationDTO> getAllBikeStations() {
         return bikeStationService.findAll();
+    }
+
+    @PostMapping("/blocked")
+    @Secured({ADMIN})
+    public BikeStationDTO blockStation(@RequestBody long id)
+    {
+        return  bikeStationService.blockBikeStation(id);
+    }
+
+    @DeleteMapping("/blocked/{id}")
+    @Secured({ADMIN})
+    public String unblockStation(@PathVariable long id)
+    {
+        return  bikeStationService.unblockBikeStation(id);
     }
 }

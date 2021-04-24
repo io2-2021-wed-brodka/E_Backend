@@ -12,15 +12,17 @@ import java.util.List;
 @Setter
 public class BikeStation {
 
-//    public enum BikeStationState {
-//        Working, Blocked
-//    }
+    public enum BikeStationState {
+        Working, Blocked
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
-//    private BikeStationState bikeStationState;
+    @Column(name="status")
+    @Enumerated(EnumType.STRING)
+    private BikeStationState status;
 
     private String locationName;
     private int maxBikes;

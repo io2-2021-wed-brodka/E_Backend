@@ -6,6 +6,7 @@ import com.example.bikeRenting.exception.EntityNotFoundException;
 import com.example.bikeRenting.exception.UserAlreadyBlockedException;
 import com.example.bikeRenting.exception.UserNotBlockedException;
 import com.example.bikeRenting.model.entity.User;
+import com.example.bikeRenting.model.entity.UserStatus;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,11 +80,11 @@ public class UserMainService implements UserService {
         var user = userRepository.findById(request.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (Boolean.TRUE.equals(user.getBlocked())) {
+        if (UserStatus.BLOCKED == user.getStatus()) {
             throw new UserAlreadyBlockedException("User already blocked");
         }
 
-        user.setBlocked(Boolean.TRUE);
+        user.setStatus(UserStatus.BLOCKED);
 
         return userMappingService.mapToUserDTO(user);
     }
@@ -94,11 +95,11 @@ public class UserMainService implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        if (Boolean.FALSE.equals(user.getBlocked())) {
+        if (UserStatus.ACTIVE == user.getStatus()) {
             throw new UserNotBlockedException("User is not blocked");
         }
 
-        user.setBlocked(Boolean.FALSE);
+        user.setStatus(UserStatus.ACTIVE);
         return userMappingService.mapToUserDTO(user);
     }
 }

@@ -14,6 +14,7 @@ public class BikeStationMappingService {
         result.setId(bikeStation.getId());
         result.setMaxBikes(bikeStation.getMaxBikes());
         result.setName(bikeStation.getLocationName());
+        result.setStatus(bikeStation.getStatus());
         return result;
     }
 }
