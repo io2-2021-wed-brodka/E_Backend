@@ -49,7 +49,7 @@ jobs:
       run: mvn test    
     
     - name: Start Maven App in background
-      run: mvn spring-boot:run -f pom.xml &
+      run: mvn spring-boot:run -f pom.xml -Dspring-boot.run.profiles=tests&
       
     - name: Wait for Maven App to start
       uses: jakejarvis/wait-action@v0.1.0
