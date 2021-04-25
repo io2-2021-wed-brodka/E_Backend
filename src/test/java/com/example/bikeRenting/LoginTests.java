@@ -30,7 +30,7 @@ class LoginTests {
 
     @BeforeAll
     void prepareInstance() {
-        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:mysql://localhost:1144/dbo","renting","NiezleHaslo123!").load());
+        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:h2:mem:dbo","renting","NiezleHaslo123!").load());
     }
 
     @Test

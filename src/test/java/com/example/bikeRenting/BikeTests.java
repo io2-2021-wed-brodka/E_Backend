@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.transaction.Transactional;
+
 
 @SpringBootTest
 @ActiveProfiles("unit-tests")
@@ -64,6 +66,7 @@ public class BikeTests {
 
     @Test
     @Order(2)
+    @Transactional
     void zeroBikesRentedTest()
     {
         var result = bikeMainService.getBikesRentedByUser(zeroBikesUser.getLogin());
@@ -74,10 +77,11 @@ public class BikeTests {
 
     @Test
     @Order(3)
+    @Transactional
     void oneBikeRentedTest()
     {
         var bikeDTO=bikeMainService.addNewBike(stationOneId);
-        rentalMainService.rentBike(bikeDTO.getId(), "oneBike" );
+        var t =rentalMainService.rentBike(bikeDTO.getId(), "oneBike" );
         var result = bikeMainService.getBikesRentedByUser("oneBike");
         Assertions.assertNotNull(result);
         var resultTab = result.toArray();
