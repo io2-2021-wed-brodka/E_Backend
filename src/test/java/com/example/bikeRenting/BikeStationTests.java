@@ -37,4 +37,29 @@ public class BikeStationTests {
         expected.setStatus(BikeStation.BikeStationState.Working);
         Assertions.assertEquals(expected, result);
     }
+
+    @Test
+    @Order(1)
+    void blockStationTest()
+    {
+        var org = bikeStationMainService.createBikeStation(10, "testowa stacja 4");
+        var result = bikeStationMainService.blockBikeStation(org.getId());
+        var expected = new BikeStationDTO();
+        expected.setMaxBikes(10);
+        expected.setName("testowa stacja 4");
+        expected.setId(org.getId());
+        expected.setStatus(BikeStation.BikeStationState.Blocked);
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @Order(2)
+    void unblockStationTest()
+    {
+        var org = bikeStationMainService.createBikeStation(10, "testowa stacja 5");
+        bikeStationMainService.blockBikeStation(org.getId());
+        var result = bikeStationMainService.unblockBikeStation(org.getId());
+        var expected = "Station unblocked";
+        Assertions.assertEquals(expected, result);
+    }
 }
