@@ -67,6 +67,7 @@ public class BikeMainService implements BikeService{
         checkWhetherStationIsFull(bikeStation);
         Bike bike = new Bike();
         bike.setBikeStation(bikeStation);
+        bike.setStatus(BikeStatus.ACTIVE);
         return bikeMappingService.mapToBikeDTO(bikeRepository.save(bike));
     }
 

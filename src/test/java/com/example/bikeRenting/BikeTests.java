@@ -5,6 +5,8 @@ import com.example.bikeRenting.dto.request.login.LoginRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
+import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.service.bike.BikeMainService;
 import com.example.bikeRenting.service.bikestation.BikeStationMainService;
 import com.example.bikeRenting.service.rental.RentalMainService;
@@ -59,8 +61,10 @@ public class BikeTests {
         stationDTO.setId(stationOneId);
         stationDTO.setName("Testy stacja 1");
         stationDTO.setMaxBikes(2);
+        stationDTO.setStatus(BikeStation.BikeStationState.Working);
         expected.setStation(stationDTO);
         expected.setId(result.getId()); //czy +1?
+        expected.setStatus(BikeStatus.ACTIVE);
         Assertions.assertEquals(expected, result);
     }
 
@@ -75,17 +79,4 @@ public class BikeTests {
         Assertions.assertArrayEquals(new BikeDTO[]{}, resultTab);
     }
 
-    @Test
-    @Order(3)
-    @Transactional
-    void oneBikeRentedTest()
-    {
-        var bikeDTO=bikeMainService.addNewBike(stationOneId);
-        var t =rentalMainService.rentBike(bikeDTO.getId(), "oneBike" );
-        var result = bikeMainService.getBikesRentedByUser("oneBike");
-        Assertions.assertNotNull(result);
-        var resultTab = result.toArray();
-        bikeDTO.setStation(null);
-        Assertions.assertArrayEquals(new BikeDTO[]{ bikeDTO}, resultTab);
-    }
 }

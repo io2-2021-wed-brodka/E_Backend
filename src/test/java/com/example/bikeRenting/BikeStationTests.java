@@ -1,6 +1,7 @@
 package com.example.bikeRenting;
 
 import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.service.bike.BikeMainService;
 import com.example.bikeRenting.service.bikestation.BikeStationMainService;
 import com.example.bikeRenting.service.rental.RentalMainService;
@@ -33,6 +34,7 @@ public class BikeStationTests {
         expected.setMaxBikes(10);
         expected.setName("testowa stacja 3");
         expected.setId(result.getId());
+        expected.setStatus(BikeStation.BikeStationState.Working);
         Assertions.assertEquals(expected, result);
     }
 }
