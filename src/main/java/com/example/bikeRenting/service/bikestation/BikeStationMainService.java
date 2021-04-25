@@ -42,11 +42,12 @@ public class BikeStationMainService implements BikeStationService {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(()-> new RuntimeException ("Station not found"));
 
-        if(BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
+        if(BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
             throw new RuntimeException("Station already blocked");
         }
 
         bikeStation.setStatus(BikeStation.BikeStationState.Blocked);
+        bikeStationRepository.save(bikeStation);
 
         return bikeStationMappingService.mapToBikeStationDTO(bikeStation);
     }
@@ -57,11 +58,12 @@ public class BikeStationMainService implements BikeStationService {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(()-> new RuntimeException ("Station not found"));
 
-        if(BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
+        if(BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
             throw new RuntimeException("Station not blocked");
         }
 
         bikeStation.setStatus(BikeStation.BikeStationState.Working);
+        bikeStationRepository.save(bikeStation);
 
         return "Station unblocked";
     }

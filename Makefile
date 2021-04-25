@@ -30,8 +30,11 @@ maven_clean_build_run_no_tests:
 	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
 	@mvn spring-boot:run -f pom.xml
 
-flyway_migrate_dev
+flyway_migrate_dev:
 	@mvn flyway:migrate -Dflyway.configFiles=./config/flyway-dev.properties
+
+flyway_migrate_unit_tests:
+	@mvn flyway:migrate -Dflyway.configFiles=./config/flyway-unit-tests.properties
 
 check_makefile:
 	@cat -e -t -v Makefile

@@ -1,6 +1,7 @@
 package com.example.bikeRenting.model.entity;
 
 import com.example.bikeRenting.model.entity.enums.BikeStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

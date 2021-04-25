@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @Import(FlywayMigrationConfig.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -28,24 +28,24 @@ class LoginTests {
     @Autowired
     private FlywayMigrationStrategy strategy;
 
-    @BeforeAll
-    void prepareInstance() {
-        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:mysql://localhost:1144/dbo","renting","NiezleHaslo123!").load());
-    }
+//    @BeforeAll
+//    void prepareInstance() {
+//        strategy.migrate(Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:h2:mem:dbo","renting","NiezleHaslo123!").load());
+//    }
 
     @Test
     @Order(-1)
     void contextLoads() {
     }
 
-    @Test
-    @Order(0)
-    void testMigratedUserLogin() {
-        var stefanoDTO = new LoginRequestDTO();
-        stefanoDTO.setLogin("stefano");
-        stefanoDTO.setPassword("stefano");
-        Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO.getLogin(), stefanoDTO.getPassword()));
-    }
+//    @Test
+//    @Order(0)
+//    void testMigratedUserLogin() {
+//        var stefanoDTO = new LoginRequestDTO();
+//        stefanoDTO.setLogin("stefano");
+//        stefanoDTO.setPassword("stefano");
+//        Assertions.assertDoesNotThrow(()->loginMainService.login(stefanoDTO.getLogin(), stefanoDTO.getPassword()));
+//    }
 
     @Test
     @Order(1)
@@ -96,7 +96,7 @@ class LoginTests {
     @Order(6)
     void nullPassword() {
         var newUserDTO = new LoginRequestDTO();
-        newUserDTO.setLogin("stefano");
+        newUserDTO.setLogin("Zaphod");
         newUserDTO.setPassword(null);
         Assertions.assertThrows(RuntimeException.class, ()->loginMainService.login(newUserDTO.getLogin(), newUserDTO.getPassword()));
     }

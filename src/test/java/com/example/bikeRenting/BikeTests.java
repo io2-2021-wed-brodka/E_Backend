@@ -5,6 +5,8 @@ import com.example.bikeRenting.dto.request.login.LoginRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
+import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.service.bike.BikeMainService;
 import com.example.bikeRenting.service.bikestation.BikeStationMainService;
 import com.example.bikeRenting.service.rental.RentalMainService;
@@ -13,10 +15,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
+
+import javax.transaction.Transactional;
 
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BikeTests {
@@ -37,7 +42,7 @@ public class BikeTests {
     @BeforeAll
     void prepareData()
     {
-            stationOneId = bikeStationMainService.createBikeStation(2, "Testy stacja 1").getId();
+            stationOneId = bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId();
             zeroBikesUser.setLogin("zeroBikes");
             zeroBikesUser.setPassword("");
             userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
@@ -56,14 +61,17 @@ public class BikeTests {
         var stationDTO = new BikeStationDTO();
         stationDTO.setId(stationOneId);
         stationDTO.setName("Testy stacja 1");
-        stationDTO.setMaxBikes(2);
+        stationDTO.setMaxBikes(200);
+        stationDTO.setStatus(BikeStation.BikeStationState.Working);
         expected.setStation(stationDTO);
         expected.setId(result.getId()); //czy +1?
+        expected.setStatus(BikeStatus.ACTIVE);
         Assertions.assertEquals(expected, result);
     }
 
     @Test
     @Order(2)
+    @Transactional
     void zeroBikesRentedTest()
     {
         var result = bikeMainService.getBikesRentedByUser(zeroBikesUser.getLogin());
@@ -74,14 +82,31 @@ public class BikeTests {
 
     @Test
     @Order(3)
-    void oneBikeRentedTest()
+    void blockBikeTest()
     {
-        var bikeDTO=bikeMainService.addNewBike(stationOneId);
-        rentalMainService.rentBike(bikeDTO.getId(), "oneBike" );
-        var result = bikeMainService.getBikesRentedByUser("oneBike");
-        Assertions.assertNotNull(result);
-        var resultTab = result.toArray();
-        bikeDTO.setStation(null);
-        Assertions.assertArrayEquals(new BikeDTO[]{ bikeDTO}, resultTab);
+        var expected = bikeMainService.addNewBike(stationOneId);
+        var result = bikeMainService.blockBike(expected.getId());
+        expected.setStatus(BikeStatus.BLOCKED);
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @Order(4)
+    void unblockBikeTest()
+    {
+        var expected = bikeMainService.addNewBike(stationOneId);
+        bikeMainService.blockBike(expected.getId());
+        var result = bikeMainService.unBlockBike(expected.getId());
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @Order(5)
+    void deleteBikeTest()
+    {
+        var expected = bikeMainService.addNewBike(stationOneId);
+        var result = bikeMainService.deleteBike(expected.getId());
+        Assertions.assertThrows(RuntimeException.class, ()->bikeMainService.deleteBike(expected.getId()));
+        Assertions.assertEquals(expected,result);
     }
 }
