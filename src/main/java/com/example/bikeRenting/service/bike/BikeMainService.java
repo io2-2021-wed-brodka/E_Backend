@@ -88,8 +88,8 @@ public class BikeMainService implements BikeService{
     public BikeDTO unBlockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
-        if(BikeStatus.BLOCKED.equals(bike.getStatus())) {
-            throw new RuntimeException("Bike has already been blocked");
+        if(BikeStatus.ACTIVE.equals(bike.getStatus())) {
+            throw new RuntimeException("Bike not blocked");
         }
 
         bike.setStatus(BikeStatus.ACTIVE);

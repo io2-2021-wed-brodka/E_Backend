@@ -15,6 +15,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
 
 import javax.transaction.Transactional;
 
@@ -41,7 +42,7 @@ public class BikeTests {
     @BeforeAll
     void prepareData()
     {
-            stationOneId = bikeStationMainService.createBikeStation(2, "Testy stacja 1").getId();
+            stationOneId = bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId();
             zeroBikesUser.setLogin("zeroBikes");
             zeroBikesUser.setPassword("");
             userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
@@ -60,7 +61,7 @@ public class BikeTests {
         var stationDTO = new BikeStationDTO();
         stationDTO.setId(stationOneId);
         stationDTO.setName("Testy stacja 1");
-        stationDTO.setMaxBikes(2);
+        stationDTO.setMaxBikes(200);
         stationDTO.setStatus(BikeStation.BikeStationState.Working);
         expected.setStation(stationDTO);
         expected.setId(result.getId()); //czy +1?
@@ -79,4 +80,33 @@ public class BikeTests {
         Assertions.assertArrayEquals(new BikeDTO[]{}, resultTab);
     }
 
+    @Test
+    @Order(3)
+    void blockBikeTest()
+    {
+        var expected = bikeMainService.addNewBike(stationOneId);
+        var result = bikeMainService.blockBike(expected.getId());
+        expected.setStatus(BikeStatus.BLOCKED);
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @Order(4)
+    void unblockBikeTest()
+    {
+        var expected = bikeMainService.addNewBike(stationOneId);
+        bikeMainService.blockBike(expected.getId());
+        var result = bikeMainService.unBlockBike(expected.getId());
+        Assertions.assertEquals(expected, result);
+    }
+
+    @Test
+    @Order(5)
+    void deleteBikeTest()
+    {
+        var expected = bikeMainService.addNewBike(stationOneId);
+        var result = bikeMainService.deleteBike(expected.getId());
+        Assertions.assertThrows(RuntimeException.class, ()->bikeMainService.deleteBike(expected.getId()));
+        Assertions.assertEquals(expected,result);
+    }
 }
