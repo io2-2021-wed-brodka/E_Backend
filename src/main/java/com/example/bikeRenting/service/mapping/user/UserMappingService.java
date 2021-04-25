@@ -18,7 +18,7 @@ public class UserMappingService {
         var result = new UserDTO();
         result.setId(user.getId());
         result.setName(user.getUserName());
-        result.setBlocked(user.getBlocked());
+        result.setStatus(user.getStatus());
         return result;
     }
 

@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserName(String userName);
 
-    @Query("select u from User u where u.blocked = true")
+    @Query("select u from User u where u.status = \'BLOCKED\'")
     List<User> findBlocked();
 }

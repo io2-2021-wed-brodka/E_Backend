@@ -8,5 +8,9 @@ public interface BikeStationService {
 
     BikeStationDTO createBikeStation(Integer maxBikes, String locationName);
 
+    BikeStationDTO blockBikeStation(long bikeStationId);
+
+    String unblockBikeStation(long bikeStationId);
+
     List<BikeStationDTO> findAll();
 }
