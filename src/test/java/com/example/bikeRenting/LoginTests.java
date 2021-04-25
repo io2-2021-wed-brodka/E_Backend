@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @Import(FlywayMigrationConfig.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

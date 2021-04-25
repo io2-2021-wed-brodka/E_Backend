@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BikeTests {

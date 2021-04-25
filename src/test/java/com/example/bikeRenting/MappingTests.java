@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MappingTests {

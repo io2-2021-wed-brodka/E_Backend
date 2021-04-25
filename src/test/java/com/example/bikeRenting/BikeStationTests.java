@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
 import javax.transaction.Transactional;
 
 @SpringBootTest
-@ActiveProfiles("tests")
+@ActiveProfiles("unit-tests")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BikeStationTests {
