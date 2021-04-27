@@ -67,4 +67,18 @@ public class BikeStationMainService implements BikeStationService {
 
         return "Station unblocked";
     }
+
+    @Override
+    public String deleteBikeStation(Long bikeStationId) {
+        var bikeStation = bikeStationRepository.findById(bikeStationId)
+                .orElseThrow(() -> new RuntimeException("Station not found"));
+
+        var bikes = bikeStationRepository.getBikesCount(bikeStationId);
+        if (bikes > 0) {
+            throw new RuntimeException("Station is not empty");
+        }
+
+        bikeStationRepository.deleteById(bikeStationId);
+        return "Station deleted";
+    }
 }
