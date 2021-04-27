@@ -59,16 +59,14 @@ public class BikeStationController {
 
     @PostMapping("/blocked")
     @Secured({ADMIN})
-    public BikeStationDTO blockStation(@RequestBody long id)
-    {
-        return  bikeStationService.blockBikeStation(id);
+    public BikeStationDTO blockStation(@RequestBody long id) {
+        return bikeStationService.blockBikeStation(id);
     }
 
     @DeleteMapping("/blocked/{id}")
     @Secured({ADMIN})
-    public String unblockStation(@PathVariable long id)
-    {
-        return  bikeStationService.unblockBikeStation(id);
+    public String unblockStation(@PathVariable long id) {
+        return bikeStationService.unblockBikeStation(id);
     }
 
     @DeleteMapping("/{stationId}")

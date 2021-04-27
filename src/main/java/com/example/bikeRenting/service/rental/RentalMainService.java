@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+import static com.example.bikeRenting.model.entity.BikeStation.BikeStationState.Blocked;
+
 @Service
 public class RentalMainService implements RentalService {
 
@@ -51,6 +53,8 @@ public class RentalMainService implements RentalService {
             throw new RuntimeException("Bike is blocked");
         }
 
+        checkWhetherStationIsBlocked(bike.getBikeStation());
+
         var rental = new Rental();
         rental.setBike(bike);
         rental.setUser(user);
@@ -80,6 +84,7 @@ public class RentalMainService implements RentalService {
                 .orElseThrow(() -> new RuntimeException("bike station with id " + bikeStationId + " doesn't exist"));
 
         checkWhetherStationIsFull(bikeStation);
+        checkWhetherStationIsBlocked(bikeStation);
 
         rental.getBike().setBikeStation(bikeStation);
         rental.setEndDate(LocalDateTime.now());
@@ -89,8 +94,14 @@ public class RentalMainService implements RentalService {
     }
 
     private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
+        if (bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+        }
+    }
+
+    private void checkWhetherStationIsBlocked(BikeStation bikeStation) {
+        if (bikeStation.getStatus().equals(Blocked)) {
+            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is blocked");
         }
     }
 }
