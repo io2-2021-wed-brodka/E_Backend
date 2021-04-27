@@ -3,6 +3,7 @@ package com.example.bikeRenting.api.advice;
 import com.example.bikeRenting.dto.error.DisplayableErrorDTO;
 import com.example.bikeRenting.exception.EntityNotFoundException;
 import com.example.bikeRenting.exception.UserAlreadyBlockedException;
+import com.example.bikeRenting.exception.UserBlockedException;
 import com.example.bikeRenting.exception.UserNotBlockedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,13 @@ public class RestControllerAdvice {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(UserNotBlockedException.class)
     public DisplayableErrorDTO handleUserNotBlockedException(BindException ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.METHOD_FAILURE)
+    @ExceptionHandler(UserBlockedException.class)
+    public DisplayableErrorDTO handleUserBlockedException(BindException ex) {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 

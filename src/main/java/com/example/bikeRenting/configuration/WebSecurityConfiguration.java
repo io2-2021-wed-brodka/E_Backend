@@ -1,6 +1,7 @@
 package com.example.bikeRenting.configuration;
 
 import com.example.bikeRenting.service.user.AuthenticationService;
+import com.example.bikeRenting.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,17 +22,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationService authenticationService;
     private final Boolean swaggerEnabled;
+    private final UserService userService;
 
     @Autowired
     public WebSecurityConfiguration(AuthenticationService authenticationService,
-                                    @Value("#{new Boolean('${swagger.enabled}')}") Boolean swaggerEnabled) {
+                                    @Value("#{new Boolean('${swagger.enabled}')}") Boolean swaggerEnabled,
+                                    UserService userService) {
         this.authenticationService = authenticationService;
         this.swaggerEnabled = swaggerEnabled;
+        this.userService = userService;
     }
 
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        return new JWTAuthenticationFilter(super.authenticationManager(), authenticationService);
+        return new JWTAuthenticationFilter(super.authenticationManager(), authenticationService, userService);
     }
 
     @Override
