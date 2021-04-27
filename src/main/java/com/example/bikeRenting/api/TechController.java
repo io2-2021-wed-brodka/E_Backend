@@ -25,7 +25,7 @@ public class TechController {
     }
 
     @PostMapping
-    @Secured("ROLE_ADMIN")
+    @Secured(ADMIN)
     public UserDTO createTech(@RequestBody CreateTechRequestDTO requestDTO) {
         return techService.createTech(requestDTO.getName(), requestDTO.getPassword());
     }
