@@ -1,9 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.constants.RoleConstants;
-import com.example.bikeRenting.dto.response.BikeDTO;
-import com.example.bikeRenting.dto.response.BikeStationDTO;
-import com.example.bikeRenting.dto.response.RentalDTO;
+import com.example.bikeRenting.dto.response.*;
 import com.example.bikeRenting.dto.request.bikeStation.CreateStationRequestDTO;
 import com.example.bikeRenting.dto.request.bikeStation.ReturnBikeRequestDTO;
 import com.example.bikeRenting.service.bike.BikeService;
@@ -37,8 +35,10 @@ public class BikeStationController {
     }
 
     @GetMapping("/{stationId}/bikes")
-    public Collection<BikeDTO> getBikesInStation(@PathVariable long stationId) {
-        return bikeService.getBikesInStation(stationId);
+    public BikeListDTO getBikesInStation(@PathVariable long stationId) {
+        var result = new BikeListDTO();
+        result.setBikes(bikeService.getBikesInStation(stationId));
+        return result;
     }
 
     @PostMapping("/{stationId}/bikes")
@@ -53,8 +53,8 @@ public class BikeStationController {
     }
 
     @GetMapping
-    public List<BikeStationDTO> getAllBikeStations() {
-        return bikeStationService.findAll();
+    public BikeStationListDTO getAllBikeStations() {
+        return new BikeStationListDTO(bikeStationService.findAll());
     }
 
     @PostMapping("/blocked")
