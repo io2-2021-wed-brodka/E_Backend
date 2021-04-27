@@ -1,6 +1,7 @@
 package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.request.user.BlockUserRequestDTO;
+import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.exception.EntityNotFoundException;
 import com.example.bikeRenting.exception.UserAlreadyBlockedException;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Optional;
+
 
 @Service
 public class UserMainService implements UserService {
@@ -55,6 +59,7 @@ public class UserMainService implements UserService {
 
         var userEntity = new User();
         userEntity.setUserName(login);
+        userEntity.setStatus(UserStatus.ACTIVE);
         userEntity.setPassword(hashedPassword);
         return userMappingService.mapToUserDTO(userRepository.save(userEntity));
     }
@@ -72,6 +77,12 @@ public class UserMainService implements UserService {
                 .orElseThrow(() -> new RuntimeException("user with id " + userId + " not found"));
         userRepository.deleteById(userId);
         return userMappingService.mapToUserDTO(user);
+    }
+
+    @Override
+    public Optional<UserDTO> findByUsername(String username) {
+        return userRepository.findByUserName(username)
+                .flatMap(u -> Optional.ofNullable(userMappingService.mapToUserDTO(u)));
     }
 
     @Override
@@ -102,4 +113,5 @@ public class UserMainService implements UserService {
         user.setStatus(UserStatus.ACTIVE);
         return userMappingService.mapToUserDTO(user);
     }
+
 }
