@@ -13,4 +13,6 @@ public interface BikeStationService {
     String unblockBikeStation(long bikeStationId);
 
     List<BikeStationDTO> findAll();
+
+    String deleteBikeStation(Long bikeStationId);
 }

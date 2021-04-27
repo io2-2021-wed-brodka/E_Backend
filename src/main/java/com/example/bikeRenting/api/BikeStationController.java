@@ -70,4 +70,10 @@ public class BikeStationController {
     {
         return  bikeStationService.unblockBikeStation(id);
     }
+
+    @DeleteMapping("/{stationId}")
+    @Secured({ADMIN})
+    public String deleteStation(@PathVariable Long stationId) {
+        return bikeStationService.deleteBikeStation(stationId);
+    }
 }
