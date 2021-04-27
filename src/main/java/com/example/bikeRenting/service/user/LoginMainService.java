@@ -2,6 +2,8 @@ package com.example.bikeRenting.service.user;
 
 import com.example.bikeRenting.dto.response.LoginResponseDTO;
 import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.exception.UserBlockedException;
+import com.example.bikeRenting.model.entity.UserStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +29,12 @@ public class LoginMainService implements LoginService{
         if(!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new RuntimeException("Wrong password provided");
         }
-
+        var userData = userService.findByUsername(login);
+        userData.ifPresent(u -> {
+            if (UserStatus.BLOCKED.equals(u.getStatus())) {
+                throw new UserBlockedException("User is blocked");
+            }
+        });
         var response = new LoginResponseDTO();
         response.setToken(authenticationService.createJWT(userDetails.getUsername()));
         var role = userDetails.getAuthorities().stream()
