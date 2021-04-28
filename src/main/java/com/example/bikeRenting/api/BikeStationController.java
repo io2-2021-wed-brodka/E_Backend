@@ -4,6 +4,7 @@ import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.*;
 import com.example.bikeRenting.dto.request.bikeStation.CreateStationRequestDTO;
 import com.example.bikeRenting.dto.request.bikeStation.ReturnBikeRequestDTO;
+import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.bikestation.BikeStationService;
 import com.example.bikeRenting.service.rental.RentalService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.bikeRenting.constants.RoleConstants.ADMIN;
 import static com.example.bikeRenting.constants.RoleConstants.TECH;
@@ -55,6 +57,11 @@ public class BikeStationController {
     @GetMapping
     public BikeStationListDTO getAllBikeStations() {
         return new BikeStationListDTO(bikeStationService.findAll());
+    }
+
+    @GetMapping("/active")
+    public BikeStationListDTO getAllActiveBikeStations() {
+        return new BikeStationListDTO(bikeStationService.findAll().stream().filter((x)->x.getStatus()== BikeStation.BikeStationState.Working).collect(Collectors.toList()));
     }
 
     @PostMapping("/blocked")
