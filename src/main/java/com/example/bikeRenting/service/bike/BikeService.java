@@ -23,4 +23,6 @@ public interface BikeService {
 
     BikeDTO deleteBike(long bikeId);
 
+    Collection<BikeDTO> findAll();
+
 }

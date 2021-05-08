@@ -23,13 +23,11 @@ public class BikeReservationController {
     private BikeReservationService bikeReservationService;
 
     @GetMapping
-    @Secured({ADMIN, TECH})
     public List<ReservedBikeDTO> getReservedBikes() {
         return bikeReservationService.getAllReserved();
     }
 
     @PostMapping
-    @Secured({ADMIN, TECH})
     public ReservedBikeDTO reserveBike(@RequestBody ReserveBikeRequestDTO request, Principal principal) {
         return bikeReservationService.reserveBike(request, principal.getName());
     }

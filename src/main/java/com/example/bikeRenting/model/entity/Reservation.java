@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rental")
+@Table(name = "reservation")
 @Data
 public class Reservation {
 
@@ -18,7 +18,7 @@ public class Reservation {
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Bike bike;
 
     @CreationTimestamp

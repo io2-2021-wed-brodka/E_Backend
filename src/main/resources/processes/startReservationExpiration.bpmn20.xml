@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="startReservationExpiration" name="startReservationExpiration" isExecutable="true">
+    <startEvent id="startEvent1"></startEvent>
+    <intermediateCatchEvent id="sid-6713AA4A-EF40-413F-91AC-FFF5F3085496">
+      <timerEventDefinition>
+        <timeDuration>PT20S</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <sequenceFlow id="sid-10F67983-BFBC-4387-9395-64C645C0A786" sourceRef="startEvent1" targetRef="sid-6713AA4A-EF40-413F-91AC-FFF5F3085496"></sequenceFlow>
+    <endEvent id="sid-52A20952-A1D5-44E1-B705-7A40522E4F53"></endEvent>
+    <serviceTask id="sid-3E45BE3D-0722-4BB8-815A-21A3842FD17F" name="Cancel Reservation" activiti:expression="#{activitiReservationService.cancelReservation(execution)}"></serviceTask>
+    <sequenceFlow id="sid-D9CC86A3-EC9F-44CF-A30D-3FEF27E6DA69" sourceRef="sid-6713AA4A-EF40-413F-91AC-FFF5F3085496" targetRef="sid-3E45BE3D-0722-4BB8-815A-21A3842FD17F"></sequenceFlow>
+    <sequenceFlow id="sid-AC81C261-BD91-4966-A4EE-AE017E8E91EB" sourceRef="sid-3E45BE3D-0722-4BB8-815A-21A3842FD17F" targetRef="sid-52A20952-A1D5-44E1-B705-7A40522E4F53"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_startReservationExpiration">
+    <bpmndi:BPMNPlane bpmnElement="startReservationExpiration" id="BPMNPlane_startReservationExpiration">
+      <bpmndi:BPMNShape bpmnElement="startEvent1" id="BPMNShape_startEvent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="100.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-6713AA4A-EF40-413F-91AC-FFF5F3085496" id="BPMNShape_sid-6713AA4A-EF40-413F-91AC-FFF5F3085496">
+        <omgdc:Bounds height="31.0" width="31.0" x="225.0" y="162.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-52A20952-A1D5-44E1-B705-7A40522E4F53" id="BPMNShape_sid-52A20952-A1D5-44E1-B705-7A40522E4F53">
+        <omgdc:Bounds height="28.0" width="28.0" x="540.0" y="164.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sid-3E45BE3D-0722-4BB8-815A-21A3842FD17F" id="BPMNShape_sid-3E45BE3D-0722-4BB8-815A-21A3842FD17F">
+        <omgdc:Bounds height="80.0" width="100.0" x="345.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-D9CC86A3-EC9F-44CF-A30D-3FEF27E6DA69" id="BPMNEdge_sid-D9CC86A3-EC9F-44CF-A30D-3FEF27E6DA69">
+        <omgdi:waypoint x="256.99991566941355" y="178.44805222185255"></omgdi:waypoint>
+        <omgdi:waypoint x="345.0" y="178.16233766233768"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-10F67983-BFBC-4387-9395-64C645C0A786" id="BPMNEdge_sid-10F67983-BFBC-4387-9395-64C645C0A786">
+        <omgdi:waypoint x="129.99988189859815" y="178.05952334086746"></omgdi:waypoint>
+        <omgdi:waypoint x="225.00012597482865" y="178.43650843640805"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-AC81C261-BD91-4966-A4EE-AE017E8E91EB" id="BPMNEdge_sid-AC81C261-BD91-4966-A4EE-AE017E8E91EB">
+        <omgdi:waypoint x="445.0" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -13,5 +13,6 @@ public interface BikeRepository extends JpaRepository<Bike, Long> {
 
     @Query("select b from Bike b where b.status = :status")
     Set<Bike> findAllByStatus(@Param("status") BikeStatus status);
+//    Set<Bike> findAllByStatusAnd(@Param("status") BikeStatus status);
 
 }

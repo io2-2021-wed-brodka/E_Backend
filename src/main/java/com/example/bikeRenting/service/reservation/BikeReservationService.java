@@ -12,9 +12,11 @@ import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeReservationRepository;
 import com.example.bikeRenting.repository.UserRepository;
+import com.example.bikeRenting.service.activiti.ActivitiReservationService;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import com.example.bikeRenting.service.mapping.reservation.ReservationMappingService;
 import com.example.bikeRenting.service.time.DateTimeService;
+import org.activiti.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,9 @@ public class BikeReservationService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ActivitiReservationService activitiReservationService;
 
     public List<ReservedBikeDTO> getAllReserved() {
         return bikeRepository.findAllByStatus(BikeStatus.RESERVED).stream()
@@ -81,13 +86,18 @@ public class BikeReservationService {
             throw new RuntimeException("Bike is already reserved by user");
         }
         var reservation = createBikeReservation(userId, bike.getId());
+
+        reservation.getBike().setStatus(BikeStatus.RESERVED);
+
+        activitiReservationService.startReservationExpiration(bike.getId());
+
         return reservationMappingService.mapToReservedBike(bikeReservationRepository.save(reservation), bike.getStation());
     }
 
     private Reservation createBikeReservation(Long userId, Long bikeId) {
         var reservation = new Reservation();
         reservation.setUser(new User(userId));
-        reservation.setBike(new Bike(bikeId));
+        reservation.setBike(bikeRepository.findById(bikeId).orElseThrow());
         reservation.setReservedAt(dateTimeService.getCurrentDate());
         reservation.setReservedTill(getReservedTillDate(reservation.getReservedAt()));
         return reservation;
