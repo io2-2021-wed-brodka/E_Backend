@@ -1,10 +1,8 @@
 package com.example.bikeRenting.service.reservation;
 
-import com.example.bikeRenting.api.BikeReservationController;
 import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
-import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.Reservation;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -16,7 +14,6 @@ import com.example.bikeRenting.service.activiti.ActivitiReservationService;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import com.example.bikeRenting.service.mapping.reservation.ReservationMappingService;
 import com.example.bikeRenting.service.time.DateTimeService;
-import org.activiti.engine.RuntimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,9 +72,23 @@ public class BikeReservationService {
         return reserveBike(loggedUser.getId(), bikeMappingService.mapToBikeDTO(bike));
     }
 
-    public ReservedBikeDTO cancelReservation(Long reservationId, String username) {
-        // todo
-        return null;
+    public void cancelReservation(Long bikeId, String username) {
+        var bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RuntimeException("Bike not found"));
+
+        if(!bike.getStatus().equals(BikeStatus.RESERVED)) {
+            throw new RuntimeException("Bike is not reserved");
+        }
+
+        if(!bike.getReservation().getUser().getUserName().equals(username)) {
+            throw new RuntimeException("Bike was reserved by other user");
+        }
+
+        bike.setStatus(BikeStatus.ACTIVE);
+        bike.setReservation(null);
+
+        activitiReservationService.cancelReservationExpiration(bikeId);
+
+        bikeRepository.save(bike);
     }
 
     private ReservedBikeDTO reserveBike(Long userId, BikeDTO bike) {

@@ -18,7 +18,7 @@ public class Reservation {
     @ManyToOne
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Bike bike;
 
     @CreationTimestamp
