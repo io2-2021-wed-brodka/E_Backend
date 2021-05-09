@@ -33,7 +33,7 @@ public class BikeMappingService {
         var result = new ReservedBikeDTO();
         var reservation = Optional.ofNullable(bike.getReservation())
                 .orElseThrow(() -> new RuntimeException("Bike is not reserved"));
-        result.setId(reservation.getId());
+        result.setId(bike.getId());
         result.setReservedAt(reservation.getReservedAt());
         result.setReservedTill(reservation.getReservedTill());
         result.setStation(bikeStationMappingService.mapToBikeStationDTO(bike.getBikeStation()));

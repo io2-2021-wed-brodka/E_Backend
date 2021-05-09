@@ -46,9 +46,10 @@ public class BikeReservationService {
     @Autowired
     private ActivitiReservationService activitiReservationService;
 
-    public List<ReservedBikeDTO> getAllReserved() {
-        return bikeRepository.findAllByStatus(BikeStatus.RESERVED).stream()
-                .map(bikeMappingService::mapToReservedBikeDTO)
+    public List<ReservedBikeDTO> getReservedByUser(String username) {
+        var user = userRepository.findByUserName(username).orElseThrow();
+        return bikeReservationRepository.findAllByUser(user).stream()
+                .map(r -> bikeMappingService.mapToReservedBikeDTO(r.getBike()))
                 .collect(Collectors.toList());
     }
 

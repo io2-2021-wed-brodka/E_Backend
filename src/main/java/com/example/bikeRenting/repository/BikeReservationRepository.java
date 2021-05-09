@@ -1,10 +1,12 @@
 package com.example.bikeRenting.repository;
 
 import com.example.bikeRenting.model.entity.Reservation;
+import com.example.bikeRenting.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface BikeReservationRepository extends JpaRepository<Reservation, Long> {
@@ -14,4 +16,6 @@ public interface BikeReservationRepository extends JpaRepository<Reservation, Lo
             "left join r.bike b " +
             "where u.id = :userId and b.id = :bikeId")
     Optional<Reservation> findByUserIdAndBikeId(@Param("bikeId") Long bikeId, @Param("userId") Long userId);
+
+    List<Reservation> findAllByUser(User user);
 }

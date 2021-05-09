@@ -20,8 +20,8 @@ public class BikeReservationController {
     private BikeReservationService bikeReservationService;
 
     @GetMapping
-    public List<ReservedBikeDTO> getReservedBikes() {
-        return bikeReservationService.getAllReserved();
+    public List<ReservedBikeDTO> getReservedBikes(Principal principal) {
+        return bikeReservationService.getReservedByUser(principal.getName());
     }
 
     @PostMapping
