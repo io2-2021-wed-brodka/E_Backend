@@ -1,0 +1,51 @@
+apply plugin: 'java'
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.example.bikeRenting.BikeRentingApplication'
+        )
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.3.10.RELEASE', ext: 'pom'
+    implementation group:'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.4.3'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.4.3'
+    implementation(group: 'mysql', name: 'mysql-connector-java', version:'8.0.23') {
+        exclude(module: 'protobuf-java')
+    }
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.3'
+    implementation group: 'com.auth0', name: 'java-jwt', version:'3.14.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version:'2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version:'2.9.2'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version:'7.1.1'
+    implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version:'8.4.1.jre8'
+    implementation group: 'com.h2database', name: 'h2', version:'1.4.190'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.4.3'
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version:'5.4.5'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.7.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version:'1.18.18'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+}
+
+task dockerBuild(type: Exec) {
+    group 'docker'
+
+    commandLine 'docker', 'build',
+            '-t', "niezly-backend-pl",
+            '-f', "$projectDir/Dockerfile",
+            rootProject.projectDir
+
+}
+

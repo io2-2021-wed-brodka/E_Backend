@@ -1,0 +1,43 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'idea'
+}
+
+task resolveDependencies(type: Task) {
+    doLast {
+        allprojects {
+            configurations.getAsMap().each { name, config ->
+                if (config.canBeResolved) {
+                    config.resolve()
+                }
+            }
+        }
+    }
+}
+
+task devComposeUp(type: Exec) {
+
+    group 'docker-compose-dev'
+
+    commandLine 'docker-compose', '-f', 'docker-compose.dev.yml', 'up'
+}
+
+task devComposeStop(type: Exec) {
+
+    group 'docker-compose-dev'
+
+    commandLine 'docker-compose', '-f', 'docker-compose.dev.yml', 'stop'
+}
+
+task devComposeDown(type: Exec) {
+
+    group 'docker-compose-dev'
+
+    commandLine 'docker-compose', '-f', 'docker-compose.dev.yml', 'down', '--volumes'
+}
+
