@@ -16,8 +16,9 @@ jobs:
     
     #setup jdk
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: gradle/wrapper-validation-action@v1.0.3
+    
+    - name: Generate Gradle wrapper
+      run: ./gradlew wrapper
 
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:build -xtest
