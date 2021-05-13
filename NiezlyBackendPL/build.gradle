@@ -1,15 +1,10 @@
 apply plugin: 'java'
 
 jar {
-    enabled=true
     manifest {
         attributes(
                 'Main-Class': 'com.example.bikeRenting.BikeRentingApplication'
         )
-    }
-    from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
@@ -17,25 +12,8 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    compile.exclude module: "spring-boot-starter-tomcat"
-}
-
-task resolveDependencies(type: Task) {
-    doLast {
-        allprojects {
-            configurations.getAsMap().each { name, config ->
-                if (config.canBeResolved) {
-                    println "Resolving dependencies for $name"
-                    config.resolve()
-                }
-            }
-        }
-    }
-}
-
-
 dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.3.10.RELEASE', ext: 'pom'
     implementation group:'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'2.4.3'
     implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '2.4.3'
@@ -70,3 +48,4 @@ task dockerBuild(type: Exec) {
             rootProject.projectDir
 
 }
+

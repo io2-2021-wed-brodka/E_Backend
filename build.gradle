@@ -2,20 +2,11 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.4.1")
-        classpath('com.palantir.gradle.gitversion:gradle-git-version:0.12.2')
-        classpath('gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:2.2.0')
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
-    }
-
 }
 
 plugins {
     id 'idea'
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
 
 task resolveDependencies(type: Task) {
     doLast {
