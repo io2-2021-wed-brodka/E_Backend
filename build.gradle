@@ -60,6 +60,7 @@ subprojects {
 }
 
 task resolveDependencies(type: Task) {
+
     doLast {
         allprojects {
             configurations.getAsMap().each { name, config ->
@@ -91,4 +92,3 @@ task devComposeDown(type: Exec) {
 
     commandLine 'docker-compose', '-f', 'docker-compose.dev.yml', 'down', '--volumes'
 }
-
