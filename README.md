@@ -15,6 +15,9 @@ To execute flyway migrations on DEV environment run:
 In order to generate DTO definition for frontend, use:
  make generate_dto
 
+Create bike-renting docker network:
+docker network create bike-renting
+
  Some docker hacks:
  - docker-compose build - rebuilds images (using docker-compose.yml in pwd)
  - docker rm -vf $(docker ps -a -q) - purge all containers
