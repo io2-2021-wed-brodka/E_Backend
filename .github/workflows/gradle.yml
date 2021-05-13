@@ -1,9 +1,10 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches:  
-      - to-niezly-branch-pl 
+  workflow_dispatch:
+    inputs:
+        tags:
+          description: 'Manually triggered action'  
 
 jobs:
 
