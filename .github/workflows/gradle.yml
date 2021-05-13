@@ -13,9 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
-    #setup jdk
-    - uses: actions/checkout@v2
+
+    - uses: gradle/wrapper-validation-action@v1.0.3
     
     - name: Generate Gradle wrapper
       run: ./gradlew wrapper
