@@ -23,6 +23,9 @@ jobs:
 
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:build -xtest
+      
+    - name: Save NiezlyBackendPL image
+      run: docker save -o NiezlyBackendImage.tgz niezly-backend-pl:latest
 
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
