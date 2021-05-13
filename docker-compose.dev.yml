@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   mssql:
     build:
       context: dev/database
@@ -16,6 +17,7 @@ services:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
+
   backend:
     container_name: niezly-backend-pl
     image: niezly-backend-pl:latest
