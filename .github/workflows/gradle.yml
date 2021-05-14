@@ -24,10 +24,11 @@ jobs:
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:dockerBuild -xtest
           
+    - name: Login to GCR
+      run: docker login -u _json_key -p '${{ secrets.GCLOUD_SERVICE_KEY }}' 'https://gcr.io' 2>/dev/null
+          
     - name: Push created image to GCR
-      run: |
-        docker login -u _json_key -p '${{ secrets.GCLOUD_SERVICE_KEY }}' 'https://gcr.io' 2>/dev/null\
-          docker push 'niezly-backend-pl:latest'
+      run: docker push niezly-backend-pl:latest
           
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
