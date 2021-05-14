@@ -6,7 +6,7 @@ on:
 
 jobs:
 
-  build:
+  build-and-push:
   
     environment: 'example'
     
@@ -23,6 +23,15 @@ jobs:
     
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:dockerBuild -xtest
+    
+    - name: Push created image to GCR
+      uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
+      with:
+          gcloud_service_key: ${{ secrets.GCLOUD_SERVICE_KEY }}
+          registry: gcr.io
+          project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
+          image_name: niezly-backend-pl
+          image_tag: ${{ latest}}
 
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
