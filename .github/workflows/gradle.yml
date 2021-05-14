@@ -28,7 +28,9 @@ jobs:
       run: docker login -u _json_key -p '${{ secrets.GCLOUD_SERVICE_KEY }}' 'https://gcr.io' 2>/dev/null
           
     - name: Push created image to GCR
-      run: docker push niezly-backend-pl:latest
+      run:  |
+        docker tag niezly-backend-pl:latest gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest\
+        docker push niezly-backend-pl:latest
           
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
