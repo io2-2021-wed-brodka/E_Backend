@@ -14,11 +14,6 @@ jobs:
 
     steps:
 
-    - uses: gradle/wrapper-validation-action@v1.0.3
-    
-    - name: Generate Gradle wrapper
-      run: ./gradlew wrapper
-
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:build -xtest
 
