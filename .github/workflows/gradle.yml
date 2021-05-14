@@ -10,10 +10,17 @@ jobs:
   
     environment: 'example'
     
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-
+    
+    - name: checkout
+      uses: actions/checkout@v2
+   
+    - name: Update gradle
+      id: gradleUpdate
+      uses: EdwarDDay/upgrade-gradle-action@v1
+    
     - name: Build NiezlyBackendPL image
       run: ./gradlew :NiezlyBackendPL:dockerBuild -xtest
 
