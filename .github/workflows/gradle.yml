@@ -15,7 +15,7 @@ jobs:
     steps:
 
     - name: Build NiezlyBackendPL image
-      run: ./gradlew :NiezlyBackendPL:build -xtest
+      run: ./gradlew :NiezlyBackendPL:dockerBuild -xtest
 
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
