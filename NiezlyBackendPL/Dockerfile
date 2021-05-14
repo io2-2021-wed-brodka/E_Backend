@@ -22,6 +22,8 @@ RUN ./gradlew resolveDependencies --info
 # Begin building of the project, using dependencies resolved earlier
 COPY . .
 
+COPY gradlew ./
+
 RUN ./gradlew :NiezlyBackendPL:build -xtest
 
 FROM base AS final
