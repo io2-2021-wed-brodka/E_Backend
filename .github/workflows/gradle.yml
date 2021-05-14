@@ -31,7 +31,7 @@ jobs:
           registry: gcr.io
           project_id: ${{ secrets.GCLOUD_PROJECT_ID }}
           image_name: niezly-backend-pl
-          image_tag: ${{ latest}}
-
+          image_tag: latest
+          
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
