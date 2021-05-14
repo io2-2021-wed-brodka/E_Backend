@@ -1,5 +1,3 @@
-[![Java CI with Maven](https://github.com/io2-2021-wed-brodka/E_Backend/actions/workflows/maven.yml/badge.svg)](https://github.com/io2-2021-wed-brodka/E_Backend/actions/workflows/maven.yml)
-
 To run containers switch context to root and execute:
  make dev_compose_start
  
