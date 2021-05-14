@@ -1,0 +1,21 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ to-niezly-branch-pl ]
+
+jobs:
+
+  build:
+  
+    environment: 'example'
+    
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Build NiezlyBackendPL image
+      run: ./gradlew :NiezlyBackendPL:build -xtest
+
+    - name: Output summary to console
+      run: echo ${{ steps.run-newman.outputs.summary }}
