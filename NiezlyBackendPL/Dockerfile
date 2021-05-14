@@ -22,7 +22,7 @@ RUN ./gradlew resolveDependencies --info
 # Begin building of the project, using dependencies resolved earlier
 COPY . .
 
-RUN chmod ugo+x gradlew
+RUN chmod +x ./gradlew
 
 RUN ./gradlew :NiezlyBackendPL:build -xtest
 
