@@ -27,10 +27,11 @@ jobs:
     - name: Login to GCR
       run: docker login -u _json_key -p '${{ secrets.GCLOUD_SERVICE_KEY }}' 'https://gcr.io' 2>/dev/null
           
-    - name: Push created image to GCR
-      run:  |
-        docker tag niezly-backend-pl:latest 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest' \
-        docker push 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest'
+    - name: Tag created image using GCR project prefix
+      run: docker tag niezly-backend-pl:latest 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest'
+      
+    - name: Push tagged image to GCR
+      run: docker push 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest'
           
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
