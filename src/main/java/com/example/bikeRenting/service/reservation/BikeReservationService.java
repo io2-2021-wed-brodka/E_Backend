@@ -1,10 +1,8 @@
 package com.example.bikeRenting.service.reservation;
 
-import com.example.bikeRenting.api.BikeReservationController;
 import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
-import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.Reservation;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -12,6 +10,7 @@ import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeReservationRepository;
 import com.example.bikeRenting.repository.UserRepository;
+import com.example.bikeRenting.service.activiti.ActivitiReservationService;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import com.example.bikeRenting.service.mapping.reservation.ReservationMappingService;
 import com.example.bikeRenting.service.time.DateTimeService;
@@ -44,9 +43,13 @@ public class BikeReservationService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<ReservedBikeDTO> getAllReserved() {
-        return bikeRepository.findAllByStatus(BikeStatus.RESERVED).stream()
-                .map(bikeMappingService::mapToReservedBikeDTO)
+    @Autowired
+    private ActivitiReservationService activitiReservationService;
+
+    public List<ReservedBikeDTO> getReservedByUser(String username) {
+        var user = userRepository.findByUserName(username).orElseThrow();
+        return bikeReservationRepository.findAllByUser(user).stream()
+                .map(r -> bikeMappingService.mapToReservedBikeDTO(r.getBike()))
                 .collect(Collectors.toList());
     }
 
@@ -70,9 +73,23 @@ public class BikeReservationService {
         return reserveBike(loggedUser.getId(), bikeMappingService.mapToBikeDTO(bike));
     }
 
-    public ReservedBikeDTO cancelReservation(Long reservationId, String username) {
-        // todo
-        return null;
+    public void cancelReservation(Long bikeId, String username) {
+        var bike = bikeRepository.findById(bikeId).orElseThrow(() -> new RuntimeException("Bike not found"));
+
+        if(!bike.getStatus().equals(BikeStatus.RESERVED)) {
+            throw new RuntimeException("Bike is not reserved");
+        }
+
+        if(!bike.getReservation().getUser().getUserName().equals(username)) {
+            throw new RuntimeException("Bike was reserved by other user");
+        }
+
+        bike.setStatus(BikeStatus.ACTIVE);
+        bike.setReservation(null);
+
+        activitiReservationService.cancelReservationExpiration(bikeId);
+
+        bikeRepository.save(bike);
     }
 
     private ReservedBikeDTO reserveBike(Long userId, BikeDTO bike) {
@@ -81,13 +98,18 @@ public class BikeReservationService {
             throw new RuntimeException("Bike is already reserved by user");
         }
         var reservation = createBikeReservation(userId, bike.getId());
+
+        reservation.getBike().setStatus(BikeStatus.RESERVED);
+
+        activitiReservationService.startReservationExpiration(bike.getId());
+
         return reservationMappingService.mapToReservedBike(bikeReservationRepository.save(reservation), bike.getStation());
     }
 
     private Reservation createBikeReservation(Long userId, Long bikeId) {
         var reservation = new Reservation();
         reservation.setUser(new User(userId));
-        reservation.setBike(new Bike(bikeId));
+        reservation.setBike(bikeRepository.findById(bikeId).orElseThrow());
         reservation.setReservedAt(dateTimeService.getCurrentDate());
         reservation.setReservedTill(getReservedTillDate(reservation.getReservedAt()));
         return reservation;

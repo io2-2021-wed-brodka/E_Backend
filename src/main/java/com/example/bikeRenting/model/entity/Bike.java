@@ -30,7 +30,7 @@ public class Bike {
     @OneToMany(mappedBy = "bike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Rental>  rentals;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "bike", orphanRemoval = true)
     private Reservation reservation;
 
     public Bike(Long id) {

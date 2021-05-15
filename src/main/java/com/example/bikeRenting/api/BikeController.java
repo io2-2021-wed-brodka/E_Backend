@@ -1,23 +1,18 @@
 package com.example.bikeRenting.api;
 
-import com.example.bikeRenting.constants.RoleConstants;
-import com.example.bikeRenting.dto.request.bike.BlockBikeRequestDTO;
-import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
-import com.example.bikeRenting.dto.response.BikeDTO;
-import com.example.bikeRenting.dto.response.RentalDTO;
 import com.example.bikeRenting.dto.request.bike.AddBikeRequestDTO;
-import com.example.bikeRenting.dto.request.bike.RentBikeRequestDTO;
-import com.example.bikeRenting.dto.response.ReservedBikeDTO;
+import com.example.bikeRenting.dto.request.bike.BlockBikeRequestDTO;
+import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeListDTO;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.rental.RentalService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Collection;
-import java.util.List;
 
 import static com.example.bikeRenting.constants.RoleConstants.ADMIN;
 import static com.example.bikeRenting.constants.RoleConstants.TECH;
@@ -37,14 +32,15 @@ public class BikeController {
     }
 
     @PostMapping
+    @Secured(ADMIN)
     public BikeDTO addBike(@RequestBody AddBikeRequestDTO requestDTO) {
         return bikeService.addNewBike(requestDTO.getStationId());
     }
 
     @Secured({ADMIN, TECH})
     @GetMapping("/blocked")
-    public Collection<BikeDTO> getAllBlockedBikes() {
-        return bikeService.getAllBlockedBikes();
+    public BikeListDTO getAllBlockedBikes() {
+        return new BikeListDTO(bikeService.getAllBlockedBikes());
     }
 
     @Secured({ADMIN, TECH})
@@ -55,14 +51,21 @@ public class BikeController {
 
     @Secured({ADMIN, TECH})
     @DeleteMapping("/blocked/{id}")
-    public BikeDTO unBlockBike(@PathVariable("id") long id) {
-        return bikeService.unBlockBike(id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void unBlockBike(@PathVariable("id") long id) {
+        bikeService.unBlockBike(id);
     }
 
     @DeleteMapping("/{id}")
     @Secured(ADMIN)
-    public BikeDTO deleteBike(@PathVariable long id) {
-        return bikeService.deleteBike(id);
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteBike(@PathVariable long id) {
+        bikeService.deleteBike(id);
     }
 
+    @GetMapping
+    @Secured({TECH, ADMIN})
+    public BikeListDTO getAllBikes() {
+        return new BikeListDTO(bikeService.findAll());
+    }
 }

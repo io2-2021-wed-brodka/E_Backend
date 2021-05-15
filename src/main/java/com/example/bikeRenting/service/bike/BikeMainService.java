@@ -121,6 +121,13 @@ public class BikeMainService implements BikeService{
         return bikeDTO;
     }
 
+    @Override
+    public Collection<BikeDTO> findAll() {
+        return bikeRepository.findAll().stream()
+                .map(bikeMappingService::mapToBikeDTO)
+                .collect(Collectors.toList());
+    }
+
     private void checkWhetherStationIsFull(BikeStation bikeStation) {
         if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");

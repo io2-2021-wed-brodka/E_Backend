@@ -1,7 +1,6 @@
 package com.example.bikeRenting.service.rental;
 
 import com.example.bikeRenting.dto.response.RentalDTO;
-import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.Rental;
 import com.example.bikeRenting.model.entity.enums.BikeStatus;
@@ -9,6 +8,7 @@ import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
+import com.example.bikeRenting.service.activiti.ActivitiReservationService;
 import com.example.bikeRenting.service.mapping.rental.RentalMappingService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,13 +26,17 @@ public class RentalMainService implements RentalService {
     private final BikeRepository bikeRepository;
     private final RentalMappingService rentalMappingService;
     private final BikeStationRepository bikeStationRepository;
+    private final ActivitiReservationService activitiReservationService;
 
-    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository, BikeRepository bikeRepository, RentalMappingService rentalMappingService, BikeStationRepository bikeStationRepository) {
+    public RentalMainService(RentalRepository rentalRepository, UserRepository userRepository,
+                             BikeRepository bikeRepository, RentalMappingService rentalMappingService,
+                             BikeStationRepository bikeStationRepository, ActivitiReservationService activitiReservationService) {
         this.rentalRepository = rentalRepository;
         this.userRepository = userRepository;
         this.bikeRepository = bikeRepository;
         this.rentalMappingService = rentalMappingService;
         this.bikeStationRepository = bikeStationRepository;
+        this.activitiReservationService = activitiReservationService;
     }
 
     @Override
@@ -51,6 +55,13 @@ public class RentalMainService implements RentalService {
 
         if (BikeStatus.BLOCKED.equals(bike.getStatus())) {
             throw new RuntimeException("Bike is blocked");
+        }
+        if (BikeStatus.RESERVED.equals(bike.getStatus())) {
+            if (bike.getReservation().getUser().getUserName().equals(userName)) {
+                activitiReservationService.cancelReservationExpiration(bikeId);
+            } else {
+                throw new RuntimeException("Bike is reserved");
+            }
         }
 
         checkWhetherStationIsBlocked(bike.getBikeStation());
@@ -76,7 +87,7 @@ public class RentalMainService implements RentalService {
 
         var user = rental.getUser();
 
-        if(!user.getUserName().equals(userName)) {
+        if (!user.getUserName().equals(userName)) {
             throw new RuntimeException("Bike was rented by other user");
         }
 

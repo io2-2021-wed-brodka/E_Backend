@@ -2,6 +2,7 @@ package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.request.bike.RentBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeListDTO;
 import com.example.bikeRenting.dto.response.RentalDTO;
 import com.example.bikeRenting.service.bike.BikeService;
 import com.example.bikeRenting.service.rental.RentalService;
@@ -24,8 +25,8 @@ public class BikeRentedController {
     private RentalService rentalService;
 
     @GetMapping
-    public Collection<BikeDTO> getUserRentedBikes(Principal principal) {
-        return bikeService.getBikesRentedByUser(principal.getName());
+    public BikeListDTO getUserRentedBikes(Principal principal) {
+        return new BikeListDTO(bikeService.getBikesRentedByUser(principal.getName()));
     }
 
     @PostMapping
