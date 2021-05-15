@@ -116,7 +116,7 @@ public class BikeReservationService {
     }
 
     private LocalDateTime getReservedTillDate(LocalDateTime reservedAt) {
-        return reservedAt.plusHours(1);
+        return reservedAt.plusSeconds(20);
     }
 
 }
