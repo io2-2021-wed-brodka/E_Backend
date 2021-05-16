@@ -54,7 +54,7 @@ jobs:
     - name: Wait for Maven App to start
       uses: jakejarvis/wait-action@v0.1.0
       with:
-        time: '30s'
+        time: '1m'
       
     - name: Run API Tests
       id: run-newman
