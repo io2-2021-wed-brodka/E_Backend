@@ -10,8 +10,8 @@ public class ReservationMappingService {
 
     public ReservedBikeDTO mapToReservedBike(Reservation reservation, BikeStationDTO bikeStation) {
         var reservedBike = new ReservedBikeDTO();
-        reservedBike.setReservedAt(reservedBike.getReservedAt());
-        reservedBike.setReservedTill(reservedBike.getReservedTill());
+        reservedBike.setReservedAt(reservation.getReservedAt());
+        reservedBike.setReservedTill(reservation.getReservedTill());
         reservedBike.setStation(bikeStation);
         reservedBike.setId(reservation.getBike().getId());
         return reservedBike;
