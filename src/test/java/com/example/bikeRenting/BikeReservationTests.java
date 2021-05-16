@@ -49,10 +49,10 @@ public class BikeReservationTests {
     @BeforeAll
     void prepareData() {
         stationOneId = bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId();
-        zeroBikesUser.setLogin("zeroBikes");
+        zeroBikesUser.setLogin("ReservationsZero");
         zeroBikesUser.setPassword("");
         userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
-        oneBikeUser.setLogin("oneBike");
+        oneBikeUser.setLogin("ReservationsOne");
         oneBikeUser.setPassword("");
         userMainService.createUser(oneBikeUser.getLogin(), oneBikeUser.getPassword());
         bikeId = bikeMainService.addNewBike(stationOneId).getId();
