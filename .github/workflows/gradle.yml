@@ -6,16 +6,32 @@ on:
 
 jobs:
 
-  build:
+  build-and-push:
   
     environment: 'example'
     
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
-
+    
+    - name: checkout
+      uses: actions/checkout@v2
+   
+    - name: Update gradle
+      id: gradleUpdate
+      uses: EdwarDDay/upgrade-gradle-action@v1
+    
     - name: Build NiezlyBackendPL image
-      run: ./gradlew :NiezlyBackendPL:build -xtest
-
+      run: ./gradlew :NiezlyBackendPL:dockerBuild -xtest
+          
+    - name: Login to GCR
+      run: docker login -u _json_key -p '${{ secrets.GCLOUD_SERVICE_KEY }}' 'https://gcr.io' 2>/dev/null
+          
+    - name: Tag created image using GCR project prefix
+      run: docker tag niezly-backend-pl:latest 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest'
+      
+    - name: Push tagged image to GCR
+      run: docker push 'gcr.io/${{ secrets.GCLOUD_PROJECT_ID }}/niezly-backend-pl:latest'
+          
     - name: Output summary to console
       run: echo ${{ steps.run-newman.outputs.summary }}
