@@ -29,6 +29,9 @@ public class ActivitiReservationService {
     }
 
     public void cancelReservationExpiration(long bikeId) {
+
+        cancelReservation(bikeId);
+
         var process = runtimeService.createProcessInstanceQuery()
                 .processDefinitionKey("startReservationExpiration")
                 .processInstanceBusinessKey("" + bikeId)
@@ -46,6 +49,11 @@ public class ActivitiReservationService {
     public void cancelReservation(DelegateExecution execution) {
         var bikeId = (long) execution.getVariable("bikeId");
 
+        cancelReservation(bikeId);
+    }
+
+    @Transactional
+    public void cancelReservation(long bikeId) {
         var bike = bikeRepository.findById(bikeId).orElseThrow();
         bike.setStatus(BikeStatus.ACTIVE);
         bike.setReservation(null);

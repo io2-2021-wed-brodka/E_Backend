@@ -73,6 +73,7 @@ public class RentalMainService implements RentalService {
         rental.setFromStation(bike.getBikeStation());
 
         bike.setBikeStation(null);
+        bike.setStatus(BikeStatus.RENTED);
 
         bikeRepository.save(bike);
 
@@ -98,6 +99,7 @@ public class RentalMainService implements RentalService {
         checkWhetherStationIsBlocked(bikeStation);
 
         rental.getBike().setBikeStation(bikeStation);
+        rental.getBike().setStatus(BikeStatus.ACTIVE);
         rental.setEndDate(LocalDateTime.now());
         rental.setToStation(bikeStation);
 
