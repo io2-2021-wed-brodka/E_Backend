@@ -32,4 +32,4 @@ EXPOSE 8080
 WORKDIR /app
 
 COPY --from=builder /builder/NiezlyBackendPL/build/libs/*.jar NiezlyBackendPL.jar
-CMD ["java", "-jar", "NiezlyBackendPL.jar"]
+CMD ["java", "-jar", "NiezlyBackendPL.jar",  "--spring.config.location=/config/application.properties"]
