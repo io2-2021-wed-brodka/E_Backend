@@ -1,9 +1,13 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.constants.RoleConstants;
+import com.example.bikeRenting.dto.response.TechListDTO;
 import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.dto.request.tech.CreateTechRequestDTO;
+import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.service.tech.TechService;
+import com.example.bikeRenting.service.user.RoleService;
+import com.example.bikeRenting.service.user.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -19,9 +23,16 @@ import static com.example.bikeRenting.constants.RoleConstants.TECH;
 public class TechController {
     private final TechService techService;
 
+
     @Autowired
     public TechController(TechService techService) {
         this.techService = techService;
+    }
+
+    @GetMapping
+    @Secured(ADMIN)
+    public  TechListDTO getAllTechs() {
+        return new TechListDTO(techService.listAll());
     }
 
     @PostMapping
