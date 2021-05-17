@@ -43,6 +43,11 @@ public class BikeStationController {
         return result;
     }
 
+    @GetMapping("/{stationId}/bikes/active")
+    public BikeListDTO returnBike(@PathVariable long stationId) {
+        return bikeService.getStationActiveBikes(stationId);
+    }
+
     @PostMapping("/{stationId}/bikes")
     public RentalDTO returnBike(@PathVariable long stationId, @RequestBody ReturnBikeRequestDTO requestDTO, Principal principal) {
         return rentalService.returnBike(requestDTO.getId(), stationId, principal.getName());
