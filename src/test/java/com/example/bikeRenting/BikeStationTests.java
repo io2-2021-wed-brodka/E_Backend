@@ -58,7 +58,7 @@ public class BikeStationTests {
     {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 5");
         bikeStationMainService.blockBikeStation(org.getId());
-        var result = bikeStationMainService.unblockBikeStation(org.getId());
+        var result = bikeStationMainService.unblockBikeStation(org.getId()).getDescription();
         var expected = "Station unblocked";
         Assertions.assertEquals(expected, result);
     }
