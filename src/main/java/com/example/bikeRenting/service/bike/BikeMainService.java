@@ -4,6 +4,7 @@ import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeListDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
+import com.example.bikeRenting.exception.BikeAlreadyRentedException;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -111,7 +112,7 @@ public class BikeMainService implements BikeService{
                 .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
 
         if(null == bike.getBikeStation()) {
-            throw new RuntimeException("Bike with id " + bikeId + " is currently rented");
+            throw new BikeAlreadyRentedException("Bike with id " + bikeId + " is currently rented");
         }
 
         var bikeDTO = bikeMappingService.mapToBikeDTO(bike);

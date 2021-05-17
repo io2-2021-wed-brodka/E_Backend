@@ -53,4 +53,12 @@ public class RestControllerAdvice {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BikeAlreadyRentedException.class)
+    public DisplayableErrorDTO handleBikeAlreadyRentedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
 }
