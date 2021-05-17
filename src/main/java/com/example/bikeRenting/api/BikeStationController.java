@@ -43,6 +43,11 @@ public class BikeStationController {
         return result;
     }
 
+    @GetMapping("/{stationId}/bikes/active")
+    public BikeListDTO returnBike(@PathVariable long stationId) {
+        return bikeService.getStationActiveBikes(stationId);
+    }
+
     @PostMapping("/{stationId}/bikes")
     public RentalDTO returnBike(@PathVariable long stationId, @RequestBody ReturnBikeRequestDTO requestDTO, Principal principal) {
         return rentalService.returnBike(requestDTO.getId(), stationId, principal.getName());
@@ -72,13 +77,13 @@ public class BikeStationController {
 
     @DeleteMapping("/blocked/{id}")
     @Secured({ADMIN})
-    public String unblockStation(@PathVariable long id) {
+    public MessageResponseDTO unblockStation(@PathVariable long id) {
         return bikeStationService.unblockBikeStation(id);
     }
 
     @DeleteMapping("/{stationId}")
     @Secured({ADMIN})
-    public String deleteStation(@PathVariable Long stationId) {
+    public MessageResponseDTO deleteStation(@PathVariable Long stationId) {
         return bikeStationService.deleteBikeStation(stationId);
     }
 }

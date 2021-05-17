@@ -2,7 +2,9 @@ package com.example.bikeRenting.service.bike;
 
 import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
+import com.example.bikeRenting.dto.response.BikeListDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
+import com.example.bikeRenting.exception.BikeAlreadyRentedException;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -110,7 +112,7 @@ public class BikeMainService implements BikeService{
                 .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
 
         if(null == bike.getBikeStation()) {
-            throw new RuntimeException("Bike with id " + bikeId + " is currently rented");
+            throw new BikeAlreadyRentedException("Bike with id " + bikeId + " is currently rented");
         }
 
         var bikeDTO = bikeMappingService.mapToBikeDTO(bike);
@@ -127,9 +129,19 @@ public class BikeMainService implements BikeService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public BikeListDTO getStationActiveBikes(Long stationId) {
+        var stationActiveBikes = bikeRepository.findAllByStationIdAndStatus(stationId, BikeStatus.ACTIVE).stream()
+                .map(bikeMappingService::mapToBikeDTO)
+                .collect(Collectors.toList());
+        return new BikeListDTO(stationActiveBikes);
+    }
+
     private void checkWhetherStationIsFull(BikeStation bikeStation) {
         if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
             throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
         }
     }
+
+
 }

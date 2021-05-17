@@ -33,13 +33,18 @@ public class AuthenticationMainService implements AuthenticationService {
     }
 
     public Authentication verifyToken(String token) {
-        var userName = JWT.require(Algorithm.HMAC256(secret))
-                .build()
-                .verify(token)
-                .getSubject();
-        if(userName == null) {
+        try {
+            var userName = JWT.require(Algorithm.HMAC256(secret))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            if(userName == null) {
+                throw new RuntimeException("Username is null");
+            }
+            return new LazyAuthoritiesAuthentication(userName, userService);
+        } catch (Exception e) {
             return null;
         }
-        return new LazyAuthoritiesAuthentication(userName, userService);
+
     }
 }
