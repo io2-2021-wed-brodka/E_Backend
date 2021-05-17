@@ -78,7 +78,7 @@ public class BikeStationController {
 
     @DeleteMapping("/{stationId}")
     @Secured({ADMIN})
-    public String deleteStation(@PathVariable Long stationId) {
+    public MessageResponseDTO deleteStation(@PathVariable Long stationId) {
         return bikeStationService.deleteBikeStation(stationId);
     }
 }

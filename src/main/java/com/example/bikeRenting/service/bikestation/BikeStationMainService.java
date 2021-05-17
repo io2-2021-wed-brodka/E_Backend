@@ -1,11 +1,15 @@
 package com.example.bikeRenting.service.bikestation;
 
 import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.MessageResponseDTO;
+import com.example.bikeRenting.exception.StationNotEmptyException;
+import com.example.bikeRenting.exception.StationNotFoundException;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.service.mapping.bikestation.BikeStationMappingService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,12 +41,11 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public BikeStationDTO blockBikeStation(long bikeStationId)
-    {
+    public BikeStationDTO blockBikeStation(long bikeStationId) {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
-                .orElseThrow(()-> new RuntimeException ("Station not found"));
+                .orElseThrow(() -> new RuntimeException("Station not found"));
 
-        if(BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
+        if (BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
             throw new RuntimeException("Station already blocked");
         }
 
@@ -53,12 +56,11 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public String unblockBikeStation(long bikeStationId)
-    {
+    public String unblockBikeStation(long bikeStationId) {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
-                .orElseThrow(()-> new RuntimeException ("Station not found"));
+                .orElseThrow(() -> new RuntimeException("Station not found"));
 
-        if(BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
+        if (BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
             throw new RuntimeException("Station not blocked");
         }
 
@@ -69,16 +71,17 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public String deleteBikeStation(Long bikeStationId) {
-        var bikeStation = bikeStationRepository.findById(bikeStationId)
-                .orElseThrow(() -> new RuntimeException("Station not found"));
+    @Transactional
+    public MessageResponseDTO deleteBikeStation(Long bikeStationId) {
 
+        var station = bikeStationRepository.findById(bikeStationId)
+                .orElseThrow(() -> new StationNotFoundException("Station does not exist"));
         var bikes = bikeStationRepository.getBikesCount(bikeStationId);
         if (bikes > 0) {
-            throw new RuntimeException("Station is not empty");
+            throw new StationNotEmptyException("Station is not empty");
         }
 
         bikeStationRepository.deleteById(bikeStationId);
-        return "Station deleted";
+        return new MessageResponseDTO("Station deleted");
     }
 }
