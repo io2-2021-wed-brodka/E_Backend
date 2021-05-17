@@ -56,7 +56,7 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public String unblockBikeStation(long bikeStationId) {
+    public MessageResponseDTO unblockBikeStation(long bikeStationId) {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("Station not found"));
 
@@ -67,7 +67,7 @@ public class BikeStationMainService implements BikeStationService {
         bikeStation.setStatus(BikeStation.BikeStationState.Working);
         bikeStationRepository.save(bikeStation);
 
-        return "Station unblocked";
+        return new MessageResponseDTO("Station unblocked");
     }
 
     @Override

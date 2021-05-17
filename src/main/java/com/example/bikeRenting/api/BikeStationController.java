@@ -72,7 +72,7 @@ public class BikeStationController {
 
     @DeleteMapping("/blocked/{id}")
     @Secured({ADMIN})
-    public String unblockStation(@PathVariable long id) {
+    public MessageResponseDTO unblockStation(@PathVariable long id) {
         return bikeStationService.unblockBikeStation(id);
     }
 

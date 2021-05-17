@@ -11,7 +11,7 @@ public interface BikeStationService {
 
     BikeStationDTO blockBikeStation(long bikeStationId);
 
-    String unblockBikeStation(long bikeStationId);
+    MessageResponseDTO unblockBikeStation(long bikeStationId);
 
     List<BikeStationDTO> findAll();
 
