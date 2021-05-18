@@ -18,5 +18,5 @@ public interface BikeStationRepository extends JpaRepository<BikeStation, Long> 
     int getBikesCount(@PathParam("id") Long id);
 
     @Query("select s from BikeStation s where s.status <> :state")
-    Set<BikeStation> findAllNotStatus(@Param("status") BikeStation.BikeStationState state);
+    Set<BikeStation> findAllNotStatus(@Param("state") BikeStation.BikeStationState state);
 }
