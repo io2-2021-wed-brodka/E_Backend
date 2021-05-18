@@ -35,6 +35,7 @@ public class TechMainService implements TechService {
     @Override
     public List<UserDTO> listAll() {
         return  userRepository.findAllTechs().stream()
+                .filter(x->UserStatus.DELETED!=x.getStatus())
                 .map(userMappingService::mapToUserDTO)
                 .collect(Collectors.toList());
     }
