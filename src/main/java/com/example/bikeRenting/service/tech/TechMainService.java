@@ -3,11 +3,15 @@ package com.example.bikeRenting.service.tech;
 import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.repository.UserRepository;
+import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import com.example.bikeRenting.service.user.LoginService;
 import com.example.bikeRenting.service.user.RoleService;
+
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TechMainService implements TechService {
@@ -15,11 +19,18 @@ public class TechMainService implements TechService {
     private final LoginService loginService;
     private final RoleService roleService;
     private final UserRepository userRepository;
+    private final UserMappingService userMappingService;
 
-    public TechMainService(LoginService loginService, RoleService roleService, UserRepository userRepository) {
+    public TechMainService(LoginService loginService, RoleService roleService, UserRepository userRepository, UserMappingService userMappingService) {
         this.loginService = loginService;
         this.roleService = roleService;
         this.userRepository = userRepository;
+        this.userMappingService = userMappingService;
+    }
+
+    @Override
+    public List<UserDTO> listAll() {
+        return  userRepository.findAll().stream().filter(x->x.getRoles().contains("ROLE_TECH")).map(x->userMappingService.mapToUserDTO(x)).collect(Collectors.toList());
     }
 
     @Override
