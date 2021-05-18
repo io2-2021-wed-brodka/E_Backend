@@ -30,7 +30,9 @@ public class TechMainService implements TechService {
 
     @Override
     public List<UserDTO> listAll() {
-        return  userRepository.findAll().stream().filter(x->x.getRoles().contains("ROLE_TECH")).map(x->userMappingService.mapToUserDTO(x)).collect(Collectors.toList());
+        return  userRepository.findAllTechs().stream()
+                .map(userMappingService::mapToUserDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
