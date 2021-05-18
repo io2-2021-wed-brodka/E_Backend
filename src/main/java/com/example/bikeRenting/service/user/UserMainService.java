@@ -37,7 +37,7 @@ public class UserMainService implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+        return userRepository.findAllNotStatus(UserStatus.DELETED).stream()
                 .map(u -> userMappingService.mapToUserDTO(u))
                 .collect(Collectors.toList());
     }
@@ -68,6 +68,7 @@ public class UserMainService implements UserService {
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userMappingService.mapToUserDetails(userRepository.findByUserName(s)
+                .filter(x->UserStatus.DELETED!=x.getStatus())
                 .orElseThrow(() -> new UsernameNotFoundException("user with username " + s + "doesn't exist")));
     }
 
@@ -75,13 +76,19 @@ public class UserMainService implements UserService {
     public UserDTO deleteUser(long userId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("user with id " + userId + " not found"));
-        userRepository.deleteById(userId);
+
+        if(checkIfDeleted(user)) {
+            throw new EntityNotFoundException("user with id " + userId + " not found");
+        }
+
+        user.setStatus(UserStatus.DELETED);
+        userRepository.save(user);
         return userMappingService.mapToUserDTO(user);
     }
 
     @Override
     public Optional<UserDTO> findByUsername(String username) {
-        return userRepository.findByUserName(username)
+        return userRepository.findByUserName(username).filter(x->UserStatus.DELETED!=x.getStatus())
                 .flatMap(u -> Optional.ofNullable(userMappingService.mapToUserDTO(u)));
     }
 
@@ -90,6 +97,10 @@ public class UserMainService implements UserService {
     public UserDTO blockUser(BlockUserRequestDTO request) {
         var user = userRepository.findById(request.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        if(checkIfDeleted(user)) {
+            throw new EntityNotFoundException("User not found");
+        }
 
         if (UserStatus.BLOCKED == user.getStatus()) {
             throw new UserAlreadyBlockedException("User already blocked");
@@ -106,6 +117,10 @@ public class UserMainService implements UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
+        if(checkIfDeleted(user)) {
+            throw new EntityNotFoundException("User not found");
+        }
+
         if (UserStatus.ACTIVE == user.getStatus()) {
             throw new UserNotBlockedException("User is not blocked");
         }
@@ -114,4 +129,7 @@ public class UserMainService implements UserService {
         return userMappingService.mapToUserDTO(user);
     }
 
+    private boolean checkIfDeleted(User user) {
+        return UserStatus.DELETED == user.getStatus();
+    }
 }

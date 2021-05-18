@@ -2,6 +2,10 @@ package com.example.bikeRenting.service.tech;
 
 import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.UserDTO;
+import com.example.bikeRenting.exception.EntityNotFoundException;
+import com.example.bikeRenting.model.entity.BikeStation;
+import com.example.bikeRenting.model.entity.User;
+import com.example.bikeRenting.model.entity.UserStatus;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.user.UserMappingService;
 import com.example.bikeRenting.service.user.LoginService;
@@ -31,6 +35,7 @@ public class TechMainService implements TechService {
     @Override
     public List<UserDTO> listAll() {
         return  userRepository.findAllTechs().stream()
+                .filter(x->UserStatus.DELETED!=x.getStatus())
                 .map(userMappingService::mapToUserDTO)
                 .collect(Collectors.toList());
     }
@@ -46,7 +51,16 @@ public class TechMainService implements TechService {
     public  UserDTO deleteTech(long techId) {
         var user = userRepository.findById(techId)
                 .orElseThrow(()-> new RuntimeException( "Tech with id " + techId + " does not exist."));
+
+        if(checkIfDeleted(user)) {
+            throw new EntityNotFoundException("Tech with id " + techId + " does not exist.");
+        }
+
         user.setRoles(null);
         return loginService.deleteUser(techId);
+    }
+
+    private boolean checkIfDeleted(User user) {
+        return UserStatus.DELETED == user.getStatus();
     }
 }

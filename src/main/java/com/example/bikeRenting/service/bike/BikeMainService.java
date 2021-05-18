@@ -15,6 +15,7 @@ import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
 import com.example.bikeRenting.service.reservation.BikeReservationService;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,8 @@ public class BikeMainService implements BikeService{
     @Override
     public Collection<BikeDTO> getBikesRentedByUser(String userName) {
         return rentalRepository.getCurrentUserRentals(userName)
-                .stream().map(r -> bikeMappingService.mapToBikeDTO(r.getBike()))
+                .stream().filter(x->BikeStatus.DELETED!=x.getBike().getStatus())
+                .map(r -> bikeMappingService.mapToBikeDTO(r.getBike()))
                 .collect(Collectors.toSet());
     }
 
@@ -76,6 +78,11 @@ public class BikeMainService implements BikeService{
     public BikeDTO blockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+
+        if(checkIfDeleted(bike)) {
+            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+        }
+
         if(BikeStatus.BLOCKED.equals(bike.getStatus())) {
             throw new RuntimeException("Bike has already been blocked");
         }
@@ -89,6 +96,11 @@ public class BikeMainService implements BikeService{
     public BikeDTO unBlockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+
+        if(checkIfDeleted(bike)) {
+            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+        }
+
         if(BikeStatus.ACTIVE.equals(bike.getStatus())) {
             throw new RuntimeException("Bike not blocked");
         }
@@ -111,20 +123,27 @@ public class BikeMainService implements BikeService{
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
 
+        if(checkIfDeleted(bike)) {
+            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+        }
+
         if(null == bike.getBikeStation()) {
             throw new BikeAlreadyRentedException("Bike with id " + bikeId + " is currently rented");
         }
 
         var bikeDTO = bikeMappingService.mapToBikeDTO(bike);
 
-        bikeRepository.delete(bike);
+        bike.setStatus(BikeStatus.DELETED);
+        bike.setBikeStation(null);
+
+        bikeRepository.save(bike);
 
         return bikeDTO;
     }
 
     @Override
     public Collection<BikeDTO> findAll() {
-        return bikeRepository.findAll().stream()
+        return bikeRepository.findAllNotStatus(BikeStatus.DELETED).stream()
                 .map(bikeMappingService::mapToBikeDTO)
                 .collect(Collectors.toList());
     }
@@ -143,5 +162,7 @@ public class BikeMainService implements BikeService{
         }
     }
 
-
+    private boolean checkIfDeleted(Bike bike) {
+        return BikeStatus.DELETED == bike.getStatus();
+    }
 }
