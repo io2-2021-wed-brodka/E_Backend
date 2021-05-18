@@ -12,10 +12,13 @@ import java.util.Set;
 
 public interface BikeRepository extends JpaRepository<Bike, Long> {
 
+
     @Query("select b from Bike b where b.status = :status")
     Set<Bike> findAllByStatus(@Param("status") BikeStatus status);
 //    Set<Bike> findAllByStatusAnd(@Param("status") BikeStatus status);
 
+    @Query("select b from Bike b where b.status <> :status")
+    Set<Bike> findAllNotStatus(@Param("status") BikeStatus status);
 
     @Query("select b from Bike b " +
             "left join b.bikeStation bs " +

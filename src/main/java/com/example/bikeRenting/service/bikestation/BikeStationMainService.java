@@ -4,7 +4,9 @@ import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
 import com.example.bikeRenting.exception.StationNotEmptyException;
 import com.example.bikeRenting.exception.StationNotFoundException;
+import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
+import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.service.mapping.bikestation.BikeStationMappingService;
 import org.springframework.stereotype.Service;
@@ -35,7 +37,7 @@ public class BikeStationMainService implements BikeStationService {
 
     @Override
     public List<BikeStationDTO> findAll() {
-        return bikeStationRepository.findAll().stream()
+        return bikeStationRepository.findAllNotStatus(BikeStation.BikeStationState.Deleted).stream()
                 .map(bikeStationMappingService::mapToBikeStationDTO)
                 .collect(Collectors.toList());
     }
@@ -44,6 +46,10 @@ public class BikeStationMainService implements BikeStationService {
     public BikeStationDTO blockBikeStation(long bikeStationId) {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("Station not found"));
+
+        if(checkIfDeleted(bikeStation)) {
+            throw new StationNotFoundException("Station not found");
+        }
 
         if (BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
             throw new RuntimeException("Station already blocked");
@@ -59,6 +65,10 @@ public class BikeStationMainService implements BikeStationService {
     public MessageResponseDTO unblockBikeStation(long bikeStationId) {
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("Station not found"));
+
+        if(checkIfDeleted(bikeStation)) {
+            throw new StationNotFoundException("Station not found");
+        }
 
         if (BikeStation.BikeStationState.Working == bikeStation.getStatus()) {
             throw new RuntimeException("Station not blocked");
@@ -76,12 +86,22 @@ public class BikeStationMainService implements BikeStationService {
 
         var station = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new StationNotFoundException("Station does not exist"));
+
+        if(checkIfDeleted(station)) {
+            throw new StationNotFoundException("Station does not exist");
+        }
+
         var bikes = bikeStationRepository.getBikesCount(bikeStationId);
         if (bikes > 0) {
             throw new StationNotEmptyException("Station is not empty");
         }
 
-        bikeStationRepository.deleteById(bikeStationId);
+        station.setStatus(BikeStation.BikeStationState.Deleted);
+        bikeStationRepository.save(station);
         return new MessageResponseDTO("Station deleted");
+    }
+
+    private boolean checkIfDeleted(BikeStation bikeStation) {
+        return BikeStation.BikeStationState.Deleted == bikeStation.getStatus();
     }
 }

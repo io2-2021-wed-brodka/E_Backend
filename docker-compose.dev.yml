@@ -8,11 +8,7 @@ services:
     restart: unless-stopped
     ports:
       - '1433:1433'
-    volumes:
-      - mssql-data:/var/opt/mssql
     environment:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
-volumes:
-  mssql-data:

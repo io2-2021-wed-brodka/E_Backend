@@ -13,7 +13,7 @@ import java.util.List;
 public class BikeStation {
 
     public enum BikeStationState {
-        Working, Blocked
+        Working, Blocked, Deleted
     }
 
     @Id
