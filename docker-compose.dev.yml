@@ -14,5 +14,23 @@ services:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
+
+  backend:
+    container_name: E_backend
+    image: E_backend:latest
+    restart: unless-stopped
+    environment:
+      WAIT_HOSTS: mssql:1433
+    depends_on:
+      - mssql
+    ports:
+      - '8080:8080'
+    networks:
+      - bike-renting
+
 volumes:
   mssql-data:
+
+networks:
+  bike-renting:
+    external: true
