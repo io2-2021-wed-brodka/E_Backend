@@ -235,7 +235,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>com.example.bikeRenting.BikeRentingApplication.java</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

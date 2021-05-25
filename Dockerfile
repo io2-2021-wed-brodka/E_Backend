@@ -1,6 +1,9 @@
-FROM maven:3.8.1-jdk-11-openj9 AS builder
+FROM openjdk:11.0.6-jre-slim AS base
 
+STOPSIGNAL SIGINT
 ENV SPRING_PROFILES_ACTIVE prod
+
+FROM maven:3.8.1-jdk-11-openj9 AS builder
 
 WORKDIR /builder
 
