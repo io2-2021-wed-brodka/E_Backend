@@ -20,17 +20,17 @@ services:
 
   backend:
     build:
-      context:  .
+      context: .
       dockerfile: Dockerfile
     restart: unless-stopped
     environment:
       WAIT_HOSTS: mssql:1433
     depends_on:
       - mssql
-    ports:
-      - '8080:8080'
     networks:
       - bike-renting
+    ports:
+      - '8080:8080'
 
 volumes:
   mssql-data:

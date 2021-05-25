@@ -1,8 +1,8 @@
 insert into dbo.user_data (id, password, status, user_name) VALUES
-(2, '$2a$10$XtDOt9NaJ1vfCZ4dZxdA1.EubpxiRVehVtpxuWEwO7cegBp2pOkUi' , 'ACTIVE', 'admin');
+(2, '$2a$10$h/ds7n4hWYEH6NHduOMlxePZbciJdxC76A35KeD2uLAdK3ajj5EPi' , 'ACTIVE', 'admin');
 
 insert into dbo.user_role (role_id, user_id) VALUES
-(1, 1);
+(1, 2);
 
 insert into dbo.bike_station (id, location_name, max_bikes, status)
 (3, 'stacja_1', 10, 'Working')
