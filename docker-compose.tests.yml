@@ -13,5 +13,17 @@ services:
       MYSQL_USER: 'renting'
       MYSQL_PASSWORD: 'NiezleHaslo123!'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      WAIT_HOSTS: mysql:1144
+    depends_on:
+      - mysql
+    network_mode: host
+
 volumes:
   mysql-data:
