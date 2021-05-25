@@ -14,5 +14,24 @@ services:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
+    networks:
+      - bike-renting
+
+  niezly-backend-pl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: niezly-backend-pl
+    image: niezly-backend-pl:latest
+    restart: unless-stopped
+    environment:
+      WAIT_HOSTS: mssql:1433
+    depends_on:
+      - mssql
+    ports:
+      - '8080:8080'
+    networks:
+      - bike-renting
+
 volumes:
   mssql-data:

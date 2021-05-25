@@ -1,5 +1,6 @@
 DOCKER_COMPOSE_DEV=docker-compose -f docker-compose.dev.yml
 DOCKER_COMPOSE_TESTS=docker-compose -f docker-compose.tests.yml
+DOCKER_BUILD=docker build
 
 all: build
 
@@ -16,8 +17,8 @@ dev_compose_start:
 dev_compose_stop:
 	@$(DOCKER_COMPOSE_DEV) stop
 
-dev_compose_down:
-	@$(DOCKER_COMPOSE_DEV) down --volumes
+docker_build_backend:
+    @$(DOCKER_BUILD) -t niezly-backend-pl .
 
 maven_build_no_tests:
 	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
