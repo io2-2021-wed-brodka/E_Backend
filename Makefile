@@ -18,7 +18,7 @@ dev_compose_stop:
 	@$(DOCKER_COMPOSE_DEV) stop
 
 docker_build_backend:
-    @$(DOCKER_BUILD) -t niezly-backend-pl .
+	@$(DOCKER_BUILD) -t niezly-backend-pl .
 
 maven_build_no_tests:
 	@mvn -B package --file pom.xml -Dskip.npm -Dmaven.test.skip=true
