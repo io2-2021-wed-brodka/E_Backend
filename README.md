@@ -1,3 +1,6 @@
+W celu uruchomienia kontenera wykonujemy:
+docker-compose -f docker-compose -f docker-compose.dev.yml up
+
 To run containers switch context to root and execute:
  make dev_compose_start
  

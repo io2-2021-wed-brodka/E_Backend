@@ -14,5 +14,12 @@ services:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
+
+  backend:
+    build:
+      context:  .
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
 volumes:
   mssql-data:

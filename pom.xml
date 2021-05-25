@@ -168,45 +168,6 @@
 					<workingDirectory>${project.basedir}/../E_User-Tech</workingDirectory>
 					<nodeVersion>v10.19.0</nodeVersion>
 				</configuration>
-				<executions>
-					<execution>
-						<id>install node and npm</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>install-node-and-npm</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>npm install</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>install</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>build</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>run-script build</arguments>
-						</configuration>
-					</execution>
-					<execution>
-						<id>build-en</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>npm</goal>
-						</goals>
-						<configuration>
-							<arguments>run-script build:en</arguments>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
