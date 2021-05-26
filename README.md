@@ -1,6 +1,16 @@
-W celu uruchomienia kontenera wykonujemy:
-docker-compose -f docker-compose.dev.yml up
+Preferowany sposób obsługi kontenerów:\
+ + docker-compose -f docker-compose.dev.yml up --detach  <- uruchamianie
+ + docker-compose -f docker-compose.dev.yml down --volumes  <- kończenie pracy (z usuwaniem danych)
+ + docker-compose -f docker-compose.dev.yml stop <- zatrzymywanie kontenerów bez usuwania danych
 
+Uruchamianie z podglądem pracy servera
+ + docker-compose -f docker-compose.dev.yml up --detach mssql
+ + docker-compose -f docker-compose.dev.yml up backend
+
+Kończenie pracy analogicznie jak powyżej.
+\
+\
+\
 To run containers switch context to root and execute:
  make dev_compose_start
  
