@@ -1,3 +1,6 @@
+Niezależnie od wybranego sposobu uruchamiania kontenerów wymagane jest stworzenie sieci komendą:
++ docker network create bike-renting
+
 Preferowany sposób obsługi kontenerów:
  + docker-compose -f docker-compose.dev.yml up --detach  <- uruchamianie
  + docker-compose -f docker-compose.dev.yml down --volumes  <- kończenie pracy (z usuwaniem danych)
