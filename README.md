@@ -1,4 +1,4 @@
-Preferowany sposób obsługi kontenerów:\
+Preferowany sposób obsługi kontenerów:
  + docker-compose -f docker-compose.dev.yml up --detach  <- uruchamianie
  + docker-compose -f docker-compose.dev.yml down --volumes  <- kończenie pracy (z usuwaniem danych)
  + docker-compose -f docker-compose.dev.yml stop <- zatrzymywanie kontenerów bez usuwania danych
