@@ -11,7 +11,7 @@ public class MigrationConfiguration {
 
     @Bean
     public Flyway flyway(){
-        return Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:sqlserver://mssql;database=renting","renting","NiezleHaslo123!").load();
+        return Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:sqlserver://localhost;database=renting","renting","NiezleHaslo123!").load();
     }
     /**
      * Override default flyway initializer to do nothing
