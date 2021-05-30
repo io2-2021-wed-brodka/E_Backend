@@ -6,12 +6,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.sql.DataSource;
+
 @Configuration
 public class MigrationConfiguration {
 
+    private final DataSource dataSource;
+
+    public MigrationConfiguration(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Bean
     public Flyway flyway(){
-        return Flyway.configure().baselineOnMigrate(true).dataSource("jdbc:sqlserver://localhost;database=renting","renting","NiezleHaslo123!").load();
+        return Flyway.configure().baselineOnMigrate(true).dataSource(dataSource).load();
     }
     /**
      * Override default flyway initializer to do nothing

@@ -8,34 +8,24 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - '1433:1433'
+      - 1433:1433
     volumes:
       - mssql-data:/var/opt/mssql
     environment:
       ACCEPT_EULA: 'Y'
       SA_PASSWORD: 'NiezleHaslo123!'
       DATABASE_PASSWORD: 'NiezleHaslo123!'
-    networks:
-      - bike-renting
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: unless-stopped
     environment:
       WAIT_HOSTS: mssql:1433
     depends_on:
       - mssql
-    networks:
-      - bike-renting
     ports:
-      - '8080:8080'
+      - 8080:8080
 
 volumes:
   mssql-data:
-
-
-networks:
-  bike-renting:
-    external: true
