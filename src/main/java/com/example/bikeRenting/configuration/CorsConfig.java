@@ -37,7 +37,8 @@ public class CorsConfig {
                         registry.addMapping(mapping)
                                 .allowedOrigins(getCorsUrls())
                                 .allowedMethods("*")
-                                .allowedHeaders("*");
+                                .allowedHeaders("*")
+                                .allowCredentials(false);
 
                     }
                 }
