@@ -36,7 +36,7 @@ public class BikeStationController {
         this.bikeStationService = bikeStationService;
     }
 
-    @GetMapping("/{stationId}/bikes")
+    @GetMapping("/{stationId}/bikes/old")
     public BikeListDTO getBikesInStation(@PathVariable long stationId) {
         var result = new BikeListDTO();
         result.setBikes(bikeService.getBikesInStation(stationId));

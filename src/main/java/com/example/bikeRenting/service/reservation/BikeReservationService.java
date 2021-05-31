@@ -3,6 +3,7 @@ package com.example.bikeRenting.service.reservation;
 import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
+import com.example.bikeRenting.dto.response.ReservedBikesListDTO;
 import com.example.bikeRenting.model.entity.Reservation;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,11 +46,11 @@ public class BikeReservationService {
     @Autowired
     private ActivitiReservationService activitiReservationService;
 
-    public List<ReservedBikeDTO> getReservedByUser(String username) {
+    public ReservedBikesListDTO getReservedByUser(String username) {
         var user = userRepository.findByUserName(username).orElseThrow();
-        return bikeReservationRepository.findAllByUser(user).stream()
+        return new ReservedBikesListDTO(bikeReservationRepository.findAllByUser(user).stream()
                 .map(r -> bikeMappingService.mapToReservedBikeDTO(r.getBike()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     @Transactional

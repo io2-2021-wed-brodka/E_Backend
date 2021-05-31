@@ -2,6 +2,7 @@ package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
+import com.example.bikeRenting.dto.response.ReservedBikesListDTO;
 import com.example.bikeRenting.service.reservation.BikeReservationService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class BikeReservationController {
     private BikeReservationService bikeReservationService;
 
     @GetMapping
-    public List<ReservedBikeDTO> getReservedBikes(Principal principal) {
+    public ReservedBikesListDTO getReservedBikes(Principal principal) {
         return bikeReservationService.getReservedByUser(principal.getName());
     }
 
