@@ -35,11 +35,10 @@ public class CorsConfig {
                 } else {
                     for (String mapping : mappings) {
                         registry.addMapping(mapping)
+                                .allowCredentials(false)
                                 .allowedOrigins(getCorsUrls())
                                 .allowedMethods("*")
-                                .allowedHeaders("*")
-                                .allowCredentials(false);
-
+                                .allowedHeaders("*");
                     }
                 }
             }
