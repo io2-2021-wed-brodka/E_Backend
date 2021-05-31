@@ -5,9 +5,9 @@ insert into dbo.user_role (role_id, user_id) VALUES
 (1, 2);
 
 insert into dbo.bike_station (id, location_name, max_bikes, status) VALUES
-(3, 'stacja_1', 10, 'Working'),
-(4, 'stacja_2', 10, 'Working'),
-(5, 'stacja_3', 10, 'Working');
+(3, 'Ankh-Morpork', 10, 'Working'),
+(4, 'Kontynent Przeciwwagi', 10, 'Working'),
+(5, 'Iksiksiksiks', 10, 'Working');
 
 insert into dbo.bike (id, status, bike_station_id) VALUES
 (6, 'ACTIVE', 3),
