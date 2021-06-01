@@ -48,8 +48,8 @@ public class MalfunctionMainService implements MalfunctionService {
 
     @Transactional
     public MalfunctionDTO addNewMalfunction(AddMalfunctionRequestDTO addMalfunctionRequestDTO, String reportingUserName) {
-        Bike malfunctioningBike = bikeRepository.findById(addMalfunctionRequestDTO.getId())
-                .orElseThrow(() -> new BikeNotFoundException(addMalfunctionRequestDTO.getId()));
+        Bike malfunctioningBike = bikeRepository.findById(Long.valueOf(addMalfunctionRequestDTO.getId()))
+                .orElseThrow(() -> new BikeNotFoundException(Long.valueOf(addMalfunctionRequestDTO.getId())));
 
         throwIfBikeBlocked(malfunctioningBike);
 

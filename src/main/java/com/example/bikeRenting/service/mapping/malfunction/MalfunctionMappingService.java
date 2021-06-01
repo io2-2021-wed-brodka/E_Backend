@@ -11,10 +11,10 @@ public class MalfunctionMappingService {
 
     public MalfunctionDTO mapToMalfunctionDTO(Malfunction malfunction) {
         return MalfunctionDTO.builder()
-                .id(malfunction.getId())
-                .bikeId(malfunction.getBike().getId())
+                .id(malfunction.getId().toString())
+                .bikeId(malfunction.getBike().getId().toString())
                 .description(malfunction.getDescription())
-                .reportingUserId(malfunction.getReportingUser().getId())
+                .reportingUserId(malfunction.getReportingUser().getId().toString())
                 .build();
     }
 

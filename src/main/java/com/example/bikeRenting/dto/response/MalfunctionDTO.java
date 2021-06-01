@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 @Builder
 public class MalfunctionDTO {
-    private long id;
-    private long bikeId;
+    private String id;
+    private String bikeId;
     private String description;
-    private long reportingUserId;
+    private String reportingUserId;
 }
