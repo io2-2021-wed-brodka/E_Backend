@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-@Secured(RoleConstants.TECH)
 @RequestMapping("/malfunctions")
 @Api(description = "API for managing bike malfunctions")
 public class MalfunctionController {
@@ -24,6 +23,7 @@ public class MalfunctionController {
     }
 
     @GetMapping()
+    @Secured({RoleConstants.TECH, RoleConstants.ADMIN})
     public MalfunctionListDTO getAllMalfunctions() {
         return malfunctionService.getAllMalfunctions();
     }
@@ -34,6 +34,7 @@ public class MalfunctionController {
     }
 
     @DeleteMapping("/{malfunctionId}")
+    @Secured({RoleConstants.TECH, RoleConstants.ADMIN})
     public void deleteMalfunction(@PathVariable Long malfunctionId) {
         malfunctionService.deleteMalfunction(malfunctionId);
     }
