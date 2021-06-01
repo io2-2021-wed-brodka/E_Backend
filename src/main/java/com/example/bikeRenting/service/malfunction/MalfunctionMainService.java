@@ -49,7 +49,7 @@ public class MalfunctionMainService implements MalfunctionService {
     @Transactional
     public MalfunctionDTO addNewMalfunction(AddMalfunctionRequestDTO addMalfunctionRequestDTO, String reportingUserName) {
         Bike malfunctioningBike = bikeRepository.findById(addMalfunctionRequestDTO.getId())
-                .orElseThrow(() -> new BikeNotFoundException("No bike with id=" + addMalfunctionRequestDTO.getId()));
+                .orElseThrow(() -> new BikeNotFoundException(addMalfunctionRequestDTO.getId()));
 
         throwIfBikeBlocked(malfunctioningBike);
 
@@ -70,13 +70,13 @@ public class MalfunctionMainService implements MalfunctionService {
         if (malfunctionRepository.existsById(malfunctionId)) {
             malfunctionRepository.deleteById(malfunctionId);
         } else {
-            throw new MalfunctionNotFoundException("Malfunction id=" + malfunctionId + " not found");
+            throw new MalfunctionNotFoundException(malfunctionId);
         }
     }
 
     private void throwIfBikeBlocked(Bike bike) {
         if (bike.getStatus().equals(BikeStatus.BLOCKED)) {
-            throw new BikeBlockedException("Bike id=" + bike.getId() + " is blocked, cannot report malfunction");
+            throw new BikeBlockedException(bike);
         }
     }
 
