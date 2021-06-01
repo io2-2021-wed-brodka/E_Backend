@@ -31,10 +31,10 @@ public class BikeStationTests {
     {
         var result = bikeStationMainService.createBikeStation(10, "testowa stacja 3");
         var expected = new BikeStationDTO();
-        expected.setMaxBikes(10);
+        expected.setBikesLimit(10);
         expected.setName("testowa stacja 3");
         expected.setId(result.getId());
-        expected.setStatus(BikeStation.BikeStationState.Working);
+        expected.setStatus(BikeStationDTO.StationState.active);
         Assertions.assertEquals(expected, result);
     }
 
@@ -45,10 +45,10 @@ public class BikeStationTests {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 4");
         var result = bikeStationMainService.blockBikeStation(org.getId());
         var expected = new BikeStationDTO();
-        expected.setMaxBikes(10);
+        expected.setBikesLimit(10);
         expected.setName("testowa stacja 4");
         expected.setId(org.getId());
-        expected.setStatus(BikeStation.BikeStationState.Blocked);
+        expected.setStatus(BikeStationDTO.StationState.blocked);
         Assertions.assertEquals(expected, result);
     }
 

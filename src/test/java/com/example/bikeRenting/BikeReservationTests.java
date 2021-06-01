@@ -71,7 +71,7 @@ public class BikeReservationTests {
     @Order(1)
     void listReservationsTest() {
         var list = reservationService.getReservedByUser(zeroBikesUser.getLogin());
-        Assertions.assertEquals(1,list.size());
+        Assertions.assertEquals(1,list.getBikes().size());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class BikeReservationTests {
     @Order(4)
     void verifyCancellation1() {
         var list = reservationService.getReservedByUser(zeroBikesUser.getLogin());
-        Assertions.assertEquals(0,list.size());
+        Assertions.assertEquals(0,list.getBikes().size());
     }
 
     @Test

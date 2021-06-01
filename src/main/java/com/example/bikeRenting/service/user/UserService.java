@@ -11,6 +11,8 @@ public interface UserService extends UserDetailsService {
 
     List<UserDTO> getAllUsers();
 
+    List<UserDTO> getAllOnlyUsers();
+
     List<UserDTO> getBlockedUsers();
 
     UserDTO createUser(String login, String hashedPassword);

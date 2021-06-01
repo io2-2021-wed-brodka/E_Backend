@@ -61,11 +61,11 @@ public class BikeTests {
         var stationDTO = new BikeStationDTO();
         stationDTO.setId(stationOneId);
         stationDTO.setName("Testy stacja 1");
-        stationDTO.setMaxBikes(200);
-        stationDTO.setStatus(BikeStation.BikeStationState.Working);
+        stationDTO.setBikesLimit(200);
+        stationDTO.setStatus(BikeStationDTO.StationState.active);
         expected.setStation(stationDTO);
         expected.setId(result.getId()); //czy +1?
-        expected.setStatus(BikeStatus.ACTIVE);
+        expected.setStatus(BikeDTO.BikeStatus.available);
         Assertions.assertEquals(expected, result);
     }
 
@@ -86,7 +86,7 @@ public class BikeTests {
     {
         var expected = bikeMainService.addNewBike(stationOneId);
         var result = bikeMainService.blockBike(expected.getId());
-        expected.setStatus(BikeStatus.BLOCKED);
+        expected.setStatus(BikeDTO.BikeStatus.blocked);
         Assertions.assertEquals(expected, result);
     }
 

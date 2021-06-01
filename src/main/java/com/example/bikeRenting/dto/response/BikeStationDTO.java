@@ -6,8 +6,14 @@ import lombok.Data;
 
 @Data
 public class BikeStationDTO {
+
+    public enum StationState {
+        active, blocked, deleted
+    }
+
     private Long id;
     private String name;
-    private int maxBikes;
-    private BikeStation.BikeStationState status;
+    private int bikesLimit;
+    private int activeBikesCount;
+    private StationState status;
 }

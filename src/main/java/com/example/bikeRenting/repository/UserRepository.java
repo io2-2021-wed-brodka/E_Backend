@@ -23,6 +23,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where r.name = 'ROLE_TECH'")
     List<User> findAllTechs();
 
+    @Query("select u from User u " +
+            "left join u.roles r " +
+            "where r.name is NULL")
+    List<User> findAllOnlyUsers();
+
     @Query("select u from User u where u.status <> :status")
     Set<User> findAllNotStatus(@Param("status") UserStatus status);
 }

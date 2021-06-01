@@ -56,7 +56,7 @@ public class BikeStationController {
     @PostMapping
     @Secured(RoleConstants.ADMIN)
     public BikeStationDTO createStation(@RequestBody CreateStationRequestDTO requestDTO) {
-        return bikeStationService.createBikeStation(requestDTO.getMaxBikes(), requestDTO.getName());
+        return bikeStationService.createBikeStation(requestDTO.getBikesLimit(), requestDTO.getName());
     }
 
     @GetMapping
@@ -66,7 +66,7 @@ public class BikeStationController {
 
     @GetMapping("/active")
     public BikeStationListDTO getAllActiveBikeStations() {
-        return new BikeStationListDTO(bikeStationService.findAll().stream().filter((x)->x.getStatus()== BikeStation.BikeStationState.Working).collect(Collectors.toList()));
+        return new BikeStationListDTO(bikeStationService.findAll().stream().filter((x)->x.getStatus()== BikeStationDTO.StationState.active).collect(Collectors.toList()));
     }
 
     @PostMapping("/blocked")

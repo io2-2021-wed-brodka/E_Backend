@@ -75,7 +75,7 @@ public class MappingTests {
         var result = bikeStationMappingService.mapToBikeStationDTO(bikeStation);
         var expected = new BikeStationDTO();
         expected.setId((long)10);
-        expected.setMaxBikes(300);
+        expected.setBikesLimit(300);
         expected.setName(name);
         Assertions.assertEquals(expected, result);
     }

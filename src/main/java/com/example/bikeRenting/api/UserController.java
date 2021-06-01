@@ -25,7 +25,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @Secured(ADMIN)
     public UserListDTO getAllUsers() {
-        return new UserListDTO(userService.getAllUsers());
+        return new UserListDTO(userService.getAllOnlyUsers());
     }
 
     @GetMapping("/blocked")

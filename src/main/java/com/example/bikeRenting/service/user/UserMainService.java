@@ -43,6 +43,13 @@ public class UserMainService implements UserService {
     }
 
     @Override
+    public List<UserDTO> getAllOnlyUsers() {
+        return userRepository.findAllOnlyUsers().stream()
+                .map(u -> userMappingService.mapToUserDTO(u))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<UserDTO> getBlockedUsers() {
         return userRepository.findBlocked().stream()
                 .map(u -> userMappingService.mapToUserDTO(u))
