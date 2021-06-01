@@ -48,14 +48,14 @@ public class BikeReservationTests {
 
     @BeforeAll
     void prepareData() {
-        stationOneId = bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId();
+        stationOneId = Long.parseLong(bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId());
         zeroBikesUser.setLogin("ReservationsZero");
         zeroBikesUser.setPassword("");
         userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
         oneBikeUser.setLogin("ReservationsOne");
         oneBikeUser.setPassword("");
         userMainService.createUser(oneBikeUser.getLogin(), oneBikeUser.getPassword());
-        bikeId = bikeMainService.addNewBike(stationOneId).getId();
+        bikeId = Long.parseLong(bikeMainService.addNewBike(stationOneId).getId());
     }
 
 
@@ -63,7 +63,7 @@ public class BikeReservationTests {
     @Order(0)
     void createReservationTest() {
         ReserveBikeRequestDTO reserveBikeDTO = new ReserveBikeRequestDTO();
-        reserveBikeDTO.setId(bikeId);
+        reserveBikeDTO.setId(Long.toString(bikeId));
         Assertions.assertDoesNotThrow(()->reservationService.reserveBike(reserveBikeDTO,zeroBikesUser.getLogin()));
     }
 

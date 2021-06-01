@@ -16,7 +16,7 @@ public class UserMappingService {
 
     public UserDTO mapToUserDTO(User user) {
         var result = new UserDTO();
-        result.setId(user.getId());
+        result.setId(user.getId().toString());
         result.setName(user.getUserName());
         result.setStatus(user.getStatus());
         return result;

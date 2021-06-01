@@ -31,6 +31,6 @@ public class BikeRentedController {
 
     @PostMapping
     public RentalDTO rentBike(@RequestBody RentBikeRequestDTO requestDTO, Principal principal) {
-        return rentalService.rentBike(requestDTO.getId(), principal.getName());
+        return rentalService.rentBike(Long.parseLong(requestDTO.getId()), principal.getName());
     }
 }

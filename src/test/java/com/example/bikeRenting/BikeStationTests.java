@@ -43,7 +43,7 @@ public class BikeStationTests {
     void blockStationTest()
     {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 4");
-        var result = bikeStationMainService.blockBikeStation(org.getId());
+        var result = bikeStationMainService.blockBikeStation(Long.parseLong(org.getId()));
         var expected = new BikeStationDTO();
         expected.setBikesLimit(10);
         expected.setName("testowa stacja 4");
@@ -57,8 +57,8 @@ public class BikeStationTests {
     void unblockStationTest()
     {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 5");
-        bikeStationMainService.blockBikeStation(org.getId());
-        var result = bikeStationMainService.unblockBikeStation(org.getId()).getDescription();
+        bikeStationMainService.blockBikeStation(Long.parseLong(org.getId()));
+        var result = bikeStationMainService.unblockBikeStation(Long.parseLong(org.getId())).getDescription();
         var expected = "Station unblocked";
         Assertions.assertEquals(expected, result);
     }

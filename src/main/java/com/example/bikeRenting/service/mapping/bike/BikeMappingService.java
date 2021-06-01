@@ -24,7 +24,7 @@ public class BikeMappingService {
 
     public BikeDTO mapToBikeDTO(Bike bike) {
         var result = new BikeDTO();
-        result.setId(bike.getId());
+        result.setId(bike.getId().toString());
         result.setStation(bike.getBikeStation() != null ? bikeStationMappingService.mapToBikeStationDTO(bike.getBikeStation()) : null);
         result.setStatus(Status2Status(bike.getStatus()));
         return result;
@@ -34,7 +34,7 @@ public class BikeMappingService {
         var result = new ReservedBikeDTO();
         var reservation = Optional.ofNullable(bike.getReservation())
                 .orElseThrow(() -> new RuntimeException("Bike is not reserved"));
-        result.setId(bike.getId());
+        result.setId(bike.getId().toString());
         result.setReservedAt(reservation.getReservedAt());
         result.setReservedTill(reservation.getReservedTill());
         result.setStation(bikeStationMappingService.mapToBikeStationDTO(bike.getBikeStation()));

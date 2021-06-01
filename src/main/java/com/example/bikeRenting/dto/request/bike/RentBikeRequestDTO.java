@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class RentBikeRequestDTO {
-    private long id;
+    private String id;
 }

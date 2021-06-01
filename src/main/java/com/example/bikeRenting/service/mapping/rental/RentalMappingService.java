@@ -19,7 +19,7 @@ public class RentalMappingService {
 
     public RentalDTO mapToRentalDTO(Rental rental) {
         var result = new RentalDTO();
-        result.setId(rental.getBike().getId());
+        result.setId(rental.getBike().getId().toString());
         result.setUser(userMappingService.mapToUserDTO(rental.getUser()));
         return result;
     }

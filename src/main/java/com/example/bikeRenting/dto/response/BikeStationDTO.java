@@ -11,7 +11,7 @@ public class BikeStationDTO {
         active, blocked, deleted
     }
 
-    private Long id;
+    private String id;
     private String name;
     private int bikesLimit;
     private int activeBikesCount;

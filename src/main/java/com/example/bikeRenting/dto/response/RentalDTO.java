@@ -6,6 +6,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class RentalDTO {
-    private Long id;
+    private String id;
     private UserDTO user;
 }

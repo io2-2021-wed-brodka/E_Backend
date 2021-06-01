@@ -13,7 +13,7 @@ public class BikeStationMappingService {
     public BikeStationDTO mapToBikeStationDTO(BikeStation bikeStation)
     {
         var result = new BikeStationDTO();
-        result.setId(bikeStation.getId());
+        result.setId(bikeStation.getId().toString());
         result.setBikesLimit(bikeStation.getMaxBikes());
         result.setActiveBikesCount((int)bikeStation.getBikes().stream().filter(x->x.getStatus()== BikeStatus.ACTIVE).count());
         result.setName(bikeStation.getLocationName());

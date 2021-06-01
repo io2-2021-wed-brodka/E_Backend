@@ -56,7 +56,7 @@ public class BikeReservationService {
     @Transactional
     public ReservedBikeDTO reserveBike(ReserveBikeRequestDTO request, String username) {
         // todo refactor to throwing specific exceptions
-        var bike = bikeRepository.findById(request.getId())
+        var bike = bikeRepository.findById(Long.parseLong(request.getId()))
                 .orElseThrow(() -> new RuntimeException("Bike not found"));
 
         if (BikeStatus.BLOCKED.equals(bike.getStatus()) || BikeStatus.RESERVED.equals(bike.getStatus())
@@ -93,15 +93,15 @@ public class BikeReservationService {
     }
 
     private ReservedBikeDTO reserveBike(Long userId, BikeDTO bike) {
-        var userCurrentBikeReservation = bikeReservationRepository.findByUserIdAndBikeId(userId, bike.getId());
+        var userCurrentBikeReservation = bikeReservationRepository.findByUserIdAndBikeId(userId, Long.parseLong(bike.getId()));
         if (userCurrentBikeReservation.isPresent()) {
             throw new RuntimeException("Bike is already reserved by user");
         }
-        var reservation = createBikeReservation(userId, bike.getId());
+        var reservation = createBikeReservation(userId, Long.parseLong(bike.getId()));
 
         reservation.getBike().setStatus(BikeStatus.RESERVED);
 
-        activitiReservationService.startReservationExpiration(bike.getId());
+        activitiReservationService.startReservationExpiration(Long.parseLong(bike.getId()));
 
         return reservationMappingService.mapToReservedBike(bikeReservationRepository.save(reservation), bike.getStation());
     }

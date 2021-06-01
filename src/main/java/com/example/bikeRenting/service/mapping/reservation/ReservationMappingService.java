@@ -13,7 +13,7 @@ public class ReservationMappingService {
         reservedBike.setReservedAt(reservation.getReservedAt());
         reservedBike.setReservedTill(reservation.getReservedTill());
         reservedBike.setStation(bikeStation);
-        reservedBike.setId(reservation.getBike().getId());
+        reservedBike.setId(reservation.getBike().getId().toString());
         return reservedBike;
     }
 }

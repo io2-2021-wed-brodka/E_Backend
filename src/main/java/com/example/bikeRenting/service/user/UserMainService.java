@@ -102,7 +102,7 @@ public class UserMainService implements UserService {
     @Override
     @Transactional
     public UserDTO blockUser(BlockUserRequestDTO request) {
-        var user = userRepository.findById(request.getId())
+        var user = userRepository.findById(Long.parseLong(request.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
         if(checkIfDeleted(user)) {

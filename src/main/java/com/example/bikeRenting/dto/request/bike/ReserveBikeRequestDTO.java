@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class ReserveBikeRequestDTO {
 
-    private Long id;
+    private String id;
 
 }

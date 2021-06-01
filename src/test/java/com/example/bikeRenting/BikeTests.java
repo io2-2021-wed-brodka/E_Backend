@@ -42,7 +42,7 @@ public class BikeTests {
     @BeforeAll
     void prepareData()
     {
-            stationOneId = bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId();
+            stationOneId = Long.parseLong(bikeStationMainService.createBikeStation(200, "Testy stacja 1").getId());
             zeroBikesUser.setLogin("zeroBikes");
             zeroBikesUser.setPassword("");
             userMainService.createUser(zeroBikesUser.getLogin(), zeroBikesUser.getPassword());
@@ -59,7 +59,7 @@ public class BikeTests {
         var result =bikeMainService.addNewBike(stationOneId);
         var expected = new BikeDTO();
         var stationDTO = new BikeStationDTO();
-        stationDTO.setId(stationOneId);
+        stationDTO.setId(Long.toString(stationOneId));
         stationDTO.setName("Testy stacja 1");
         stationDTO.setBikesLimit(200);
         stationDTO.setStatus(BikeStationDTO.StationState.active);
@@ -85,7 +85,7 @@ public class BikeTests {
     void blockBikeTest()
     {
         var expected = bikeMainService.addNewBike(stationOneId);
-        var result = bikeMainService.blockBike(expected.getId());
+        var result = bikeMainService.blockBike(Long.parseLong(expected.getId()));
         expected.setStatus(BikeDTO.BikeStatus.blocked);
         Assertions.assertEquals(expected, result);
     }
@@ -95,8 +95,8 @@ public class BikeTests {
     void unblockBikeTest()
     {
         var expected = bikeMainService.addNewBike(stationOneId);
-        bikeMainService.blockBike(expected.getId());
-        var result = bikeMainService.unBlockBike(expected.getId());
+        bikeMainService.blockBike(Long.parseLong(expected.getId()));
+        var result = bikeMainService.unBlockBike(Long.parseLong(expected.getId()));
         Assertions.assertEquals(expected, result);
     }
 
@@ -105,8 +105,8 @@ public class BikeTests {
     void deleteBikeTest()
     {
         var expected = bikeMainService.addNewBike(stationOneId);
-        var result = bikeMainService.deleteBike(expected.getId());
-        Assertions.assertThrows(RuntimeException.class, ()->bikeMainService.deleteBike(expected.getId()));
+        var result = bikeMainService.deleteBike(Long.parseLong(expected.getId()));
+        Assertions.assertThrows(RuntimeException.class, ()->bikeMainService.deleteBike(Long.parseLong(expected.getId())));
         Assertions.assertEquals(expected,result);
     }
 }

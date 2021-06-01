@@ -57,7 +57,7 @@ public class MappingTests {
         bike.setRentals(null);
         var result=bikeMappingService.mapToBikeDTO(bike);
         var expected = new BikeDTO();
-        expected.setId((long)10);
+        expected.setId("10");
         expected.setStation(null);
         Assertions.assertEquals(expected, result);
     }
@@ -74,7 +74,7 @@ public class MappingTests {
         bikeStation.setId((long)10);
         var result = bikeStationMappingService.mapToBikeStationDTO(bikeStation);
         var expected = new BikeStationDTO();
-        expected.setId((long)10);
+        expected.setId("10");
         expected.setBikesLimit(300);
         expected.setName(name);
         Assertions.assertEquals(expected, result);
@@ -109,7 +109,7 @@ public class MappingTests {
         user.setRentedBikes(null);
         var result = userMappingService.mapToUserDTO(user);
         var expected = new UserDTO();
-        expected.setId((long)4);
+        expected.setId("4");
         expected.setName("abc");
         Assertions.assertEquals(expected, result);
     }

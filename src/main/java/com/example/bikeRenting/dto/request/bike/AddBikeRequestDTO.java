@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class AddBikeRequestDTO {
-    private long stationId;
+    private String stationId;
 }
