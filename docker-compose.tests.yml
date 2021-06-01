@@ -5,7 +5,7 @@ services:
     image: mysql:5.7
     restart: unless-stopped
     ports:
-      - '1144:3306'
+      - '3306:3306'
     volumes:
       - mysql-data:/var/lib/mysql
     environment:
@@ -18,12 +18,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: unless-stopped
     environment:
-      WAIT_HOSTS: mysql:1144
+      WAIT_HOSTS: mysql
     depends_on:
       - mysql
-    network_mode: host
+    ports:
+      - 8080:8080
 
 volumes:
   mysql-data:
