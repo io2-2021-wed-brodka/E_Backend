@@ -31,6 +31,11 @@ public class BikeRentedController {
 
     @PostMapping
     public RentalDTO rentBike(@RequestBody RentBikeRequestDTO requestDTO, Principal principal) {
-        return rentalService.rentBike(Long.parseLong(requestDTO.getId()), principal.getName());
+        long id = -1;
+        if(null!=requestDTO.getId() && !requestDTO.getId().isEmpty())
+        {
+            id = Long.parseLong(requestDTO.getId());
+        }
+        return rentalService.rentBike(id, principal.getName());
     }
 }

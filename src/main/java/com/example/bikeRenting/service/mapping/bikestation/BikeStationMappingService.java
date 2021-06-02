@@ -15,7 +15,14 @@ public class BikeStationMappingService {
         var result = new BikeStationDTO();
         result.setId(bikeStation.getId().toString());
         result.setBikesLimit(bikeStation.getMaxBikes());
-        result.setActiveBikesCount((int)bikeStation.getBikes().stream().filter(x->x.getStatus()== BikeStatus.ACTIVE).count());
+        int count =0;
+        try {
+            count = (int)bikeStation.getBikes().stream().filter(x->x.getStatus()== BikeStatus.ACTIVE).count();
+        }
+        catch (NullPointerException e) {
+            count=0;
+        }
+        result.setActiveBikesCount(count);
         result.setName(bikeStation.getLocationName());
         result.setStatus(Status2Status(bikeStation.getStatus()));
         return result;
