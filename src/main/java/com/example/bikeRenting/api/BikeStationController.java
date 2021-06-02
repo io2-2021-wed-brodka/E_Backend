@@ -50,7 +50,12 @@ public class BikeStationController {
 
     @PostMapping("/{stationId}/bikes")
     public RentalDTO returnBike(@PathVariable long stationId, @RequestBody ReturnBikeRequestDTO requestDTO, Principal principal) {
-        return rentalService.returnBike(Long.parseLong(requestDTO.getId()), stationId, principal.getName());
+        long id = -1;
+        if(null!=requestDTO.getId() && !requestDTO.getId().isEmpty())
+        {
+            id = Long.parseLong(requestDTO.getId());
+        }
+        return rentalService.returnBike(id, stationId, principal.getName());
     }
 
     @PostMapping

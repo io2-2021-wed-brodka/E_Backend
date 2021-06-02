@@ -34,7 +34,12 @@ public class BikeController {
     @PostMapping
     @Secured(ADMIN)
     public BikeDTO addBike(@RequestBody AddBikeRequestDTO requestDTO) {
-        return bikeService.addNewBike(Long.parseLong(requestDTO.getStationId()));
+        long id = -1;
+        if(null!=requestDTO.getStationId() && !requestDTO.getStationId().isEmpty())
+        {
+            id = Long.parseLong(requestDTO.getStationId());
+        }
+        return bikeService.addNewBike(id);
     }
 
     @Secured({ADMIN, TECH})
@@ -46,7 +51,12 @@ public class BikeController {
     @Secured({ADMIN, TECH})
     @PostMapping("/blocked")
     public BikeDTO blockBike(@RequestBody BlockBikeRequestDTO requestDTO) {
-        return bikeService.blockBike(Long.parseLong(requestDTO.getId()));
+        long id = -1;
+        if(null!=requestDTO.getId() && !requestDTO.getId().isEmpty())
+        {
+            id = Long.parseLong(requestDTO.getId());
+        }
+        return bikeService.blockBike(id);
     }
 
     @Secured({ADMIN, TECH})
