@@ -101,4 +101,11 @@ public class RestControllerAdvice {
     public DisplayableErrorDTO handleUserAlreadyExistsException(Exception ex) {
         return new DisplayableErrorDTO(ex.getMessage());
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(StationAlreadyBlockedException.class)
+    public DisplayableErrorDTO handleStationAlreadyBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
 }

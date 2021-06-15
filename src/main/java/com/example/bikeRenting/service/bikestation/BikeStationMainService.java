@@ -4,6 +4,7 @@ import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
+import com.example.bikeRenting.exception.StationAlreadyBlockedException;
 import com.example.bikeRenting.exception.StationNotEmptyException;
 import com.example.bikeRenting.exception.StationNotFoundException;
 import com.example.bikeRenting.model.entity.Bike;
@@ -55,7 +56,7 @@ public class BikeStationMainService implements BikeStationService {
         }
 
         if (BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
-            throw new RuntimeException("Station already blocked");
+            throw new StationAlreadyBlockedException("Station already blocked");
         }
 
         bikeStation.setStatus(BikeStation.BikeStationState.Blocked);
