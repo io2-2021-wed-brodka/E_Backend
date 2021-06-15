@@ -1,5 +1,6 @@
 package com.example.bikeRenting.service.bikestation;
 
+import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
@@ -44,7 +45,8 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public BikeStationDTO blockBikeStation(long bikeStationId) {
+    public BikeStationDTO blockBikeStation(BlockStationRequestDTO request) {
+        var bikeStationId = request.getId();
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("Station not found"));
 

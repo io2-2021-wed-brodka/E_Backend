@@ -1,5 +1,6 @@
 package com.example.bikeRenting.service.bikestation;
 
+import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
@@ -10,7 +11,7 @@ public interface BikeStationService {
 
     BikeStationDTO createBikeStation(Integer maxBikes, String locationName);
 
-    BikeStationDTO blockBikeStation(long bikeStationId);
+    BikeStationDTO blockBikeStation(BlockStationRequestDTO request);
 
     MessageResponseDTO unblockBikeStation(long bikeStationId);
 
