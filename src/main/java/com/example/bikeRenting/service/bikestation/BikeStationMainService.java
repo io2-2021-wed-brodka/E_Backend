@@ -29,7 +29,7 @@ public class BikeStationMainService implements BikeStationService {
     @Override
     public BikeStationDTO createBikeStation(Integer maxBikes, String locationName) {
         BikeStation bikeStation = new BikeStation();
-        bikeStation.setMaxBikes(maxBikes);
+        bikeStation.setMaxBikes(maxBikes==null?10:maxBikes);
         bikeStation.setLocationName(locationName);
         bikeStation.setStatus(BikeStation.BikeStationState.Working);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
