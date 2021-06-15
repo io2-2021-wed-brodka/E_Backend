@@ -81,4 +81,12 @@ public class RestControllerAdvice {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeNotBlockedException.class)
+    public DisplayableErrorDTO handleBikeNotBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+
 }

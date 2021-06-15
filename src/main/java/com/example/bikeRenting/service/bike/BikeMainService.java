@@ -5,6 +5,7 @@ import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeListDTO;
 import com.example.bikeRenting.dto.response.ReservedBikeDTO;
 import com.example.bikeRenting.exception.BikeAlreadyRentedException;
+import com.example.bikeRenting.exception.BikeNotBlockedException;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -129,6 +130,10 @@ public class BikeMainService implements BikeService{
 
         if(null == bike.getBikeStation()) {
             throw new BikeAlreadyRentedException("Bike with id " + bikeId + " is currently rented");
+        }
+
+        if (!BikeStatus.BLOCKED.equals(bike.getStatus())) {
+            throw new BikeNotBlockedException("Bike not blocked");
         }
 
         var bikeDTO = bikeMappingService.mapToBikeDTO(bike);
