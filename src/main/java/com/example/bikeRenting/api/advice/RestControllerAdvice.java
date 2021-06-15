@@ -88,5 +88,11 @@ public class RestControllerAdvice {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(StationIsFullException.class)
+    public DisplayableErrorDTO handleBikeIsFullException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
 
 }

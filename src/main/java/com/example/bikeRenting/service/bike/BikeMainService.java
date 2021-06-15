@@ -1,29 +1,23 @@
 package com.example.bikeRenting.service.bike;
 
-import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeListDTO;
-import com.example.bikeRenting.dto.response.ReservedBikeDTO;
 import com.example.bikeRenting.exception.BikeAlreadyRentedException;
+import com.example.bikeRenting.exception.StationIsFullException;
 import com.example.bikeRenting.exception.BikeNotBlockedException;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
-import com.example.bikeRenting.model.entity.UserStatus;
 import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
-import com.example.bikeRenting.service.reservation.BikeReservationService;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,7 +62,7 @@ public class BikeMainService implements BikeService{
     public BikeDTO addNewBike(long stationId) {
         var bikeStation =  bikeStationRepository.findById(stationId)
                 .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + " doesn't exist"));
-        checkWhetherStationIsFull(bikeStation);
+        checkWhetherStationIsFullOrBlocked(bikeStation);
         Bike bike = new Bike();
         bike.setBikeStation(bikeStation);
         bike.setStatus(BikeStatus.ACTIVE);
@@ -161,9 +155,11 @@ public class BikeMainService implements BikeService{
         return new BikeListDTO(stationActiveBikes);
     }
 
-    private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
-            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+    private void checkWhetherStationIsFullOrBlocked(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId()) ||
+                BikeStation.BikeStationState.Blocked.equals(bikeStation.getStatus())) {
+            throw new StationIsFullException("Cannot associate specified bike with specified station. Example reasons:\\n -" +
+                    " station is blocked or full\\n - bike is not rented by calling user");
         }
     }
 
