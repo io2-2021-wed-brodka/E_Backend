@@ -108,4 +108,19 @@ public class RestControllerAdvice {
     public DisplayableErrorDTO handleStationAlreadyBlockedException(Exception ex) {
         return new DisplayableErrorDTO(ex.getMessage());
     }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeAlreadyBlockedException.class)
+    public DisplayableErrorDTO handleBikeAlreadyBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeAlreadyDeletedException.class)
+    public DisplayableErrorDTO handleBikeAlreadyDeletedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
 }

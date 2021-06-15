@@ -2,9 +2,7 @@ package com.example.bikeRenting.service.bike;
 
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeListDTO;
-import com.example.bikeRenting.exception.BikeAlreadyRentedException;
-import com.example.bikeRenting.exception.StationIsFullException;
-import com.example.bikeRenting.exception.BikeNotBlockedException;
+import com.example.bikeRenting.exception.*;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.model.entity.enums.BikeStatus;
@@ -43,7 +41,7 @@ public class BikeMainService implements BikeService{
     @Override
     public Collection<BikeDTO> getBikesInStation(long stationId) {
         return bikeStationRepository.findById(stationId)
-                .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + "doesn't exist"))
+                .orElseThrow(() -> new StationNotFoundException("Bike station with id " + stationId + "doesn't exist"))
                 .getBikes()
                 .stream().map(bikeMappingService::mapToBikeDTO)
                 .collect(Collectors.toSet());
@@ -61,7 +59,7 @@ public class BikeMainService implements BikeService{
     @Transactional
     public BikeDTO addNewBike(long stationId) {
         var bikeStation =  bikeStationRepository.findById(stationId)
-                .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + " doesn't exist"));
+                .orElseThrow(() -> new StationNotFoundException("Bike station with id " + stationId + " doesn't exist"));
         checkWhetherStationIsFullOrBlocked(bikeStation);
         Bike bike = new Bike();
         bike.setBikeStation(bikeStation);
@@ -72,14 +70,14 @@ public class BikeMainService implements BikeService{
     @Override
     public BikeDTO blockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+                .orElseThrow(() -> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
             throw new RuntimeException("Bike with id " + bikeId +" does not exist");
         }
 
         if(BikeStatus.BLOCKED.equals(bike.getStatus())) {
-            throw new RuntimeException("Bike has already been blocked");
+            throw new BikeAlreadyBlockedException("Bike has already been blocked");
         }
 
         bike.setStatus(BikeStatus.BLOCKED);
@@ -90,14 +88,14 @@ public class BikeMainService implements BikeService{
     @Override
     public BikeDTO unBlockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+                .orElseThrow(() -> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
-            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+            throw new BikeAlreadyDeletedException("Bike with id " + bikeId +" is already blocked");
         }
 
         if(BikeStatus.ACTIVE.equals(bike.getStatus())) {
-            throw new RuntimeException("Bike not blocked");
+            throw new BikeNotBlockedException("Bike not blocked");
         }
 
         bike.setStatus(BikeStatus.ACTIVE);
@@ -116,10 +114,10 @@ public class BikeMainService implements BikeService{
     @Transactional
     public  BikeDTO deleteBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
+                .orElseThrow(()-> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
-            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+            throw new BikeAlreadyDeletedException("Bike with id " + bikeId +" is already blocked");
         }
 
         if(null == bike.getBikeStation()) {
@@ -164,6 +162,6 @@ public class BikeMainService implements BikeService{
     }
 
     private boolean checkIfDeleted(Bike bike) {
-        return BikeStatus.DELETED == bike.getStatus();
+        return BikeStatus.DELETED.equals(bike.getStatus());
     }
 }

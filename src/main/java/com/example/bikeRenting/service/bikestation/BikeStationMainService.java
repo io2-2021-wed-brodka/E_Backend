@@ -107,7 +107,7 @@ public class BikeStationMainService implements BikeStationService {
 
     @Override
     public BikeStationListDTO getBlockedStations() {
-        var blockedStations = bikeStationRepository.findAllNotStatus(BikeStation.BikeStationState.Blocked).stream()
+        var blockedStations = bikeStationRepository.findAllByStatus(BikeStation.BikeStationState.Blocked).stream()
                 .map(bikeStationMappingService::mapToBikeStationDTO)
                 .collect(Collectors.toList());
         return new BikeStationListDTO(blockedStations);
