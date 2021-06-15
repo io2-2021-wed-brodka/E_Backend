@@ -7,7 +7,7 @@ import lombok.Data;
 public class BikeDTO {
 
     private Long id;
-    private BikeStationDTO station;
+    private BikeStationDTO station; //opcjonalne pole według specki
     private BikeStatus status;
-
+    //będzie trzeba dodać usera gdy admin listuje rowery np na /bikes
 }

@@ -8,6 +8,6 @@ public class UserDTO {
 
     private Long id;
     private String name;
-    private UserStatus status;
+    private UserStatus status; //nie ma w specyfikacji, ale potrzebne
 
 }

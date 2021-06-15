@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class LoginRequestDTO {
     private String login;
-    private String password;
+    private String password; //bug z rolą w specyfikacji
 }
