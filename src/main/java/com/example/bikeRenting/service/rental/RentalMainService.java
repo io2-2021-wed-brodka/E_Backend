@@ -48,6 +48,9 @@ public class RentalMainService implements RentalService {
         var bike = bikeRepository.findById(bikeId)
                 .orElseThrow(() -> new RuntimeException("Bike with id " + bikeId + " doesn't exist"));
 
+        if(rentalRepository.getCurrentUserRentals(user.getUserName()).stream().count() >= 4) {
+            throw new RuntimeException("Too many rented bikes");
+        }
 
         if (bike.getBikeStation() == null) {
             throw new RuntimeException("Bike has been already rented");
