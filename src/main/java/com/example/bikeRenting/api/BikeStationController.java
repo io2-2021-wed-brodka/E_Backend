@@ -44,6 +44,12 @@ public class BikeStationController {
         return result;
     }
 
+    @GetMapping("/{stationId}")
+    public BikeStationDTO getBikeStationById(@PathVariable long stationId) {
+        return bikeStationService.getStationById(stationId);
+    }
+
+
     @GetMapping("/{stationId}/bikes")
     public BikeListDTO returnBike(@PathVariable long stationId) {
         return bikeService.getStationActiveBikes(stationId);

@@ -20,4 +20,6 @@ public interface BikeStationService {
     MessageResponseDTO deleteBikeStation(Long bikeStationId);
 
     BikeStationListDTO getBlockedStations();
+
+    BikeStationDTO getStationById(Long bikeStationId);
 }

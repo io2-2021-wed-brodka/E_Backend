@@ -113,6 +113,13 @@ public class BikeStationMainService implements BikeStationService {
         return new BikeStationListDTO(blockedStations);
     }
 
+    @Override
+    public BikeStationDTO getStationById(Long bikeStationId) {
+        var station = bikeStationRepository.findById(bikeStationId)
+                .orElseThrow(() -> new StationNotFoundException("Station does not exist"));
+        return bikeStationMappingService.mapToBikeStationDTO(station);
+    }
+
     private boolean checkIfDeleted(BikeStation bikeStation) {
         return BikeStation.BikeStationState.Deleted == bikeStation.getStatus();
     }
