@@ -6,6 +6,7 @@ import com.example.bikeRenting.dto.response.MalfunctionDTO;
 import com.example.bikeRenting.dto.response.MalfunctionListDTO;
 import com.example.bikeRenting.service.malfunction.MalfunctionService;
 import io.swagger.annotations.Api;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class MalfunctionController {
 
     @DeleteMapping("/{malfunctionId}")
     @Secured({RoleConstants.TECH, RoleConstants.ADMIN})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMalfunction(@PathVariable Long malfunctionId) {
         malfunctionService.deleteMalfunction(malfunctionId);
     }
