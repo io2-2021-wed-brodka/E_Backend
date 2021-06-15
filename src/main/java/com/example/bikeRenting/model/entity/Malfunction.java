@@ -1,15 +1,19 @@
 package com.example.bikeRenting.model.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
+@Builder
 @Table(name = "malfunction")
-@Getter
-@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Malfunction {
 
     @Id

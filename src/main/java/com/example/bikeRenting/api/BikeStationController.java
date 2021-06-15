@@ -1,6 +1,7 @@
 package com.example.bikeRenting.api;
 
 import com.example.bikeRenting.constants.RoleConstants;
+import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.*;
 import com.example.bikeRenting.dto.request.bikeStation.CreateStationRequestDTO;
 import com.example.bikeRenting.dto.request.bikeStation.ReturnBikeRequestDTO;
@@ -76,14 +77,19 @@ public class BikeStationController {
 
     @PostMapping("/blocked")
     @Secured({ADMIN})
-    public BikeStationDTO blockStation(@RequestBody long id) {
-        return bikeStationService.blockBikeStation(id);
+    public BikeStationDTO blockStation(@RequestBody BlockStationRequestDTO request) {
+        return bikeStationService.blockBikeStation(request);
     }
 
     @DeleteMapping("/blocked/{id}")
     @Secured({ADMIN})
     public MessageResponseDTO unblockStation(@PathVariable long id) {
         return bikeStationService.unblockBikeStation(id);
+    }
+
+    @GetMapping("/blocked")
+    public BikeStationListDTO getBlockedStations() {
+        return bikeStationService.getBlockedStations();
     }
 
     @DeleteMapping("/{stationId}")

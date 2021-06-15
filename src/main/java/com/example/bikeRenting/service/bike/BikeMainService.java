@@ -1,28 +1,21 @@
 package com.example.bikeRenting.service.bike;
 
-import com.example.bikeRenting.dto.request.bike.ReserveBikeRequestDTO;
 import com.example.bikeRenting.dto.response.BikeDTO;
 import com.example.bikeRenting.dto.response.BikeListDTO;
-import com.example.bikeRenting.dto.response.ReservedBikeDTO;
-import com.example.bikeRenting.exception.BikeAlreadyRentedException;
+import com.example.bikeRenting.exception.*;
 import com.example.bikeRenting.model.entity.Bike;
 import com.example.bikeRenting.model.entity.BikeStation;
-import com.example.bikeRenting.model.entity.UserStatus;
 import com.example.bikeRenting.model.entity.enums.BikeStatus;
 import com.example.bikeRenting.repository.BikeRepository;
 import com.example.bikeRenting.repository.BikeStationRepository;
 import com.example.bikeRenting.repository.RentalRepository;
 import com.example.bikeRenting.repository.UserRepository;
 import com.example.bikeRenting.service.mapping.bike.BikeMappingService;
-import com.example.bikeRenting.service.reservation.BikeReservationService;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +41,7 @@ public class BikeMainService implements BikeService{
     @Override
     public Collection<BikeDTO> getBikesInStation(long stationId) {
         return bikeStationRepository.findById(stationId)
-                .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + "doesn't exist"))
+                .orElseThrow(() -> new StationNotFoundException("Bike station with id " + stationId + "doesn't exist"))
                 .getBikes()
                 .stream().map(bikeMappingService::mapToBikeDTO)
                 .collect(Collectors.toSet());
@@ -66,8 +59,8 @@ public class BikeMainService implements BikeService{
     @Transactional
     public BikeDTO addNewBike(long stationId) {
         var bikeStation =  bikeStationRepository.findById(stationId)
-                .orElseThrow(() -> new RuntimeException("Bike station with id " + stationId + " doesn't exist"));
-        checkWhetherStationIsFull(bikeStation);
+                .orElseThrow(() -> new StationNotFoundException("Bike station with id " + stationId + " doesn't exist"));
+        checkWhetherStationIsFullOrBlocked(bikeStation);
         Bike bike = new Bike();
         bike.setBikeStation(bikeStation);
         bike.setStatus(BikeStatus.ACTIVE);
@@ -77,14 +70,14 @@ public class BikeMainService implements BikeService{
     @Override
     public BikeDTO blockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+                .orElseThrow(() -> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
             throw new RuntimeException("Bike with id " + bikeId +" does not exist");
         }
 
         if(BikeStatus.BLOCKED.equals(bike.getStatus())) {
-            throw new RuntimeException("Bike has already been blocked");
+            throw new BikeAlreadyBlockedException("Bike has already been blocked");
         }
 
         bike.setStatus(BikeStatus.BLOCKED);
@@ -95,14 +88,14 @@ public class BikeMainService implements BikeService{
     @Override
     public BikeDTO unBlockBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(() -> new RuntimeException("Bike with given id does not exist"));
+                .orElseThrow(() -> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
-            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+            throw new BikeAlreadyDeletedException("Bike with id " + bikeId +" is already blocked");
         }
 
         if(BikeStatus.ACTIVE.equals(bike.getStatus())) {
-            throw new RuntimeException("Bike not blocked");
+            throw new BikeNotBlockedException("Bike not blocked");
         }
 
         bike.setStatus(BikeStatus.ACTIVE);
@@ -121,14 +114,18 @@ public class BikeMainService implements BikeService{
     @Transactional
     public  BikeDTO deleteBike(long bikeId) {
         var bike = bikeRepository.findById(bikeId)
-                .orElseThrow(()-> new RuntimeException("Bike with id " + bikeId +" does not exist"));
+                .orElseThrow(()-> new BikeNotFoundException(bikeId));
 
         if(checkIfDeleted(bike)) {
-            throw new RuntimeException("Bike with id " + bikeId +" does not exist");
+            throw new BikeAlreadyDeletedException("Bike with id " + bikeId +" is already blocked");
         }
 
         if(null == bike.getBikeStation()) {
             throw new BikeAlreadyRentedException("Bike with id " + bikeId + " is currently rented");
+        }
+
+        if (!BikeStatus.BLOCKED.equals(bike.getStatus())) {
+            throw new BikeNotBlockedException("Bike not blocked");
         }
 
         var bikeDTO = bikeMappingService.mapToBikeDTO(bike);
@@ -156,13 +153,15 @@ public class BikeMainService implements BikeService{
         return new BikeListDTO(stationActiveBikes);
     }
 
-    private void checkWhetherStationIsFull(BikeStation bikeStation) {
-        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId())) {
-            throw new RuntimeException("Bike station with id " + bikeStation.getId() + " is full");
+    private void checkWhetherStationIsFullOrBlocked(BikeStation bikeStation) {
+        if(bikeStation.getMaxBikes() <= bikeStationRepository.getBikesCount(bikeStation.getId()) ||
+                BikeStation.BikeStationState.Blocked.equals(bikeStation.getStatus())) {
+            throw new StationIsFullException("Cannot associate specified bike with specified station. Example reasons:\\n -" +
+                    " station is blocked or full\\n - bike is not rented by calling user");
         }
     }
 
     private boolean checkIfDeleted(Bike bike) {
-        return BikeStatus.DELETED == bike.getStatus();
+        return BikeStatus.DELETED.equals(bike.getStatus());
     }
 }

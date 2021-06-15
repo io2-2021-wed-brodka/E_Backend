@@ -5,6 +5,7 @@ import com.example.bikeRenting.constants.RoleConstants;
 import com.example.bikeRenting.dto.response.UserDTO;
 import com.example.bikeRenting.exception.EntityNotFoundException;
 import com.example.bikeRenting.exception.UserAlreadyBlockedException;
+import com.example.bikeRenting.exception.UserAlreadyExistsException;
 import com.example.bikeRenting.exception.UserNotBlockedException;
 import com.example.bikeRenting.model.entity.User;
 import com.example.bikeRenting.model.entity.UserStatus;
@@ -61,7 +62,7 @@ public class UserMainService implements UserService {
     public UserDTO createUser(String login, String hashedPassword) {
         userRepository.findByUserName(login)
                 .ifPresent(s -> {
-                    throw new RuntimeException("user with username " + login + " already exists");
+                    throw new UserAlreadyExistsException("user with username " + login + " already exists");
                 });
 
         var userEntity = new User();

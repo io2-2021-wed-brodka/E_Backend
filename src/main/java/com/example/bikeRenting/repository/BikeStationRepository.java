@@ -19,4 +19,7 @@ public interface BikeStationRepository extends JpaRepository<BikeStation, Long> 
 
     @Query("select s from BikeStation s where s.status <> :state")
     Set<BikeStation> findAllNotStatus(@Param("state") BikeStation.BikeStationState state);
+
+    @Query("select s from BikeStation s where s.status = :state")
+    Set<BikeStation> findAllByStatus(@Param("state") BikeStation.BikeStationState state);
 }

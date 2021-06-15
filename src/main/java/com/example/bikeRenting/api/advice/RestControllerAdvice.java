@@ -53,11 +53,73 @@ public class RestControllerAdvice {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 
-
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BikeAlreadyRentedException.class)
     public DisplayableErrorDTO handleBikeAlreadyRentedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BikeBlockedException.class)
+    public DisplayableErrorDTO handleBikeBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MalfunctionNotFoundException.class)
+    public DisplayableErrorDTO handleMalfunctionNotFoundException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BikeNotFoundException.class)
+    public DisplayableErrorDTO handleBikeNotFoundException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeNotBlockedException.class)
+    public DisplayableErrorDTO handleBikeNotBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(StationIsFullException.class)
+    public DisplayableErrorDTO handleBikeIsFullException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.METHOD_FAILURE)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public DisplayableErrorDTO handleUserAlreadyExistsException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(StationAlreadyBlockedException.class)
+    public DisplayableErrorDTO handleStationAlreadyBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeAlreadyBlockedException.class)
+    public DisplayableErrorDTO handleBikeAlreadyBlockedException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(BikeAlreadyDeletedException.class)
+    public DisplayableErrorDTO handleBikeAlreadyDeletedException(Exception ex) {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 

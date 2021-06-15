@@ -1,5 +1,6 @@
 package com.example.bikeRenting;
 
+import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
 import com.example.bikeRenting.model.entity.BikeStation;
 import com.example.bikeRenting.service.bike.BikeMainService;
@@ -43,7 +44,7 @@ public class BikeStationTests {
     void blockStationTest()
     {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 4");
-        var result = bikeStationMainService.blockBikeStation(Long.parseLong(org.getId()));
+        var result = bikeStationMainService.blockBikeStation(new BlockStationRequestDTO(Long.parseLong(org.getId())));
         var expected = new BikeStationDTO();
         expected.setBikesLimit(10);
         expected.setName("testowa stacja 4");
@@ -57,7 +58,7 @@ public class BikeStationTests {
     void unblockStationTest()
     {
         var org = bikeStationMainService.createBikeStation(10, "testowa stacja 5");
-        bikeStationMainService.blockBikeStation(Long.parseLong(org.getId()));
+        bikeStationMainService.blockBikeStation(new BlockStationRequestDTO(Long.parseLong(org.getId())));
         var result = bikeStationMainService.unblockBikeStation(Long.parseLong(org.getId())).getDescription();
         var expected = "Station unblocked";
         Assertions.assertEquals(expected, result);

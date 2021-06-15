@@ -1,7 +1,10 @@
 package com.example.bikeRenting.service.bikestation;
 
+import com.example.bikeRenting.dto.request.bikeStation.BlockStationRequestDTO;
 import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
+import com.example.bikeRenting.exception.StationAlreadyBlockedException;
 import com.example.bikeRenting.exception.StationNotEmptyException;
 import com.example.bikeRenting.exception.StationNotFoundException;
 import com.example.bikeRenting.model.entity.Bike;
@@ -29,7 +32,7 @@ public class BikeStationMainService implements BikeStationService {
     @Override
     public BikeStationDTO createBikeStation(Integer maxBikes, String locationName) {
         BikeStation bikeStation = new BikeStation();
-        bikeStation.setMaxBikes(maxBikes);
+        bikeStation.setMaxBikes(maxBikes==null?10:maxBikes);
         bikeStation.setLocationName(locationName);
         bikeStation.setStatus(BikeStation.BikeStationState.Working);
         return bikeStationMappingService.mapToBikeStationDTO(bikeStationRepository.save(bikeStation));
@@ -43,7 +46,8 @@ public class BikeStationMainService implements BikeStationService {
     }
 
     @Override
-    public BikeStationDTO blockBikeStation(long bikeStationId) {
+    public BikeStationDTO blockBikeStation(BlockStationRequestDTO request) {
+        var bikeStationId = request.getId();
         var bikeStation = bikeStationRepository.findById(bikeStationId)
                 .orElseThrow(() -> new RuntimeException("Station not found"));
 
@@ -52,7 +56,7 @@ public class BikeStationMainService implements BikeStationService {
         }
 
         if (BikeStation.BikeStationState.Blocked == bikeStation.getStatus()) {
-            throw new RuntimeException("Station already blocked");
+            throw new StationAlreadyBlockedException("Station already blocked");
         }
 
         bikeStation.setStatus(BikeStation.BikeStationState.Blocked);
@@ -99,6 +103,14 @@ public class BikeStationMainService implements BikeStationService {
         station.setStatus(BikeStation.BikeStationState.Deleted);
         bikeStationRepository.save(station);
         return new MessageResponseDTO("Station deleted");
+    }
+
+    @Override
+    public BikeStationListDTO getBlockedStations() {
+        var blockedStations = bikeStationRepository.findAllByStatus(BikeStation.BikeStationState.Blocked).stream()
+                .map(bikeStationMappingService::mapToBikeStationDTO)
+                .collect(Collectors.toList());
+        return new BikeStationListDTO(blockedStations);
     }
 
     private boolean checkIfDeleted(BikeStation bikeStation) {
