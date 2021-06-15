@@ -1,6 +1,7 @@
 package com.example.bikeRenting.service.bikestation;
 
 import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
 import com.example.bikeRenting.exception.StationNotEmptyException;
 import com.example.bikeRenting.exception.StationNotFoundException;
@@ -99,6 +100,14 @@ public class BikeStationMainService implements BikeStationService {
         station.setStatus(BikeStation.BikeStationState.Deleted);
         bikeStationRepository.save(station);
         return new MessageResponseDTO("Station deleted");
+    }
+
+    @Override
+    public BikeStationListDTO getBlockedStations() {
+        var blockedStations = bikeStationRepository.findAllNotStatus(BikeStation.BikeStationState.Blocked).stream()
+                .map(bikeStationMappingService::mapToBikeStationDTO)
+                .collect(Collectors.toList());
+        return new BikeStationListDTO(blockedStations);
     }
 
     private boolean checkIfDeleted(BikeStation bikeStation) {

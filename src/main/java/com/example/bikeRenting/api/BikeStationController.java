@@ -86,6 +86,11 @@ public class BikeStationController {
         return bikeStationService.unblockBikeStation(id);
     }
 
+    @GetMapping("/blocked")
+    public BikeStationListDTO getBlockedStations() {
+        return bikeStationService.getBlockedStations();
+    }
+
     @DeleteMapping("/{stationId}")
     @Secured({ADMIN})
     public MessageResponseDTO deleteStation(@PathVariable Long stationId) {

@@ -1,6 +1,7 @@
 package com.example.bikeRenting.service.bikestation;
 
 import com.example.bikeRenting.dto.response.BikeStationDTO;
+import com.example.bikeRenting.dto.response.BikeStationListDTO;
 import com.example.bikeRenting.dto.response.MessageResponseDTO;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface BikeStationService {
     List<BikeStationDTO> findAll();
 
     MessageResponseDTO deleteBikeStation(Long bikeStationId);
+
+    BikeStationListDTO getBlockedStations();
 }

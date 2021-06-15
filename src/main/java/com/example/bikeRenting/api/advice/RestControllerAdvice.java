@@ -95,4 +95,10 @@ public class RestControllerAdvice {
         return new DisplayableErrorDTO(ex.getMessage());
     }
 
+    @ResponseBody
+    @ResponseStatus(HttpStatus.METHOD_FAILURE)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public DisplayableErrorDTO handleUserAlreadyExistsException(Exception ex) {
+        return new DisplayableErrorDTO(ex.getMessage());
+    }
 }
